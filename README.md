@@ -16,7 +16,7 @@ Run the script
 
 1. add the jars to your classpath, e.g. on Linux with:
 
-  export CLASSPATH=``ls -1 *.jar | tr '\n' ':'``
+  export CLASSPATH=\`ls -1 *.jar | tr '\n' ':'\`
 
 2. make sure the HMDB data file is saved as hmdb_metabolites.zip
 
