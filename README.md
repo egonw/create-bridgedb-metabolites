@@ -9,7 +9,10 @@ The script has been tested with HMDB 3.0 [3] data from January 2013.
 License
 -------
 
-New BSD.
+This repository: New BSD.
+
+Derby License -> http://db.apache.org/derby/license.html
+BridgeDB License -> http://www.bridgedb.org/browser/trunk/LICENSE-2.0.txt
 
 Run the script
 --------------
