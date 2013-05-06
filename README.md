@@ -1,10 +1,10 @@
 Create BridgeDB Identity Mapping files for HMDB
 ===============================================
 
-This groovy script is loosly build on code developed by Martina Kutmon [0]
-and creates a Derby file for BridgeDB [1] for use in PathVisio, etc.
+This groovy script is loosly build on code developed by Martina Kutmon [1]
+and creates a Derby file for BridgeDB [2] for use in PathVisio, etc.
 
-The script has been tested with HMDB 3.0 data from January 2013.
+The script has been tested with HMDB 3.0 [3] data from January 2013.
 
 License
 -------
@@ -29,5 +29,6 @@ Run the script
 References
 ----------
 
-0. http://svn.bigcat.unimaas.nl/bridgedbcreator/trunk/src/org/bridgedb/creator/
-1. http://bridgedb.org/
+1. http://svn.bigcat.unimaas.nl/bridgedbcreator/trunk/src/org/bridgedb/creator/
+2. http://bridgedb.org/
+3. http://hmdb.ca/
