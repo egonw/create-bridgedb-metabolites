@@ -26,5 +26,8 @@ Run the script
 
 4. open the file in PathVisio
 
+References
+----------
+
 0. http://svn.bigcat.unimaas.nl/bridgedbcreator/trunk/src/org/bridgedb/creator/
 1. http://bridgedb.org/
