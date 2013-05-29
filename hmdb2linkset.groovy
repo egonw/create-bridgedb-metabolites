@@ -10,7 +10,8 @@ def voidFile = new File('hmdb_ls_chemspider.void')
 def lsFile = new File('hmdb_ls_chemspider.ttl')
 
 hmdbNS = "http://identifiers.org/hmdb/"
-chemspiderNS = "http://chemspider.com/resource/"
+chemspiderNSprefix = "http://www.chemspider.com/Chemical-Structure."
+chemspiderNSpostfix = ".rdf#Compound"
 
 def predicate = "skos:relatedMatch"
 
@@ -40,22 +41,22 @@ voidOut.println """
   dcterms:description "VoID file describing the link set between HMDB and ChemSpider." ;
   pav:createdBy <http://egonw.github.com/#me> ;
   pav:createdOn "2013-05-27T18:49:00Z"^^xsd:dataTime ;
-  pav:lastUpdateOn "2013-05-27T18:49:00Z"^^xsd:dataTime ;
+  pav:lastUpdateOn "2013-05-29T10:02:00Z"^^xsd:dateTime ;
   foaf:primaryTopic :LS .
 
 :LS a void:Linkset ;
   dcterms:title "HMDB 2 ChemSpider LinkSet" ;
   dcterms:description "A link set with links between HMDB and ChemSpider entries."@en;
   dcterms:license <http://www.hmdb.ca/citing>;
-  pav:version "3.0.0"^^xsd:string ;
+  pav:version "3.0.1"^^xsd:string ;
   pav:createdBy <http://egonw.github.com/#me> ;
-  pav:createdOn "2013-05-27T18:49:00Z"^^xsd:dateTime ;
+  pav:createdOn "2013-05-29T10:02:00Z"^^xsd:dateTime ;
   void:linkPredicate $predicate ;
   dul:expresses cheminf:CHEMINF_000000 ;
   void:subjectsTarget :HMDB ;
   void:objectsTarget <ftp://ftp.rsc-us.org/OPS/20130408/void_2013-04-08.ttl#chemSpiderDataset> ;
   pav:authoredBy <http://www.hmdb.ca/>;
-  pav:authoredOn "2013-05-27T18:49:00Z"^^xsd:dateTime .
+  pav:authoredOn "2013-05-29T10:02:00Z"^^xsd:dateTime ;
 
 :HMDB a void:Dataset ;
   void:subset :LS ;
@@ -85,7 +86,8 @@ zipFile.entries().each { entry ->
     // add external identifiers
     tripleCount++
     lsOut.println "<" + hmdbNS + rootid + "> $predicate <" +
-          chemspiderNS + rootNode.chemspider_id.toString() + "> ."
+          chemspiderNSprefix + rootNode.chemspider_id.toString() + chemspiderNSpostfix +
+          "> ."
   }
 }
 
