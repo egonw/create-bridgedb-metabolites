@@ -41,7 +41,7 @@ voidOut.println """
   dcterms:description "VoID file describing the link set between HMDB and ChemSpider." ;
   pav:createdBy <http://egonw.github.com/#me> ;
   pav:createdOn "2013-05-27T18:49:00Z"^^xsd:dataTime ;
-  pav:lastUpdateOn "2013-05-29T10:02:00Z"^^xsd:dateTime ;
+  pav:lastUpdateOn "2013-05-29T12:57:00Z"^^xsd:dateTime ;
   foaf:primaryTopic :LS .
 
 :LS a void:Linkset ;
@@ -52,7 +52,7 @@ voidOut.println """
   pav:createdBy <http://egonw.github.com/#me> ;
   pav:createdOn "2013-05-29T10:02:00Z"^^xsd:dateTime ;
   void:linkPredicate $predicate ;
-  dul:expresses cheminf:CHEMINF_000000 ;
+  dul:expresses cheminf:CHEMINF_000044 ;
   void:subjectsTarget :HMDB ;
   void:objectsTarget <ftp://ftp.rsc-us.org/OPS/20130408/void_2013-04-08.ttl#chemSpiderDataset> ;
   pav:authoredBy <http://www.hmdb.ca/>;
