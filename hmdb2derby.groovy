@@ -44,6 +44,7 @@ def addXRef(GdbConstruct database, Xref ref, String node, DataSource source) {
    println "id: $id"
    if (id.length() > 0) {
      ref2 = new Xref(id, source);
+     database.addGene(ref2);
      database.addLink(ref, ref2);
    }
 }
