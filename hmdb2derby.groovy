@@ -24,13 +24,13 @@ database.preInsert();
 inchiDS = DataSource.register ("Cin", "InChI").asDataSource()
 inchikeyDS = DataSource.register ("Cik", "InChIKey").asDataSource()
 chemspiderDS = DataSource.register ("Cs", "Chemspider").asDataSource()
-casDS = DataSource.register ("Ca", "CAS").asDataSource()
-pubchemDS = DataSource.register ("Cpc", "PubChem-compound").asDataSource()
-chebiDS = DataSource.register ("Ce", "ChEBI").asDataSource()
-keggDS = DataSource.register ("Ck", "Kegg Compound").asDataSource()
-drugbankDS = DataSource.register ("DrugBank", "DrugBank").asDataSource()
-wikipediaDS = DataSource.register ("Wi", "Wikipedia").asDataSource()
-nugoDS = DataSource.register ("Nw", "NuGO wiki").asDataSource()
+casDS = BioDataSource.CAS
+pubchemDS = BioDataSource.PUBCHEM_COMPOUND
+chebiDS = BioDataSource.CHEBI
+keggDS = BioDataSource.KEGG_COMPOUND
+// drugbankDS = BioDataSource.DRUGBANK
+wikipediaDS = BioDataSource.WIKIPEDIA
+nugoDS = BioDataSource.NUGOWIKI
 
 String dateStr = new SimpleDateFormat("yyyyMMdd").format(new Date());
 database.setInfo("BUILDDATE", dateStr);
@@ -72,33 +72,34 @@ zipFile.entries().each { entry ->
      String rootid = rootNode.accession.toString()
      Xref ref = new Xref(rootid, BioDataSource.HMDB);
      error = database.addGene(ref);
+     error += database.addLink(ref,ref);
 
      // add the synonyms
      addAttribute(database, ref, "Symbol", rootNode.common_name.toString());
-     rootNode.synonyms.synonym.each { synonym ->
-       addAttribute(database, ref, "Synonym", synonym.toString())
-     }
-     addAttribute(database, ref, "Synonym", rootNode.traditional_iupac.toString());
-     addAttribute(database, ref, "Synonym", rootNode.iupac_name.toString());
+//      rootNode.synonyms.synonym.each { synonym ->
+//        addAttribute(database, ref, "Synonym", synonym.toString())
+//      }
+//      addAttribute(database, ref, "Synonym", rootNode.traditional_iupac.toString());
+//      addAttribute(database, ref, "Synonym", rootNode.iupac_name.toString());
 
      // add the SMILES, InChIKey, etc
-     addAttribute(database, ref, "InChIKey", cleanKey(rootNode.inchkey.toString()));
-     addAttribute(database, ref, "SMILES", rootNode.smiles.toString());
-     addAttribute(database, ref, "BrutoFormula", rootNode.chemical_formula.toString());
-     addAttribute(database, ref, "Taxonomy Parent", rootNode.direct_parent.toString());
-     addAttribute(database, ref, "Monoisotopic Weight", rootNode.monisotopic_moleculate_weight.toString());
+//      addAttribute(database, ref, "InChIKey", cleanKey(rootNode.inchkey.toString()));
+//      addAttribute(database, ref, "SMILES", rootNode.smiles.toString());
+//      addAttribute(database, ref, "BrutoFormula", rootNode.chemical_formula.toString());
+//      addAttribute(database, ref, "Taxonomy Parent", rootNode.direct_parent.toString());
+//      addAttribute(database, ref, "Monoisotopic Weight", rootNode.monisotopic_moleculate_weight.toString());
 
      // add external identifiers
      addXRef(database, ref, rootNode.accession.toString(), BioDataSource.HMDB);
-     addXRef(database, ref, rootNode.cas_registry_number.toString(), casDS);
-     addXRef(database, ref, rootNode.inchi.toString(), inchiDS);
-     addXRef(database, ref, rootNode.chemspider_id.toString(), chemspiderDS);
-     addXRef(database, ref, rootNode.pubchem_compound_id.toString(), pubchemDS);
-     addXRef(database, ref, rootNode.chebi_id.toString(), chebiDS);
-     addXRef(database, ref, rootNode.kegg_id.toString(), keggDS);
-     addXRef(database, ref, rootNode.wikipedia.toString(), wikipediaDS);
-     addXRef(database, ref, rootNode.drugbank_id.toString(), drugbankDS);
-     addXRef(database, ref, rootNode.nugowiki.toString(), nugoDS);
+//      addXRef(database, ref, rootNode.cas_registry_number.toString(), casDS);
+//      addXRef(database, ref, rootNode.pubchem_compound_id.toString(), pubchemDS);
+//      addXRef(database, ref, rootNode.chebi_id.toString(), chebiDS);
+//      addXRef(database, ref, rootNode.kegg_id.toString(), keggDS);
+//      addXRef(database, ref, rootNode.wikipedia.toString(), wikipediaDS);
+//      addXRef(database, ref, rootNode.drugbank_id.toString(), drugbankDS);
+//      addXRef(database, ref, rootNode.nugowiki.toString(), nugoDS);
+//      addXRef(database, ref, rootNode.inchi.toString(), inchiDS);
+//      addXRef(database, ref, rootNode.chemspider_id.toString(), chemspiderDS);
 
      println "errors: " + error
   }
