@@ -31,6 +31,45 @@ datasets = [
   dcterms:title "CAS Common Chemistry" ;
   foaf:homepage <http://commonchemistry.org/> .
 """
+  ],
+  [
+    name: "PubChem Compounds",
+    acronym: "pubchem",
+    targetNSprefix: "http://pubchem.ncbi.nlm.nih.gov/rest/rdf/compound/CID",
+    targetNSpostfix: "",
+    objectsTarget: ":PubChem",
+    field: "pubchem_compound_id",
+    extraVoID: """
+:PubChem a dcterms:Dataset ;
+  dcterms:title "PubChem Compounds" ;
+  foaf:homepage <http://pubchem.ncbi.nlm.nih.gov/> .
+"""
+  ],
+  [
+    name: "DBPedia",
+    acronym: "wp",
+    targetNSprefix: "http://dbpedia.org/resource/",
+    targetNSpostfix: "",
+    objectsTarget: ":WP",
+    field: "wikipidia",
+    extraVoID: """
+:WP a dcterms:Dataset ;
+  dcterms:title "Wikipedia via DBPedia" ;
+  foaf:homepage <http://dbpedia.org/> .
+"""
+  ],
+  [
+    name: "KEGG",
+    acronym: "kegg",
+    targetNSprefix: "http://identifiers.org/kegg.compound/",
+    targetNSpostfix: "",
+    objectsTarget: ":KEGG",
+    field: "kegg_id",
+    extraVoID: """
+:KEGG a dcterms:Dataset ;
+  dcterms:title "KEGG" ;
+  foaf:homepage <http://www.genome.jp/kegg/> .
+"""
   ]
 ]
     
