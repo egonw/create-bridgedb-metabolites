@@ -15,7 +15,8 @@ datasets = [
     acronym: "chemspider",
     targetNSprefix: "http://rdf.chemspider.com/",
     targetNSpostfix: "",
-    objectsTarget: "ftp://ftp.rsc-us.org/OPS/20130408/void_2013-04-08.ttl#chemSpiderDataset"
+    objectsTarget: "ftp://ftp.rsc-us.org/OPS/20130408/void_2013-04-08.ttl#chemSpiderDataset",
+    field: "chemspider_id"
   ]
 ]
     
@@ -100,7 +101,7 @@ for (i in 0..0) {
       // add external identifiers
       tripleCount++
       lsOut.println "<" + hmdbNS + rootid + "> $predicate <" +
-	    datasets[i].targetNSprefix + rootNode.chemspider_id.toString() + datasets[i].targetNSpostfix +
+	    datasets[i].targetNSprefix + rootNode[datasets[i].field].toString() + datasets[i].targetNSpostfix +
 	    "> ."
       if (tripleCount > 5) { 
 	voidOut.println ":LS void:triples $tripleCount ."
