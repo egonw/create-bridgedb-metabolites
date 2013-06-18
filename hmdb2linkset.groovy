@@ -155,10 +155,12 @@ for (i in 0..(datasets.size()-1)) {
       String rootid = rootNode.accession.toString()
 
       // add external identifiers
-      tripleCount++
-      lsOut.println "<" + hmdbNS + rootid + "> $predicate <" +
-	    datasets[i].targetNSprefix + rootNode[datasets[i].field].toString() + datasets[i].targetNSpostfix +
-	    "> ."
+      if (rootNode[datasets[i].field].toString().length() > 0) {
+        tripleCount++
+        lsOut.println "<" + hmdbNS + rootid + "> $predicate <" +
+          datasets[i].targetNSprefix + rootNode[datasets[i].field].toString() + datasets[i].targetNSpostfix +
+          "> ."
+      }
     }
   }
 
