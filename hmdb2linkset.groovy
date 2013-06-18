@@ -15,8 +15,22 @@ datasets = [
     acronym: "chemspider",
     targetNSprefix: "http://rdf.chemspider.com/",
     targetNSpostfix: "",
-    objectsTarget: "ftp://ftp.rsc-us.org/OPS/20130408/void_2013-04-08.ttl#chemSpiderDataset",
-    field: "chemspider_id"
+    objectsTarget: "<ftp://ftp.rsc-us.org/OPS/20130408/void_2013-04-08.ttl#chemSpiderDataset>",
+    field: "chemspider_id",
+    extraVoID: ""
+  ],
+  [
+    name: "CAS",
+    acronym: "cas",
+    targetNSprefix: "http://identifiers.org/cas/",
+    targetNSpostfix: "",
+    objectsTarget: ":CAS",
+    field: "cas_registry_number",
+    extraVoID: """
+:CAS a dcterms:Dataset ;
+  dcterms:title "CAS Common Chemistry" ;
+  foaf:homepage <http://commonchemistry.org/> .
+"""
   ]
 ]
     
@@ -24,7 +38,7 @@ def hmdbNS = "http://identifiers.org/hmdb/"
 def predicate = "skos:relatedMatch"
 
 // loop over all data sets
-for (i in 0..0) {
+for (i in 0..(datasets.size()-1)) {
   def voidFile = new File("hmdb_ls_${datasets[i].acronym}.void")
   def lsFile = new File("hmdb_ls_${datasets[i].acronym}.ttl")
   def voidOut = new PrintStream(voidFile.newOutputStream())
@@ -69,7 +83,7 @@ for (i in 0..0) {
   void:linkPredicate $predicate ;
   dul:expresses cheminf:CHEMINF_000044 ;
   void:subjectsTarget :HMDB ;
-  void:objectsTarget <${datasets[i].objectsTarget}> ;
+  void:objectsTarget ${datasets[i].objectsTarget} ;
   pav:authoredBy <http://www.hmdb.ca/>;
   pav:authoredOn "2013-05-29T10:02:00Z"^^xsd:dateTime .
 
@@ -89,8 +103,11 @@ for (i in 0..0) {
   voag:frequencyOfChange <http://purl.org/cld/freq/irregular> ;
   pav:version "3".
 """
+  if (datasets[i].extraVoID.length() > 0)
+    voidOut.println datasets[i].extraVoID
 
   def tripleCount = 0
+try {
   zipFile.entries().each { entry ->
     if (!entry.isDirectory()) {
       inputStream = zipFile.getInputStream(entry)
@@ -108,10 +125,11 @@ for (i in 0..0) {
 
 	voidOut.close()
 	lsOut.close()
-	System.exit(0)
+	throw new Exception()
       }
     }
   }
+} catch (Exception e) {}
 
   voidOut.println ":LS void:triples $tripleCount ."
 
