@@ -62,6 +62,7 @@ for (i in 0..(datasets.size()-1)) {
 @prefix dul: <http://www.ontologydesignpatterns.org/ont/dul/DUL.owl#> .
 @prefix freq: <http://purl.org/cld/freq/> .
 @prefix cheminf: <http://semanticscience.org/resource/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
 
 @prefix : <#> .
 
@@ -81,7 +82,7 @@ for (i in 0..(datasets.size()-1)) {
   pav:createdBy <http://egonw.github.com/#me> ;
   pav:createdOn "${current_date}Z"^^xsd:dateTime ;
   void:linkPredicate $predicate ;
-  dul:expresses cheminf:CHEMINF_000044 ;
+  dul:expresses owl:Thing ;
   void:subjectsTarget :HMDB ;
   void:objectsTarget ${datasets[i].objectsTarget} ;
   pav:authoredBy <http://www.hmdb.ca/>;
