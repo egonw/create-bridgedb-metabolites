@@ -147,7 +147,6 @@ for (i in 0..(datasets.size()-1)) {
     voidOut.println datasets[i].extraVoID
 
   def tripleCount = 0
-try {
   zipFile.entries().each { entry ->
     if (!entry.isDirectory()) {
       inputStream = zipFile.getInputStream(entry)
@@ -160,16 +159,8 @@ try {
       lsOut.println "<" + hmdbNS + rootid + "> $predicate <" +
 	    datasets[i].targetNSprefix + rootNode[datasets[i].field].toString() + datasets[i].targetNSpostfix +
 	    "> ."
-      if (tripleCount > 5) { 
-	voidOut.println ":LS void:triples $tripleCount ."
-
-	voidOut.close()
-	lsOut.close()
-	throw new Exception()
-      }
     }
   }
-} catch (Exception e) {}
 
   voidOut.println ":LS void:triples $tripleCount ."
 
