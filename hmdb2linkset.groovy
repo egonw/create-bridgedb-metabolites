@@ -160,10 +160,11 @@ for (i in 0..(datasets.size()-1)) {
       String rootid = rootNode.accession.toString()
 
       // add external identifiers
-      if (rootNode[datasets[i].field].toString().length() > 0) {
+      identifier = rootNode[datasets[i].field].toString().length()
+      if (identifier > 0 && !("Not available".equals(identifier))) {
         tripleCount++
         lsOut.println "<" + hmdbNS + rootid + "> $predicate <" +
-          datasets[i].targetNSprefix + rootNode[datasets[i].field].toString() + datasets[i].targetNSpostfix +
+          datasets[i].targetNSprefix + identifier + datasets[i].targetNSpostfix +
           "> ."
       }
     }
