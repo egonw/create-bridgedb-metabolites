@@ -102,13 +102,6 @@ for (i in 0..0) {
       lsOut.println "<" + hmdbNS + rootid + "> $predicate <" +
 	    datasets[i].targetNSprefix + rootNode.chemspider_id.toString() + datasets[i].targetNSpostfix +
 	    "> ."
-      if (tripleCount > 5) { 
-	voidOut.println ":LS void:triples $tripleCount ."
-
-	voidOut.close()
-	lsOut.close()
-	System.exit(0)
-      }
     }
   }
 
