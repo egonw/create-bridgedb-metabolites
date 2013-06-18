@@ -87,6 +87,10 @@ for (i in 0..(datasets.size()-1)) {
   dateTime = new Date()
   current_date = DateGroovyMethods.format(dateTime, "yyyy-MM-dd'T'HH:mm:ss");
 
+  lsOut.println """
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+"""
+
   voidOut.println """
 @prefix dcterms: <http://purl.org/dc/terms/> .
 @prefix dctypes: <http://purl.org/dc/dcmitype/> .
