@@ -75,6 +75,7 @@ datasets = [
     
 def hmdbNS = "http://identifiers.org/hmdb/"
 def predicate = "skos:relatedMatch"
+def version = "3.0.2"
 
 // loop over all data sets
 for (i in 0..(datasets.size()-1)) {
@@ -117,7 +118,7 @@ for (i in 0..(datasets.size()-1)) {
   dcterms:title "HMDB 2 ${datasets[i].name} LinkSet" ;
   dcterms:description "A link set with links between HMDB and ${datasets[i].name} entries."@en;
   dcterms:license <http://www.hmdb.ca/citing>;
-  pav:version "3.0.1"^^xsd:string ;
+  pav:version "$version"^^xsd:string ;
   pav:createdBy <http://egonw.github.com/#me> ;
   pav:createdOn "${current_date}Z"^^xsd:dateTime ;
   void:linkPredicate $predicate ;
@@ -138,7 +139,7 @@ for (i in 0..(datasets.size()-1)) {
   pav:retrievedFrom <http://www.hmdb.ca/downloads> ;
   pav:retrievedOn "2013-05-27T18:49:00Z"^^xsd:dateTime ;
   void:uriSpace <$hmdbNS> ;
-  void:dataDump <http://www.bigcat.unimaas.nl/~egonw/hmdb/3.0.0/hmdb_ls_${datasets[i].acronym}.ttl> ;
+  void:dataDump <http://www.bigcat.unimaas.nl/~egonw/hmdb/$version/hmdb_ls_${datasets[i].acronym}.ttl> ;
   void:exampleResource <http://identifiers.org/hmdb/HMDB00005> ;
   voag:frequencyOfChange <http://purl.org/cld/freq/irregular> ;
   pav:version "3".
