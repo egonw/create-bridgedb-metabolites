@@ -111,7 +111,7 @@ for (i in 0..(datasets.size()-1)) {
 @prefix : <#> .
 
 <> a void:DatasetDescription;
-  dcterms:title "A VoID Description of the HMDB 2 ${datasets[i].name} LinkSet" ;
+  dcterms:title "A VoID Description of the HMDB to ${datasets[i].name} LinkSet" ;
   dcterms:description "VoID file describing the link set between HMDB and ${datasets[i].name}." ;
   pav:createdBy <http://egonw.github.com/#me> ;
   pav:createdOn "2013-05-27T18:49:00Z"^^xsd:dataTime ;
