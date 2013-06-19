@@ -160,8 +160,12 @@ for (i in 0..(datasets.size()-1)) {
       String rootid = rootNode.accession.toString()
 
       // add external identifiers
-      identifier = rootNode[datasets[i].field].toString().length()
-      if (identifier > 0 && !("Not available".equals(identifier))) {
+      identifier = rootNode[datasets[i].field].toString().trim()
+      if ("Not available".equals(identifier)) identifier = ""
+      if (datasets[i].acronym == "wp")  {
+        identifier = identifier.replace(" ", "_")
+      }
+      if (identifier.length() > 0) {
         tripleCount++
         lsOut.println "<" + hmdbNS + rootid + "> $predicate <" +
           datasets[i].targetNSprefix + identifier + datasets[i].targetNSpostfix +
