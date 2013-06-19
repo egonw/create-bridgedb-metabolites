@@ -27,7 +27,7 @@ datasets = [
     objectsTarget: ":CAS",
     field: "cas_registry_number",
     extraVoID: """
-:CAS a dcterms:Dataset ;
+:CAS a dctypes:Dataset ;
   dcterms:title "CAS Common Chemistry" ;
   foaf:homepage <http://commonchemistry.org/> .
 """
@@ -40,7 +40,7 @@ datasets = [
     objectsTarget: ":PubChem",
     field: "pubchem_compound_id",
     extraVoID: """
-:PubChem a dcterms:Dataset ;
+:PubChem a dctypes:Dataset ;
   dcterms:title "PubChem Compounds" ;
   foaf:homepage <http://pubchem.ncbi.nlm.nih.gov/> .
 """
@@ -53,7 +53,7 @@ datasets = [
     objectsTarget: ":WP",
     field: "wikipidia",
     extraVoID: """
-:WP a dcterms:Dataset ;
+:WP a dctypes:Dataset ;
   dcterms:title "Wikipedia via DBPedia" ;
   foaf:homepage <http://dbpedia.org/> .
 """
@@ -66,7 +66,7 @@ datasets = [
     objectsTarget: ":KEGG",
     field: "kegg_id",
     extraVoID: """
-:KEGG a dcterms:Dataset ;
+:KEGG a dctypes:Dataset ;
   dcterms:title "KEGG" ;
   foaf:homepage <http://www.genome.jp/kegg/> .
 """
