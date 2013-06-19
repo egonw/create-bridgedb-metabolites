@@ -75,7 +75,7 @@ datasets = [
     
 def hmdbNS = "http://identifiers.org/hmdb/"
 def predicate = "skos:relatedMatch"
-def version = "3.0.2"
+def version = "3.0.4"
 
 // loop over all data sets
 for (i in 0..(datasets.size()-1)) {
@@ -114,7 +114,7 @@ for (i in 0..(datasets.size()-1)) {
   dcterms:title "A VoID Description of the HMDB to ${datasets[i].name} LinkSet" ;
   dcterms:description "VoID file describing the link set between HMDB and ${datasets[i].name}." ;
   pav:createdBy <http://egonw.github.com/#me> ;
-  pav:createdOn "2013-05-27T18:49:00Z"^^xsd:dataTime ;
+  pav:createdOn "2013-05-27T18:49:00Z"^^xsd:dateTime ;
   pav:lastUpdateOn "${current_date}Z"^^xsd:dateTime ;
   foaf:primaryTopic :LS .
 
