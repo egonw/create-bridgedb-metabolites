@@ -9,7 +9,7 @@ import org.codehaus.groovy.runtime.DateGroovyMethods;
 def zipFile = new java.util.zip.ZipFile(new File('hmdb_metabolites.zip'))
 
 def predicate = "skos:relatedMatch"
-def version = "3.0.4"
+def version = "3.0.5"
 def uploadLocation = "http://www.bigcat.unimaas.nl/~egonw/hmdb/$version/"
 
 // configuring things
@@ -127,7 +127,7 @@ for (i in 0..(datasets.size()-1)) {
   foaf:primaryTopic :LS .
 
 :LS a void:Linkset ;
-  dcterms:title "HMDB 2 ${datasets[i].name} LinkSet" ;
+  dcterms:title "HMDB to ${datasets[i].name} LinkSet" ;
   dcterms:description "A link set with links between HMDB and ${datasets[i].name} entries."@en;
   dcterms:license <http://www.hmdb.ca/citing>;
   pav:version "$version"^^xsd:string ;
