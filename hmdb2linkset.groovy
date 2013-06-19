@@ -8,6 +8,10 @@ import org.codehaus.groovy.runtime.DateGroovyMethods;
 
 def zipFile = new java.util.zip.ZipFile(new File('hmdb_metabolites.zip'))
 
+def predicate = "skos:relatedMatch"
+def version = "3.0.4"
+def uploadLocation = "http://www.bigcat.unimaas.nl/~egonw/hmdb/$version/"
+
 // configuring things
 datasets = [
   [
@@ -74,13 +78,14 @@ datasets = [
 ]
     
 def hmdbNS = "http://identifiers.org/hmdb/"
-def predicate = "skos:relatedMatch"
-def version = "3.0.4"
 
 // loop over all data sets
 for (i in 0..(datasets.size()-1)) {
-  def voidFile = new File("hmdb_ls_${datasets[i].acronym}.void")
-  def lsFile = new File("hmdb_ls_${datasets[i].acronym}.ttl")
+  def voidFilename = "hmdb_ls_${datasets[i].acronym}.void.ttl"
+  def lsFilename = "hmdb_ls_${datasets[i].acronym}.ttl"
+
+  def voidFile = new File(voidFilename)
+  def lsFile = new File(lsFilename)
   def voidOut = new PrintStream(voidFile.newOutputStream())
   def lsOut = new PrintStream(lsFile.newOutputStream())
 
@@ -89,6 +94,9 @@ for (i in 0..(datasets.size()-1)) {
 
   lsOut.println """
 @prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix void: <http://rdfs.org/ns/void#> .
+
+<${uploadLocation}${lsFilename}> void:inDataset <${uploadLocation}${voidFilename}#LS> .
 """
 
   voidOut.println """
@@ -143,7 +151,7 @@ for (i in 0..(datasets.size()-1)) {
   pav:retrievedFrom <http://www.hmdb.ca/downloads> ;
   pav:retrievedOn "2013-05-27T18:49:00Z"^^xsd:dateTime ;
   void:uriSpace <$hmdbNS> ;
-  void:dataDump <http://www.bigcat.unimaas.nl/~egonw/hmdb/$version/hmdb_ls_${datasets[i].acronym}.ttl> ;
+  void:dataDump <${uploadLocation}${lsFilename}> ;
   void:exampleResource <http://identifiers.org/hmdb/HMDB00005> ;
   voag:frequencyOfChange <http://purl.org/cld/freq/irregular> ;
   pav:version "3".
