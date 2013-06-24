@@ -9,7 +9,7 @@ import org.codehaus.groovy.runtime.DateGroovyMethods;
 def zipFile = new java.util.zip.ZipFile(new File('hmdb_metabolites.zip'))
 
 def predicate = "skos:relatedMatch"
-def version = "3.0.5"
+def version = "3.0.6"
 def uploadLocation = "http://www.bigcat.unimaas.nl/~egonw/hmdb/$version/"
 
 // configuring things
@@ -134,7 +134,7 @@ for (i in 0..(datasets.size()-1)) {
   pav:createdBy <http://egonw.github.com/#me> ;
   pav:createdOn "${current_date}Z"^^xsd:dateTime ;
   void:linkPredicate $predicate ;
-  dul:expresses owl:Thing ;
+  dul:expresses <http://semanticscience.org/resource/SIO_001171> ;
   void:subjectsTarget :HMDB ;
   void:objectsTarget ${datasets[i].objectsTarget} ;
   pav:authoredBy <http://www.hmdb.ca/>;
