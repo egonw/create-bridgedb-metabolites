@@ -83,6 +83,7 @@ zipFile.entries().each { entry ->
      addAttribute(database, ref, "Synonym", rootNode.iupac_name.toString());
 
      // add the SMILES, InChIKey, etc
+     addAttribute(database, ref, "InChI", cleanKey(rootNode.inchi.toString()));
      addAttribute(database, ref, "InChIKey", cleanKey(rootNode.inchkey.toString()));
      addAttribute(database, ref, "SMILES", rootNode.smiles.toString());
      addAttribute(database, ref, "BrutoFormula", rootNode.chemical_formula.toString());
