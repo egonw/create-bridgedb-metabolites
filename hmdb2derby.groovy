@@ -57,8 +57,8 @@ def addAttribute(GdbConstruct database, Xref ref, String key, String value) {
 }
 
 def cleanKey(String inchikey) {
-   String cleanKey = inchikey
-   if (inchikey.startsWith("InChIKey=")) cleankey = inchikey.tokenize("=").get(1)
+   String cleanKey = inchikey.trim()
+   if (cleanKey.startsWith("InChIKey=")) cleanKey = cleanKey.substring(9)
    cleanKey
 }
 
