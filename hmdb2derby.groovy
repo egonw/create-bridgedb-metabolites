@@ -30,7 +30,6 @@ chebiDS = BioDataSource.CHEBI
 keggDS = BioDataSource.KEGG_COMPOUND
 // drugbankDS = BioDataSource.DRUGBANK
 wikipediaDS = BioDataSource.WIKIPEDIA
-nugoDS = BioDataSource.NUGOWIKI
 
 String dateStr = new SimpleDateFormat("yyyyMMdd").format(new Date());
 database.setInfo("BUILDDATE", dateStr);
@@ -98,7 +97,7 @@ zipFile.entries().each { entry ->
      addXRef(database, ref, rootNode.chebi_id.toString(), chebiDS);
      addXRef(database, ref, rootNode.kegg_id.toString(), keggDS);
      addXRef(database, ref, rootNode.wikipedia.toString(), wikipediaDS);
-     addXRef(database, ref, rootNode.nugowiki.toString(), nugoDS);
+//      addXRef(database, ref, rootNode.nugowiki.toString(), nugoDS);
 //      addXRef(database, ref, rootNode.drugbank_id.toString(), drugbankDS);
 //      addXRef(database, ref, rootNode.inchi.toString(), inchiDS);
 
