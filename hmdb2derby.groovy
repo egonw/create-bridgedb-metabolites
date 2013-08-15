@@ -13,8 +13,6 @@ import org.bridgedb.rdb.construct.DataDerby;
 import org.bridgedb.rdb.construct.GdbConstruct;
 import org.bridgedb.rdb.construct.GdbConstructImpl3;
 
-def zipFile = new java.util.zip.ZipFile(new File('hmdb_metabolites.zip'))
-
 GdbConstruct database = GdbConstructImpl3.createInstance(
   "hmdb_metabolites", new DataDerby(), DBConnector.PROP_RECREATE
 );
@@ -33,8 +31,8 @@ wikipediaDS = BioDataSource.WIKIPEDIA
 
 String dateStr = new SimpleDateFormat("yyyyMMdd").format(new Date());
 database.setInfo("BUILDDATE", dateStr);
-database.setInfo("DATASOURCENAME", "HMDB3");
-database.setInfo("DATASOURCEVERSION", "hmdb_metabolites_" + dateStr);
+database.setInfo("DATASOURCENAME", "HMDB35CHEBI");
+database.setInfo("DATASOURCEVERSION", "metabolites_" + dateStr);
 database.setInfo("DATATYPE", "Metabolite");
 database.setInfo("SERIES", "standard_metabolite");
 
@@ -43,8 +41,8 @@ def addXRef(GdbConstruct database, Xref ref, String node, DataSource source) {
    println "id: $id"
    if (id.length() > 0) {
      ref2 = new Xref(id, source);
-     database.addGene(ref2);
-     database.addLink(ref, ref2);
+     if (database.addGene(ref2)) println "Error: " + database.getErrorMessage()
+     if (database.addLink(ref, ref2)) println "Error: " + database.getErrorMessage()
    }
 }
 
@@ -52,7 +50,7 @@ def addAttribute(GdbConstruct database, Xref ref, String key, String value) {
    id = value.trim()
    println "attrib($key): $id"
    if (id.length() > 0) {
-     database.addAttribute(ref, key, value);
+     if (database.addAttribute(ref, key, value)) println "Error: " + database.getErrorMessage()
    }
 }
 
@@ -62,7 +60,9 @@ def cleanKey(String inchikey) {
    cleanKey
 }
 
+// load the HMDB content
 counter = 0
+def zipFile = new java.util.zip.ZipFile(new File('hmdb_metabolites.zip'))
 zipFile.entries().each { entry ->
    if (!entry.isDirectory()) {
      println entry.name
@@ -103,10 +103,53 @@ zipFile.entries().each { entry ->
 //      addXRef(database, ref, rootNode.inchi.toString(), inchiDS);
 
      println "errors: " + error
-     
      counter++
      if (counter % 100 == 0) database.commit()
   }
+}
+
+// load the ChEBI content
+counter = 0
+// load the names
+def chebiNames = new File('data/chebi_names.tsv')
+chebiNames.eachLine { line->
+  columns = line.split('\t')
+  rootid = "CHEBI:" + columns[1]
+  name = columns[4]
+  // println rootid + " -> " + name
+  Xref ref = new Xref(rootid, BioDataSource.CHEBI);
+  error = database.addGene(ref);
+  error += database.addLink(ref,ref);
+  error += addAttribute(database, ref, "Synonym", name);
+
+  println "errors: " + error
+  counter++
+  if (counter % 100 == 0) database.commit()
+}
+// load the mappings
+def mappedIDs = new File('data/chebi_database_accession.tsv')
+mappedIDs.eachLine { line->
+  columns = line.split('\t')
+  rootid = "CHEBI:" + columns[1]
+  type = columns[3]
+  id = columns[4]
+  println "$rootid -($type)-> $id"
+  error = 0
+  Xref ref = new Xref(rootid, BioDataSource.CHEBI);
+  if (type == "CAS Registry Number") {
+    addXRef(database, ref, id, BioDataSource.CAS);
+  } else if (type == "KEGG COMPOUND accession") {
+    addXRef(database, ref, id, BioDataSource.KEGG_COMPOUND);
+  } else if (type == "Chemspider accession") {
+    addXRef(database, ref, id, chemspiderDS);
+  } else if (type == "Wikipedia accession") {
+    addXRef(database, ref, id, wikipediaDS);
+  } else if (type == "Pubchem accession") {
+    addXRef(database, ref, id, pubchemDS);
+  }
+  println "errors: " + error
+  counter++
+  if (counter % 100 == 0) database.commit()
 }
 
 database.commit();
