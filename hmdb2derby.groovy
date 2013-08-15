@@ -91,7 +91,7 @@ zipFile.entries().each { entry ->
      addAttribute(database, ref, "Monoisotopic Weight", rootNode.monisotopic_moleculate_weight.toString());
 
      // add external identifiers
-     addXRef(database, ref, rootNode.accession.toString(), BioDataSource.HMDB);
+     // addXRef(database, ref, rootNode.accession.toString(), BioDataSource.HMDB);
      addXRef(database, ref, rootNode.cas_registry_number.toString(), casDS);
      addXRef(database, ref, rootNode.pubchem_compound_id.toString(), pubchemDS);
      addXRef(database, ref, rootNode.chemspider_id.toString(), chemspiderDS);
