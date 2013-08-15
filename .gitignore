@@ -1,5 +1,7 @@
 *~
 hmdb_metabolites.zip
 *.derby
+*.bridge
+*.bridge.zip
 hmdb_ls_*.ttl
 hmdb_ls_*.void
