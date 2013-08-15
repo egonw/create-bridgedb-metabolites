@@ -9,7 +9,7 @@ import org.codehaus.groovy.runtime.DateGroovyMethods;
 def zipFile = new java.util.zip.ZipFile(new File('hmdb_metabolites.zip'))
 
 def predicate = "skos:relatedMatch"
-def version = "3.0.6"
+def version = "3.0.7"
 def uploadLocation = "http://www.bigcat.unimaas.nl/~egonw/hmdb/$version/"
 
 // configuring things
@@ -76,30 +76,16 @@ datasets = [
 """
   ]
 ]
-    
+
+dateTime = new Date()
+current_date = DateGroovyMethods.format(dateTime, "yyyy-MM-dd'T'HH:mm:ss");
+
 def hmdbNS = "http://identifiers.org/hmdb/"
 
-// loop over all data sets
-for (i in 0..(datasets.size()-1)) {
-  def voidFilename = "hmdb_ls_${datasets[i].acronym}.void.ttl"
-  def lsFilename = "hmdb_ls_${datasets[i].acronym}.ttl"
-
-  def voidFile = new File(voidFilename)
-  def lsFile = new File(lsFilename)
-  def voidOut = new PrintStream(voidFile.newOutputStream())
-  def lsOut = new PrintStream(lsFile.newOutputStream())
-
-  dateTime = new Date()
-  current_date = DateGroovyMethods.format(dateTime, "yyyy-MM-dd'T'HH:mm:ss");
-
-  lsOut.println """
-@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
-@prefix void: <http://rdfs.org/ns/void#> .
-
-<${uploadLocation}${lsFilename}> void:inDataset <${uploadLocation}${voidFilename}#LS> .
-"""
-
-  voidOut.println """
+def voidFilename = "hmdb_ls.void.ttl"
+def voidFile = new File(voidFilename)
+def voidOut = new PrintStream(voidFile.newOutputStream())
+voidOut.println """
 @prefix dcterms: <http://purl.org/dc/terms/> .
 @prefix dctypes: <http://purl.org/dc/dcmitype/> .
 @prefix foaf: <http://xmlns.com/foaf/0.1/> .
@@ -119,29 +105,14 @@ for (i in 0..(datasets.size()-1)) {
 @prefix : <#> .
 
 <> a void:DatasetDescription;
-  dcterms:title "A VoID Description of the HMDB to ${datasets[i].name} LinkSet" ;
-  dcterms:description "VoID file describing the link set between HMDB and ${datasets[i].name}." ;
+  dcterms:title "A VoID Description of the HMDB LinkSets" ;
+  dcterms:description "VoID file describing the link set defined by HMDB." ;
   pav:createdBy <http://egonw.github.com/#me> ;
   pav:createdOn "2013-05-27T18:49:00Z"^^xsd:dateTime ;
   pav:lastUpdateOn "${current_date}Z"^^xsd:dateTime ;
-  foaf:primaryTopic :LS .
-
-:LS a void:Linkset ;
-  dcterms:title "HMDB to ${datasets[i].name} LinkSet" ;
-  dcterms:description "A link set with links between HMDB and ${datasets[i].name} entries."@en;
-  dcterms:license <http://www.hmdb.ca/citing>;
-  pav:version "$version"^^xsd:string ;
-  pav:createdBy <http://egonw.github.com/#me> ;
-  pav:createdOn "${current_date}Z"^^xsd:dateTime ;
-  void:linkPredicate $predicate ;
-  dul:expresses <http://semanticscience.org/resource/SIO_001171> ;
-  void:subjectsTarget :HMDB ;
-  void:objectsTarget ${datasets[i].objectsTarget} ;
-  pav:authoredBy <http://www.hmdb.ca/>;
-  pav:authoredOn "2013-05-29T10:02:00Z"^^xsd:dateTime .
+  foaf:primaryTopic :HMDB .
 
 :HMDB a void:Dataset ;
-  void:subset :LS ;
   dcterms:title "Human Metabolite Database";
   dcterms:description "The Human Metabolite Database (HMDB) is a database with information about metabolites, drugs and (other) xenobiotics found in the human organism. It is described in this paper: Wishart DS, Jewison T, Guo AC, Wilson M, Knox C, et al., HMDB 3.0—The Human Metabolome Database in 2013. Nucleic Acids Res. 2013. Jan 1;41(D1):D801-7."@en;
   dcterms:license <http://www.hmdb.ca/citing>;
@@ -151,11 +122,46 @@ for (i in 0..(datasets.size()-1)) {
   pav:retrievedFrom <http://www.hmdb.ca/downloads> ;
   pav:retrievedOn "2013-05-27T18:49:00Z"^^xsd:dateTime ;
   void:uriSpace <$hmdbNS> ;
-  void:dataDump <${uploadLocation}${lsFilename}> ;
+  void:dataDump <${uploadLocation}> ;
   void:exampleResource <http://identifiers.org/hmdb/HMDB00005> ;
   voag:frequencyOfChange <http://purl.org/cld/freq/irregular> ;
   pav:version "3".
 """
+
+// loop over all data sets
+for (i in 0..(datasets.size()-1)) {
+  def lsFilename = "hmdb_ls_${datasets[i].acronym}.ttl"
+
+  def lsFile = new File(lsFilename)
+  def lsOut = new PrintStream(lsFile.newOutputStream())
+
+  dateTime = new Date()
+  current_date = DateGroovyMethods.format(dateTime, "yyyy-MM-dd'T'HH:mm:ss");
+
+  lsOut.println """
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix void: <http://rdfs.org/ns/void#> .
+
+<${uploadLocation}${lsFilename}> void:inDataset <${uploadLocation}${voidFilename}#LS> .
+"""
+  voidOut.println """
+:HMDB void:subset :LS$i .
+:LS$i a void:Linkset ;
+  dcterms:title "HMDB to ${datasets[i].name} LinkSet" ;
+  dcterms:description "A link set with links between HMDB and ${datasets[i].name} entries."@en;
+  dcterms:license <http://www.hmdb.ca/citing>;
+  void:dataDump <${uploadLocation}${lsFilename}> ;
+  pav:version "$version"^^xsd:string ;
+  pav:createdBy <http://egonw.github.com/#me> ;
+  pav:createdOn "${current_date}Z"^^xsd:dateTime ;
+  void:linkPredicate $predicate ;
+  dul:expresses <http://semanticscience.org/resource/SIO_001171> ;
+  void:subjectsTarget :HMDB ;
+  void:objectsTarget ${datasets[i].objectsTarget} ;
+  pav:authoredBy <http://www.hmdb.ca/>;
+  pav:authoredOn "2013-05-29T10:02:00Z"^^xsd:dateTime .
+"""
+
   if (datasets[i].extraVoID.length() > 0)
     voidOut.println datasets[i].extraVoID
 
@@ -182,8 +188,9 @@ for (i in 0..(datasets.size()-1)) {
     }
   }
 
-  voidOut.println ":LS void:triples $tripleCount ."
+  voidOut.println ":LS$i void:triples $tripleCount ."
 
-  voidOut.close()
   lsOut.close()
 }
+
+voidOut.close()
