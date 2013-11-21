@@ -97,7 +97,14 @@ zipFile.entries().each { entry ->
      addXRef(database, ref, rootNode.cas_registry_number.toString(), casDS);
      addXRef(database, ref, rootNode.pubchem_compound_id.toString(), pubchemDS);
      addXRef(database, ref, rootNode.chemspider_id.toString(), chemspiderDS);
-     addXRef(database, ref, rootNode.chebi_id.toString(), chebiDS);
+     String chebID = rootNode.chebi_id.toString()
+     if (chebID.startsWith("CHEBI:")) {
+       addXRef(database, ref, chebID, chebiDS);
+       addXRef(database, ref, chebID.substring(6), chebiDS);
+     } else {
+       addXRef(database, ref, chebID, chebiDS);
+       addXRef(database, ref, "CHEBI:" + chebID, chebiDS);
+     }
      addXRef(database, ref, rootNode.kegg_id.toString(), keggDS);
      addXRef(database, ref, rootNode.wikipedia.toString(), wikipediaDS);
 //      addXRef(database, ref, rootNode.nugowiki.toString(), nugoDS);
