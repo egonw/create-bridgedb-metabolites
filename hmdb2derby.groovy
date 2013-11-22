@@ -38,8 +38,8 @@ database.setInfo("SERIES", "standard_metabolite");
 
 def addXRef(GdbConstruct database, Xref ref, String node, DataSource source) {
    id = node.trim()
-   println "id: $id"
    if (id.length() > 0) {
+     println "id: $id"
      ref2 = new Xref(id, source);
      if (database.addGene(ref2)) println "Error (addGene): " + database.getErrorMessage()
      if (database.addLink(ref, ref2)) println "Error (addLink): " + database.getErrorMessage()
@@ -97,11 +97,11 @@ zipFile.entries().each { entry ->
      addXRef(database, ref, rootNode.cas_registry_number.toString(), casDS);
      addXRef(database, ref, rootNode.pubchem_compound_id.toString(), pubchemDS);
      addXRef(database, ref, rootNode.chemspider_id.toString(), chemspiderDS);
-     String chebID = rootNode.chebi_id.toString()
+     String chebID = rootNode.chebi_id.toString().trim()
      if (chebID.startsWith("CHEBI:")) {
        addXRef(database, ref, chebID, chebiDS);
        addXRef(database, ref, chebID.substring(6), chebiDS);
-     } else {
+     } else if (chebID.length() > 0) {
        addXRef(database, ref, chebID, chebiDS);
        addXRef(database, ref, "CHEBI:" + chebID, chebiDS);
      }
