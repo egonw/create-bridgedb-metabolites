@@ -26,6 +26,7 @@ casDS = BioDataSource.CAS
 pubchemDS = BioDataSource.PUBCHEM_COMPOUND
 chebiDS = BioDataSource.CHEBI
 keggDS = BioDataSource.KEGG_COMPOUND
+keggDrugDS = DataSource.register ("Kd", "KEGG Drug").asDataSource()
 // drugbankDS = BioDataSource.DRUGBANK
 wikipediaDS = BioDataSource.WIKIPEDIA
 
@@ -105,7 +106,12 @@ zipFile.entries().each { entry ->
        addXRef(database, ref, chebID, chebiDS);
        addXRef(database, ref, "CHEBI:" + chebID, chebiDS);
      }
-     addXRef(database, ref, rootNode.kegg_id.toString(), keggDS);
+     String keggID = rootNode.kegg_id.toString();
+     if (keggID.length() > 0 && keggID.charAt(0) == 'C') {
+       addXRef(database, ref, keggID, keggDS);
+     } else if (keggID.length() > 0 && keggID.charAt(0) == 'D') {
+       addXRef(database, ref, keggID, keggDrugDS);
+     }
      addXRef(database, ref, rootNode.wikipedia.toString(), wikipediaDS);
 //      addXRef(database, ref, rootNode.nugowiki.toString(), nugoDS);
 //      addXRef(database, ref, rootNode.drugbank_id.toString(), drugbankDS);
