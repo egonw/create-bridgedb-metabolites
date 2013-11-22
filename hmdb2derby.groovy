@@ -78,7 +78,7 @@ zipFile.entries().each { entry ->
      error += database.addLink(ref,ref);
 
      // add the synonyms
-     addAttribute(database, ref, "Symbol", rootNode.common_name.toString());
+     addAttribute(database, ref, "Symbol", rootNode.name.toString());
      rootNode.synonyms.synonym.each { synonym ->
        addAttribute(database, ref, "Synonym", synonym.toString())
      }
@@ -87,7 +87,7 @@ zipFile.entries().each { entry ->
 
      // add the SMILES, InChIKey, etc
      // addAttribute(database, ref, "InChI", cleanKey(rootNode.inchi.toString()));
-     addAttribute(database, ref, "InChIKey", cleanKey(rootNode.inchkey.toString()));
+     addAttribute(database, ref, "InChIKey", cleanKey(rootNode.inchikey.toString()));
      addAttribute(database, ref, "SMILES", rootNode.smiles.toString());
      addAttribute(database, ref, "BrutoFormula", rootNode.chemical_formula.toString());
      addAttribute(database, ref, "Taxonomy Parent", rootNode.direct_parent.toString());
