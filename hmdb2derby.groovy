@@ -37,12 +37,15 @@ database.setInfo("DATASOURCEVERSION", "metabolites_" + dateStr);
 database.setInfo("DATATYPE", "Metabolite");
 database.setInfo("SERIES", "standard_metabolite");
 
-def addXRef(GdbConstruct database, Xref ref, String node, DataSource source) {
+def addXRef(GdbConstruct database, Xref ref, String node, DataSource source, Set genesDone) {
    id = node.trim()
    if (id.length() > 0) {
      println "id: $id"
      ref2 = new Xref(id, source);
-     if (database.addGene(ref2)) println "Error (addGene): " + database.getErrorMessage()
+     if (!genesDone.contains(ref2.toString())) {
+       if (database.addGene(ref2)) println "Error (addGene): " + database.getErrorMessage()
+       genesDone.add(ref2.toString())
+     }
      if (database.addLink(ref, ref2)) println "Error (addLink): " + database.getErrorMessage()
    }
 }
@@ -53,7 +56,9 @@ def addAttribute(GdbConstruct database, Xref ref, String key, String value) {
    if (id.length() > 255) {
      println "Warn: attribute does not fit the Derby SQL schema: $id"
    } else if (id.length() > 0) {
-     if (database.addAttribute(ref, key, value)) println "Error (addAttrib): " + database.getErrorMessage()
+     if (database.addAttribute(ref, key, value) != 0) {
+       println "Error (addAttrib): " + database.getErrorMessage()
+     }
    }
 }
 
@@ -65,17 +70,26 @@ def cleanKey(String inchikey) {
 
 // load the HMDB content
 counter = 0
+genesDone = new java.util.HashSet();
 def zipFile = new java.util.zip.ZipFile(new File('hmdb_metabolites.zip'))
 zipFile.entries().each { entry ->
    if (!entry.isDirectory()) {
      println entry.name
      inputStream = zipFile.getInputStream(entry)
      def rootNode = new XmlSlurper().parse(inputStream)
+     error = 0
 
      String rootid = rootNode.accession.toString()
      Xref ref = new Xref(rootid, BioDataSource.HMDB);
-     error = database.addGene(ref);
-     error += database.addLink(ref,ref);
+     if (!genesDone.contains(ref.toString())) {
+       addError = database.addGene(ref);
+       if (addError != 0) println "Error (addGene): " + database.getErrorMessage()
+       error += addError
+       linkError = database.addLink(ref,ref);
+       if (linkError != 0) println "Error (addLinkItself): " + database.getErrorMessage()
+       error += linkError
+       genesDone.add(ref.toString())
+     }
 
      // add the synonyms
      addAttribute(database, ref, "Symbol", rootNode.name.toString());
@@ -95,29 +109,29 @@ zipFile.entries().each { entry ->
 
      // add external identifiers
      // addXRef(database, ref, rootNode.accession.toString(), BioDataSource.HMDB);
-     addXRef(database, ref, rootNode.cas_registry_number.toString(), casDS);
-     addXRef(database, ref, rootNode.pubchem_compound_id.toString(), pubchemDS);
-     addXRef(database, ref, rootNode.chemspider_id.toString(), chemspiderDS);
+     addXRef(database, ref, rootNode.cas_registry_number.toString(), casDS, genesDone);
+     addXRef(database, ref, rootNode.pubchem_compound_id.toString(), pubchemDS, genesDone);
+     addXRef(database, ref, rootNode.chemspider_id.toString(), chemspiderDS, genesDone);
      String chebID = rootNode.chebi_id.toString().trim()
      if (chebID.startsWith("CHEBI:")) {
-       addXRef(database, ref, chebID, chebiDS);
-       addXRef(database, ref, chebID.substring(6), chebiDS);
+       addXRef(database, ref, chebID, chebiDS, genesDone);
+       addXRef(database, ref, chebID.substring(6), chebiDS, genesDone);
      } else if (chebID.length() > 0) {
-       addXRef(database, ref, chebID, chebiDS);
-       addXRef(database, ref, "CHEBI:" + chebID, chebiDS);
+       addXRef(database, ref, chebID, chebiDS, genesDone);
+       addXRef(database, ref, "CHEBI:" + chebID, chebiDS, genesDone);
      }
      String keggID = rootNode.kegg_id.toString();
      if (keggID.length() > 0 && keggID.charAt(0) == 'C') {
-       addXRef(database, ref, keggID, keggDS);
+       addXRef(database, ref, keggID, keggDS, genesDone);
      } else if (keggID.length() > 0 && keggID.charAt(0) == 'D') {
-       addXRef(database, ref, keggID, keggDrugDS);
+       addXRef(database, ref, keggID, keggDrugDS, genesDone);
      }
-     addXRef(database, ref, rootNode.wikipedia.toString(), wikipediaDS);
+     addXRef(database, ref, rootNode.wikipedia.toString(), wikipediaDS, genesDone);
 //      addXRef(database, ref, rootNode.nugowiki.toString(), nugoDS);
 //      addXRef(database, ref, rootNode.drugbank_id.toString(), drugbankDS);
 //      addXRef(database, ref, rootNode.inchi.toString(), inchiDS);
 
-     println "errors: " + error
+     println "errors: " + error + " (HMDB)"
      counter++
      if (counter % 100 == 0) database.commit()
   }
@@ -133,11 +147,18 @@ chebiNames.eachLine { line->
   name = columns[4]
   // println rootid + " -> " + name
   Xref ref = new Xref(rootid, BioDataSource.CHEBI);
-  error = database.addGene(ref);
-  error += database.addLink(ref,ref);
+  if (!genesDone.contains(ref.toString())) {
+    addError = database.addGene(ref);
+    if (addError != 0) println "Error (addGene): " + database.getErrorMessage()
+    error += addError
+    linkError += database.addLink(ref,ref);
+    if (linkError != 0) println "Error (addLinkItself): " + database.getErrorMessage()
+    error += linkError
+    genesDone.add(ref.toString())
+  }
   addAttribute(database, ref, "Synonym", name);
 
-  println "errors: " + error
+  println "errors: " + error + " (ChEBI)"
   counter++
   if (counter % 100 == 0) database.commit()
 }
@@ -152,17 +173,17 @@ mappedIDs.eachLine { line->
   error = 0
   Xref ref = new Xref(rootid, BioDataSource.CHEBI);
   if (type == "CAS Registry Number") {
-    addXRef(database, ref, id, BioDataSource.CAS);
+    addXRef(database, ref, id, BioDataSource.CAS, genesDone);
   } else if (type == "KEGG COMPOUND accession") {
-    addXRef(database, ref, id, BioDataSource.KEGG_COMPOUND);
+    addXRef(database, ref, id, BioDataSource.KEGG_COMPOUND, genesDone);
   } else if (type == "Chemspider accession") {
-    addXRef(database, ref, id, chemspiderDS);
+    addXRef(database, ref, id, chemspiderDS, genesDone);
   } else if (type == "Wikipedia accession") {
-    addXRef(database, ref, id, wikipediaDS);
+    addXRef(database, ref, id, wikipediaDS, genesDone);
   } else if (type == "Pubchem accession") {
-    addXRef(database, ref, id, pubchemDS);
+    addXRef(database, ref, id, pubchemDS, genesDone);
   }
-  println "errors: " + error
+  println "errors: " + error + " (ChEBI)"
   counter++
   if (counter % 100 == 0) database.commit()
 }
