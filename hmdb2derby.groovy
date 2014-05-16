@@ -43,10 +43,10 @@ def addXRef(GdbConstruct database, Xref ref, String node, DataSource source, Set
      println "id: $id"
      ref2 = new Xref(id, source);
      if (!genesDone.contains(ref2.toString())) {
-       if (database.addGene(ref2)) println "Error (addGene): " + database.getErrorMessage()
+       if (database.addGene(ref2)) println "Error (addGene): " + database.recentException().getMessage()
        genesDone.add(ref2.toString())
      }
-     if (database.addLink(ref, ref2)) println "Error (addLink): " + database.getErrorMessage()
+     if (database.addLink(ref, ref2)) println "Error (addLink): " + database.recentException().getMessage()
    }
 }
 
@@ -57,7 +57,7 @@ def addAttribute(GdbConstruct database, Xref ref, String key, String value) {
      println "Warn: attribute does not fit the Derby SQL schema: $id"
    } else if (id.length() > 0) {
      if (database.addAttribute(ref, key, value) != 0) {
-       println "Error (addAttrib): " + database.getErrorMessage()
+       println "Error (addAttrib): " + database.getException().getMessage()
      }
    }
 }
@@ -83,10 +83,10 @@ zipFile.entries().each { entry ->
      Xref ref = new Xref(rootid, BioDataSource.HMDB);
      if (!genesDone.contains(ref.toString())) {
        addError = database.addGene(ref);
-       if (addError != 0) println "Error (addGene): " + database.getErrorMessage()
+       if (addError != 0) println "Error (addGene): " + database.recentException().getMessage()
        error += addError
        linkError = database.addLink(ref,ref);
-       if (linkError != 0) println "Error (addLinkItself): " + database.getErrorMessage()
+       if (linkError != 0) println "Error (addLinkItself): " + database.recentException().getMessage()
        error += linkError
        genesDone.add(ref.toString())
      }
@@ -149,10 +149,10 @@ chebiNames.eachLine { line->
   Xref ref = new Xref(rootid, BioDataSource.CHEBI);
   if (!genesDone.contains(ref.toString())) {
     addError = database.addGene(ref);
-    if (addError != 0) println "Error (addGene): " + database.getErrorMessage()
+    if (addError != 0) println "Error (addGene): " + database.recentException().getMessage()
     error += addError
     linkError += database.addLink(ref,ref);
-    if (linkError != 0) println "Error (addLinkItself): " + database.getErrorMessage()
+    if (linkError != 0) println "Error (addLinkItself): " + database.recentException().getMessage()
     error += linkError
     genesDone.add(ref.toString())
   }
