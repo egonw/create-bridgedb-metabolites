@@ -32,7 +32,7 @@ wikipediaDS = BioDataSource.WIKIPEDIA
 
 String dateStr = new SimpleDateFormat("yyyyMMdd").format(new Date());
 database.setInfo("BUILDDATE", dateStr);
-database.setInfo("DATASOURCENAME", "HMDB35CHEBI");
+database.setInfo("DATASOURCENAME", "HMDB36CHEBI");
 database.setInfo("DATASOURCEVERSION", "metabolites_" + dateStr);
 database.setInfo("DATATYPE", "Metabolite");
 database.setInfo("SERIES", "standard_metabolite");
@@ -73,7 +73,7 @@ counter = 0
 genesDone = new java.util.HashSet();
 def zipFile = new java.util.zip.ZipFile(new File('hmdb_metabolites.zip'))
 zipFile.entries().each { entry ->
-   if (!entry.isDirectory()) {
+   if (!entry.isDirectory() && entry.name != "hmdb_metabolites.xml") {
      println entry.name
      inputStream = zipFile.getInputStream(entry)
      def rootNode = new XmlSlurper().parse(inputStream)
