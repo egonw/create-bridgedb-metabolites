@@ -14,7 +14,7 @@ import org.bridgedb.rdb.construct.GdbConstruct;
 import org.bridgedb.rdb.construct.GdbConstructImpl3;
 
 GdbConstruct database = GdbConstructImpl3.createInstance(
-  "hmdb_metabolites", new DataDerby(), DBConnector.PROP_RECREATE
+  "hmdb_chebi_wikidata_metabolites", new DataDerby(), DBConnector.PROP_RECREATE
 );
 database.createGdbTables();
 database.preInsert();
@@ -27,6 +27,7 @@ pubchemDS = BioDataSource.PUBCHEM_COMPOUND
 chebiDS = BioDataSource.CHEBI
 keggDS = BioDataSource.KEGG_COMPOUND
 keggDrugDS = DataSource.register ("Kd", "KEGG Drug").asDataSource()
+wikidataDS = DataSource.register ("Wd", "Wikidata").asDataSource()
 // drugbankDS = BioDataSource.DRUGBANK
 wikipediaDS = BioDataSource.WIKIPEDIA
 
@@ -67,6 +68,8 @@ def cleanKey(String inchikey) {
    if (cleanKey.startsWith("InChIKey=")) cleanKey = cleanKey.substring(9)
    cleanKey
 }
+
+commitInterval = 500
 
 // load the HMDB content
 counter = 0
@@ -131,9 +134,9 @@ zipFile.entries().each { entry ->
 //      addXRef(database, ref, rootNode.drugbank_id.toString(), drugbankDS);
 //      addXRef(database, ref, rootNode.inchi.toString(), inchiDS);
 
-     println "errors: " + error + " (HMDB)"
+     println "errors: " + error + " (ChEBI)"
      counter++
-     if (counter % 100 == 0) database.commit()
+     if (counter % commitInterval == 0) database.commit()
   }
 }
 
@@ -160,7 +163,7 @@ chebiNames.eachLine { line->
 
   println "errors: " + error + " (ChEBI)"
   counter++
-  if (counter % 100 == 0) database.commit()
+  if (counter % commitInterval == 0) database.commit()
 }
 // load the mappings
 def mappedIDs = new File('data/chebi_database_accession.tsv')
@@ -185,7 +188,125 @@ mappedIDs.eachLine { line->
   }
   println "errors: " + error + " (ChEBI)"
   counter++
-  if (counter % 100 == 0) database.commit()
+  if (counter % commitInterval == 0) database.commit()
+}
+
+// load the Wikidata content
+
+// CAS registry numbers
+counter = 0
+error = 0
+genesDone = new java.util.HashSet();
+new File("cas2wikidata.csv").eachLine { line ->
+  fields = line.split(",")
+  rootid = fields[0]
+  Xref ref = new Xref(rootid, wikidataDS);
+  if (!genesDone.contains(ref.toString())) {
+    addError = database.addGene(ref);
+    if (addError != 0) println "Error (addGene): " + database.recentException().getMessage()
+    error += addError
+    linkError = database.addLink(ref,ref);
+    if (linkError != 0) println "Error (addLinkItself): " + database.recentException().getMessage()
+    error += linkError
+    genesDone.add(ref.toString())
+  }
+
+  // add external identifiers
+  addXRef(database, ref, fields[1], casDS, genesDone);
+
+  counter++
+  if (counter % commitInterval == 0) {
+    println "errors: " + error + " (CAS)"
+    database.commit()
+  }
+}
+
+// PubChem registry numbers
+counter = 0
+error = 0
+new File("pubchem2wikidata.csv").eachLine { line ->
+  fields = line.split(",")
+  rootid = fields[0]
+  Xref ref = new Xref(rootid, wikidataDS);
+  if (!genesDone.contains(ref.toString())) {
+    addError = database.addGene(ref);
+    if (addError != 0) println "Error (addGene): " + database.recentException().getMessage()
+    error += addError
+    linkError = database.addLink(ref,ref);
+    if (linkError != 0) println "Error (addLinkItself): " + database.recentException().getMessage()
+    error += linkError
+    genesDone.add(ref.toString())
+  }
+
+  // add external identifiers
+  addXRef(database, ref, fields[1], pubchemDS, genesDone);
+
+  counter++
+  if (counter % commitInterval == 0) {
+    println "errors: " + error + " (PubChem)"
+    database.commit()
+  }
+}
+
+// KEGG registry numbers
+counter = 0
+error = 0
+new File("kegg2wikidata.csv").eachLine { line ->
+  fields = line.split(",")
+  rootid = fields[0]
+  Xref ref = new Xref(rootid, wikidataDS);
+  if (!genesDone.contains(ref.toString())) {
+    addError = database.addGene(ref);
+    if (addError != 0) println "Error (addGene): " + database.recentException().getMessage()
+    error += addError
+    linkError = database.addLink(ref,ref);
+    if (linkError != 0) println "Error (addLinkItself): " + database.recentException().getMessage()
+    error += linkError
+    genesDone.add(ref.toString())
+  }
+
+  // add external identifiers
+  keggID = fields[1]
+  if (keggID.charAt(0) == 'C') {
+    addXRef(database, ref, keggID, keggDS, genesDone);
+  } else if (keggID.charAt(0) == 'D') {
+    addXRef(database, ref, keggID, keggDrugDS, genesDone);
+  } else {
+    println "unclear KEGG ID: " + keggID
+  }
+
+  counter++
+  if (counter % commitInterval == 0) {
+    println "errors: " + error + " (KEGG)"
+    database.commit()
+  }
+}
+
+// ChemSpider registry numbers
+counter = 0
+error = 0
+new File("cs2wikidata.csv").eachLine { line ->
+  fields = line.split(",")
+  rootid = fields[0]
+  Xref ref = new Xref(rootid, wikidataDS);
+  if (!genesDone.contains(ref.toString())) {
+    addError = database.addGene(ref);
+    if (addError != 0) println "Error (addGene): " + database.recentException().getMessage()
+    error += addError
+    linkError = database.addLink(ref,ref);
+    if (linkError != 0) println "Error (addLinkItself): " + database.recentException().getMessage()
+    error += linkError
+    genesDone.add(ref.toString())
+  }
+
+  // add external identifiers
+  addXRef(database, ref, fields[1], chemspiderDS, genesDone);
+
+  counter++
+  if (counter % commitInterval == 0) {
+    println "errors: " + error + " (ChemSpider)"
+    database.commit()
+  }
 }
 
 database.commit();
