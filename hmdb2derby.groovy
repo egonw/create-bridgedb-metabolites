@@ -20,7 +20,7 @@ database.createGdbTables();
 database.preInsert();
 
 //inchiDS = DataSource.register ("Cin", "InChI").asDataSource()
-//inchikeyDS = DataSource.register ("Cik", "InChIKey").asDataSource()
+inchikeyDS = DataSource.register ("Ik", "InChIKey").asDataSource()
 chemspiderDS = DataSource.register ("Cs", "Chemspider").asDataSource()
 casDS = BioDataSource.CAS
 pubchemDS = BioDataSource.PUBCHEM_COMPOUND
@@ -104,7 +104,11 @@ zipFile.entries().each { entry ->
 
      // add the SMILES, InChIKey, etc
      addAttribute(database, ref, "InChI", cleanKey(rootNode.inchi.toString()));
-     addAttribute(database, ref, "InChIKey", cleanKey(rootNode.inchikey.toString()));
+     key = cleanKey(rootNode.inchikey.toString().trim());
+     if (key.length() == 27) {
+       addAttribute(database, ref, "InChIKey", key);
+       addXRef(database, ref, key, inchikeyDS, genesDone);
+     }
      addAttribute(database, ref, "SMILES", rootNode.smiles.toString());
      addAttribute(database, ref, "BrutoFormula", rootNode.chemical_formula.toString());
      addAttribute(database, ref, "Taxonomy Parent", rootNode.direct_parent.toString());
