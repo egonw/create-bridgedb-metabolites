@@ -9,7 +9,7 @@ import org.codehaus.groovy.runtime.DateGroovyMethods;
 def zipFile = new java.util.zip.ZipFile(new File('hmdb_metabolites.zip'))
 
 def predicate = "skos:relatedMatch"
-def version = "3.0.7"
+def version = "3.6.0"
 def uploadLocation = "http://www.bigcat.unimaas.nl/~egonw/hmdb/$version/"
 
 // configuring things
@@ -114,18 +114,18 @@ voidOut.println """
 
 :HMDB a void:Dataset ;
   dcterms:title "Human Metabolite Database";
-  dcterms:description "The Human Metabolite Database (HMDB) is a database with information about metabolites, drugs and (other) xenobiotics found in the human organism. It is described in this paper: Wishart DS, Jewison T, Guo AC, Wilson M, Knox C, et al., HMDB 3.0—The Human Metabolome Database in 2013. Nucleic Acids Res. 2013. Jan 1;41(D1):D801-7."@en;
+  dcterms:description "The Human Metabolite Database (HMDB) is a database with information about metabolites, drugs and (other) xenobiotics found in the human organism. It is described in this paper: Wishart DS, Jewison T, Guo AC, Wilson M, Knox C, et al., HMDB 3.0 — The Human Metabolome Database in 2013. Nucleic Acids Res. 2013. Jan 1;41(D1):D801-7."@en;
   dcterms:license <http://www.hmdb.ca/citing>;
   foaf:homepage <http://www.hmdb.ca/>;
   foaf:page <http://www.hmdb.ca/>;
   pav:retrievedBy <http://egonw.github.com/#me> ;
   pav:retrievedFrom <http://www.hmdb.ca/downloads> ;
-  pav:retrievedOn "2013-05-27T18:49:00Z"^^xsd:dateTime ;
+  pav:retrievedOn "2015-08-26T09:21:00Z"^^xsd:dateTime ;
   void:uriSpace <$hmdbNS> ;
   void:dataDump <${uploadLocation}> ;
   void:exampleResource <http://identifiers.org/hmdb/HMDB00005> ;
   voag:frequencyOfChange <http://purl.org/cld/freq/irregular> ;
-  pav:version "3".
+  pav:version "3.6".
 """
 
 // loop over all data sets
@@ -167,7 +167,7 @@ for (i in 0..(datasets.size()-1)) {
 
   def tripleCount = 0
   zipFile.entries().each { entry ->
-    if (!entry.isDirectory()) {
+    if (!entry.isDirectory() && entry.name != "hmdb_metabolites.xml") {
       inputStream = zipFile.getInputStream(entry)
       def rootNode = new XmlSlurper().parse(inputStream)
 
