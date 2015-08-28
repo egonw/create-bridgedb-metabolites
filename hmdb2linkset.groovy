@@ -131,9 +131,12 @@ voidOut.println """
 // loop over all data sets
 for (i in 0..(datasets.size()-1)) {
   def lsFilename = "hmdb_ls_${datasets[i].acronym}.ttl"
+  def lsvoidFilename = "hmdb_ls_${datasets[i].acronym}.void.ttl"
 
   def lsFile = new File(lsFilename)
   def lsOut = new PrintStream(lsFile.newOutputStream())
+  def lsvoidFile = new File(lsvoidFilename)
+  def lsvoidOut = new PrintStream(lsvoidFile.newOutputStream())
 
   dateTime = new Date()
   current_date = DateGroovyMethods.format(dateTime, "yyyy-MM-dd'T'HH:mm:ss");
@@ -144,8 +147,24 @@ for (i in 0..(datasets.size()-1)) {
 
 <${uploadLocation}${lsFilename}> void:inDataset <${uploadLocation}${voidFilename}#LS> .
 """
-  voidOut.println """
-:HMDB void:subset :LS$i .
+  lsvoidOut.println """
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix dctypes: <http://purl.org/dc/dcmitype/> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix pav: <http://purl.org/pav/> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix voag: <http://voag.linkedmodel.org/schema/voag#> .
+@prefix void: <http://rdfs.org/ns/void#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix dcat: <http://www.w3.org/ns/dcat#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix dul: <http://www.ontologydesignpatterns.org/ont/dul/DUL.owl#> .
+@prefix freq: <http://purl.org/cld/freq/> .
+@prefix cheminf: <http://semanticscience.org/resource/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+
+<${uploadLocation}${voidFilename}#HMDB> void:subset :LS$i .
 :LS$i a void:Linkset ;
   dcterms:title "HMDB to ${datasets[i].name} LinkSet" ;
   dcterms:description "A link set with links between HMDB and ${datasets[i].name} entries."@en;
@@ -163,10 +182,15 @@ for (i in 0..(datasets.size()-1)) {
 """
 
   if (datasets[i].extraVoID.length() > 0)
-    voidOut.println datasets[i].extraVoID
+    lsvoidOut.println datasets[i].extraVoID
 
   def tripleCount = 0
   zipFile.entries().each { entry ->
+  // counter = 10;
+  // entries = zipFile.entries().toSet().iterator()
+  // while (counter > 0) {
+  //  counter = counter - 1
+  //  entry = entries.next()
     if (!entry.isDirectory() && entry.name != "hmdb_metabolites.xml") {
       inputStream = zipFile.getInputStream(entry)
       def rootNode = new XmlSlurper().parse(inputStream)
@@ -188,8 +212,9 @@ for (i in 0..(datasets.size()-1)) {
     }
   }
 
-  voidOut.println ":LS$i void:triples $tripleCount ."
+  lsvoidOut.println ":LS$i void:triples $tripleCount ."
 
+  lsvoidOut.close()
   lsOut.close()
 }
 
