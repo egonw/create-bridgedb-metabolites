@@ -2,7 +2,7 @@
 @prefix skos: <http://www.w3.org/2004/02/skos/core#> .
 @prefix void: <http://rdfs.org/ns/void#> .
 
-<http://www.bigcat.unimaas.nl/~egonw/hmdb/3.6.0/hmdb_ls_kegg.ttl> void:inDataset <http://www.bigcat.unimaas.nl/~egonw/hmdb/3.6.0/hmdb_ls.void.ttl#LS> .
+<http://egonw.github.io/create-bridgedb-hmdb/hmdb/3.6.0/hmdb_ls_kegg.ttl> void:inDataset <http://egonw.github.io/create-bridgedb-hmdb/hmdb/3.6.0/hmdb_ls_kegg.void.ttl#LS-KEGG> .
 
 <http://identifiers.org/hmdb/HMDB00001> skos:relatedMatch <http://identifiers.org/kegg.compound/C01152> .
 <http://identifiers.org/hmdb/HMDB00002> skos:relatedMatch <http://identifiers.org/kegg.compound/C00986> .

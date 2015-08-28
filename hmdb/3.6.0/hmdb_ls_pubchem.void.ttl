@@ -15,15 +15,15 @@
 @prefix cheminf: <http://semanticscience.org/resource/> .
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
 
-<http://www.bigcat.unimaas.nl/~egonw/hmdb/3.6.0/hmdb_ls.void.ttl#HMDB> void:subset :LS2 .
-:LS2 a void:Linkset ;
+<http://egonw.github.io/create-bridgedb-hmdb/hmdb/3.6.0/hmdb_ls.void.ttl#HMDB> void:subset :LS-PUBCHEM .
+:LS-PUBCHEM a void:Linkset ;
   dcterms:title "HMDB to PubChem Compounds LinkSet" ;
   dcterms:description "A link set with links between HMDB and PubChem Compounds entries."@en;
   dcterms:license <http://www.hmdb.ca/citing>;
-  void:dataDump <http://www.bigcat.unimaas.nl/~egonw/hmdb/3.6.0/hmdb_ls_pubchem.ttl> ;
+  void:dataDump <http://egonw.github.io/create-bridgedb-hmdb/hmdb/3.6.0/hmdb_ls_pubchem.ttl> ;
   pav:version "3.6.0"^^xsd:string ;
   pav:createdBy <http://egonw.github.com/#me> ;
-  pav:createdOn "2015-08-27T18:39:58Z"^^xsd:dateTime ;
+  pav:createdOn "2015-08-28T08:37:53Z"^^xsd:dateTime ;
   void:linkPredicate skos:relatedMatch ;
   dul:expresses <http://semanticscience.org/resource/SIO_001171> ;
   void:subjectsTarget :HMDB ;
@@ -36,4 +36,4 @@
   dcterms:title "PubChem Compounds" ;
   foaf:homepage <http://pubchem.ncbi.nlm.nih.gov/> .
 
-:LS2 void:triples 16923 .
+:LS-PUBCHEM void:triples 16923 .

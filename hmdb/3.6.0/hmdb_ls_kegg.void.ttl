@@ -15,15 +15,15 @@
 @prefix cheminf: <http://semanticscience.org/resource/> .
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
 
-<http://www.bigcat.unimaas.nl/~egonw/hmdb/3.6.0/hmdb_ls.void.ttl#HMDB> void:subset :LS4 .
-:LS4 a void:Linkset ;
+<http://egonw.github.io/create-bridgedb-hmdb/hmdb/3.6.0/hmdb_ls.void.ttl#HMDB> void:subset :LS-KEGG .
+:LS-KEGG a void:Linkset ;
   dcterms:title "HMDB to KEGG LinkSet" ;
   dcterms:description "A link set with links between HMDB and KEGG entries."@en;
   dcterms:license <http://www.hmdb.ca/citing>;
-  void:dataDump <http://www.bigcat.unimaas.nl/~egonw/hmdb/3.6.0/hmdb_ls_kegg.ttl> ;
+  void:dataDump <http://egonw.github.io/create-bridgedb-hmdb/hmdb/3.6.0/hmdb_ls_kegg.ttl> ;
   pav:version "3.6.0"^^xsd:string ;
   pav:createdBy <http://egonw.github.com/#me> ;
-  pav:createdOn "2015-08-27T18:42:22Z"^^xsd:dateTime ;
+  pav:createdOn "2015-08-28T08:38:32Z"^^xsd:dateTime ;
   void:linkPredicate skos:relatedMatch ;
   dul:expresses <http://semanticscience.org/resource/SIO_001171> ;
   void:subjectsTarget :HMDB ;
@@ -36,4 +36,4 @@
   dcterms:title "KEGG" ;
   foaf:homepage <http://www.genome.jp/kegg/> .
 
-:LS4 void:triples 7249 .
+:LS-KEGG void:triples 7249 .

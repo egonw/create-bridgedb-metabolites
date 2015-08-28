@@ -15,15 +15,15 @@
 @prefix cheminf: <http://semanticscience.org/resource/> .
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
 
-<http://www.bigcat.unimaas.nl/~egonw/hmdb/3.6.0/hmdb_ls.void.ttl#HMDB> void:subset :LS0 .
-:LS0 a void:Linkset ;
+<http://egonw.github.io/create-bridgedb-hmdb/hmdb/3.6.0/hmdb_ls.void.ttl#HMDB> void:subset :LS-CHEMSPIDER .
+:LS-CHEMSPIDER a void:Linkset ;
   dcterms:title "HMDB to ChemSpider LinkSet" ;
   dcterms:description "A link set with links between HMDB and ChemSpider entries."@en;
   dcterms:license <http://www.hmdb.ca/citing>;
-  void:dataDump <http://www.bigcat.unimaas.nl/~egonw/hmdb/3.6.0/hmdb_ls_chemspider.ttl> ;
+  void:dataDump <http://egonw.github.io/create-bridgedb-hmdb/hmdb/3.6.0/hmdb_ls_chemspider.ttl> ;
   pav:version "3.6.0"^^xsd:string ;
   pav:createdBy <http://egonw.github.com/#me> ;
-  pav:createdOn "2015-08-27T18:37:32Z"^^xsd:dateTime ;
+  pav:createdOn "2015-08-28T08:25:54Z"^^xsd:dateTime ;
   void:linkPredicate skos:relatedMatch ;
   dul:expresses <http://semanticscience.org/resource/SIO_001171> ;
   void:subjectsTarget :HMDB ;
@@ -31,4 +31,4 @@
   pav:authoredBy <http://www.hmdb.ca/>;
   pav:authoredOn "2013-05-29T10:02:00Z"^^xsd:dateTime .
 
-:LS0 void:triples 15791 .
+:LS-CHEMSPIDER void:triples 15791 .

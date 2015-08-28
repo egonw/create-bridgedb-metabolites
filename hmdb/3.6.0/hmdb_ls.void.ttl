@@ -22,7 +22,7 @@
   dcterms:description "VoID file describing the link set defined by HMDB." ;
   pav:createdBy <http://egonw.github.com/#me> ;
   pav:createdOn "2013-05-27T18:49:00Z"^^xsd:dateTime ;
-  pav:lastUpdateOn "2015-08-27T18:37:32Z"^^xsd:dateTime ;
+  pav:lastUpdateOn "2015-08-28T08:25:54Z"^^xsd:dateTime ;
   foaf:primaryTopic :HMDB .
 
 :HMDB a void:Dataset ;
@@ -35,7 +35,7 @@
   pav:retrievedFrom <http://www.hmdb.ca/downloads> ;
   pav:retrievedOn "2015-08-26T09:21:00Z"^^xsd:dateTime ;
   void:uriSpace <http://identifiers.org/hmdb/> ;
-  void:dataDump <http://www.bigcat.unimaas.nl/~egonw/hmdb/3.6.0/> ;
+  void:dataDump <http://egonw.github.io/create-bridgedb-hmdb/hmdb/3.6.0/> ;
   void:exampleResource <http://identifiers.org/hmdb/HMDB00005> ;
   voag:frequencyOfChange <http://purl.org/cld/freq/irregular> ;
   pav:version "3.6".
