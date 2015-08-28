@@ -137,6 +137,8 @@ for (i in 0..(datasets.size()-1)) {
   def lsOut = new PrintStream(lsFile.newOutputStream())
   def lsvoidFile = new File(lsvoidFilename)
   def lsvoidOut = new PrintStream(lsvoidFile.newOutputStream())
+  
+  def lsCode = datasets[i].acronym.toUpperCase()
 
   dateTime = new Date()
   current_date = DateGroovyMethods.format(dateTime, "yyyy-MM-dd'T'HH:mm:ss");
@@ -145,7 +147,7 @@ for (i in 0..(datasets.size()-1)) {
 @prefix skos: <http://www.w3.org/2004/02/skos/core#> .
 @prefix void: <http://rdfs.org/ns/void#> .
 
-<${uploadLocation}${lsFilename}> void:inDataset <${uploadLocation}${lsvoidFilename}#LS$i> .
+<${uploadLocation}${lsFilename}> void:inDataset <${uploadLocation}${lsvoidFilename}#LS-${lsCode}> .
 """
   lsvoidOut.println """
 @prefix dcterms: <http://purl.org/dc/terms/> .
@@ -164,8 +166,8 @@ for (i in 0..(datasets.size()-1)) {
 @prefix cheminf: <http://semanticscience.org/resource/> .
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
 
-<${uploadLocation}${voidFilename}#HMDB> void:subset :LS$i .
-:LS$i a void:Linkset ;
+<${uploadLocation}${voidFilename}#HMDB> void:subset :LS-${lsCode} .
+:LS-${lsCode} a void:Linkset ;
   dcterms:title "HMDB to ${datasets[i].name} LinkSet" ;
   dcterms:description "A link set with links between HMDB and ${datasets[i].name} entries."@en;
   dcterms:license <http://www.hmdb.ca/citing>;
@@ -212,7 +214,7 @@ for (i in 0..(datasets.size()-1)) {
     }
   }
 
-  lsvoidOut.println ":LS$i void:triples $tripleCount ."
+  lsvoidOut.println ":LS-${lsCode} void:triples $tripleCount ."
 
   lsvoidOut.close()
   lsOut.close()
