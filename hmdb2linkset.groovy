@@ -10,7 +10,7 @@ def zipFile = new java.util.zip.ZipFile(new File('hmdb_metabolites.zip'))
 
 def predicate = "skos:relatedMatch"
 def version = "3.6.0"
-def uploadLocation = "http://www.bigcat.unimaas.nl/~egonw/hmdb/$version/"
+def uploadLocation = "http://egonw.github.io/create-bridgedb-hmdb/hmdb/$version/"
 
 // configuring things
 datasets = [
