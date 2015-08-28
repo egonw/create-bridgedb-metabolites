@@ -145,7 +145,7 @@ for (i in 0..(datasets.size()-1)) {
 @prefix skos: <http://www.w3.org/2004/02/skos/core#> .
 @prefix void: <http://rdfs.org/ns/void#> .
 
-<${uploadLocation}${lsFilename}> void:inDataset <${uploadLocation}${voidFilename}#LS> .
+<${uploadLocation}${lsFilename}> void:inDataset <${uploadLocation}${lsvoidFilename}#LS$i> .
 """
   lsvoidOut.println """
 @prefix dcterms: <http://purl.org/dc/terms/> .
