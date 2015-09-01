@@ -221,7 +221,7 @@ for (i in 0..(datasets.size()-1)) {
   lsvoidOut.close()
   lsOut.close()
 
-  voidOut.println "<${uploadLocation}${voidFilename}#HMDB> void:subset :LS-${lsCode} ."
+  voidOut.println "<${uploadLocation}${voidFilename}#HMDB> void:subset <${uploadLocation}${lsvoidFilename}#LS-${lsCode}> ."
 }
 
 voidOut.close()
