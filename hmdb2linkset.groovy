@@ -168,6 +168,7 @@ for (i in 0..(datasets.size()-1)) {
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
 
 <${uploadLocation}${voidFilename}#HMDB> void:subset :LS-${lsCode} .
+
 :LS-${lsCode} a void:Linkset ;
   dcterms:title "HMDB to ${datasets[i].name} LinkSet" ;
   dcterms:description "A link set with links between HMDB and ${datasets[i].name} entries."@en;
@@ -179,7 +180,7 @@ for (i in 0..(datasets.size()-1)) {
   pav:createdWith <https://github.com/egonw/create-bridgedb-hmdb/> ;
   void:linkPredicate $predicate ;
   dul:expresses <http://semanticscience.org/resource/SIO_001171> ;
-  void:subjectsTarget :HMDB ;
+  void:subjectsTarget <${uploadLocation}${voidFilename}#HMDB> ;
   void:objectsTarget ${datasets[i].objectsTarget} ;
   pav:authoredBy <http://www.hmdb.ca/>;
   pav:authoredOn "2013-05-29T10:02:00Z"^^xsd:dateTime .
@@ -217,9 +218,10 @@ for (i in 0..(datasets.size()-1)) {
   }
 
   lsvoidOut.println ":LS-${lsCode} void:triples $tripleCount ."
-
   lsvoidOut.close()
   lsOut.close()
+
+  voidOut.println "<${uploadLocation}${voidFilename}#HMDB> void:subset :LS-${lsCode} ."
 }
 
 voidOut.close()
