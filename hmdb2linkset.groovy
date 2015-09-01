@@ -109,6 +109,7 @@ voidOut.println """
   dcterms:description "VoID file describing the link set defined by HMDB." ;
   pav:createdBy <http://egonw.github.com/#me> ;
   pav:createdOn "2013-05-27T18:49:00Z"^^xsd:dateTime ;
+  pav:createdWith <https://github.com/egonw/create-bridgedb-hmdb/> ;
   pav:lastUpdateOn "${current_date}Z"^^xsd:dateTime ;
   foaf:primaryTopic :HMDB .
 
@@ -175,6 +176,7 @@ for (i in 0..(datasets.size()-1)) {
   pav:version "$version"^^xsd:string ;
   pav:createdBy <http://egonw.github.com/#me> ;
   pav:createdOn "${current_date}Z"^^xsd:dateTime ;
+  pav:createdWith <https://github.com/egonw/create-bridgedb-hmdb/> ;
   void:linkPredicate $predicate ;
   dul:expresses <http://semanticscience.org/resource/SIO_001171> ;
   void:subjectsTarget :HMDB ;
