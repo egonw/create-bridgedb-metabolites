@@ -167,6 +167,8 @@ for (i in 0..(datasets.size()-1)) {
 @prefix cheminf: <http://semanticscience.org/resource/> .
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
 
+@prefix : <#> .
+
 <${uploadLocation}${voidFilename}#HMDB> void:subset :LS-${lsCode} .
 
 :LS-${lsCode} a void:Linkset ;
