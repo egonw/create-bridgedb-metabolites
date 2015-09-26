@@ -23,11 +23,27 @@ Run the script
 
 2. make sure the HMDB data file is saved as hmdb_metabolites.zip
 
-3. run the script with Groovy:
+  ```
+  wget http://www.hmdb.ca/downloads/hmdb_metabolites.zip
+  ```
+
+3. make sure the ChEBI data file is saved
+
+  ```
+  mkdir data
+  cd data
+  wget ftp://ftp.ebi.ac.uk/pub/databases/chebi/Flat_file_tab_delimited/names.tsv.gz
+  gunzip names.tsv.gz
+  mv names.tsv chebi_names.tsv
+  wget ftp://ftp.ebi.ac.uk/pub/databases/chebi/Flat_file_tab_delimited/database_accession.tsv
+  mv database_accession.tsv chebi_database_accession.tsv
+  ```
+
+4. run the script with Groovy:
 
   groovy hmdb2derby.groovy
 
-4. open the file in PathVisio
+5. open the file in PathVisio
 
 References
 ----------
