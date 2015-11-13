@@ -23,8 +23,8 @@
   pav:createdBy <http://egonw.github.com/#me> ;
   pav:createdOn "2013-05-27T18:49:00Z"^^xsd:dateTime ;
   pav:createdWith <https://github.com/egonw/create-bridgedb-hmdb/> ;
-  pav:lastUpdateOn "2015-11-13T12:46:27Z"^^xsd:dateTime ;
-  dcterms:issued "2015-11-13T12:46:27Z"^^xsd:dateTime ;
+  pav:lastUpdateOn "2015-11-13T15:47:44Z"^^xsd:dateTime ;
+  dcterms:issued "2015-11-13T15:47:44Z"^^xsd:dateTime ;
   foaf:primaryTopic :HMDB .
 
 :HMDB a void:Dataset ;
@@ -43,13 +43,8 @@
   dcterms:accuralPeriodicity <http://purl.org/cld/freq/irregular> ;
   pav:version "3.6".
 
-:HMDB void:dataDump <http://egonw.github.io/create-bridgedb-hmdb/hmdb/3.6.0/hmdb_ls_chemspider.ttl> .
 :HMDB void:subset <http://egonw.github.io/create-bridgedb-hmdb/hmdb/3.6.0/hmdb_ls_chemspider.void.ttl#LS-CHEMSPIDER> .
-:HMDB void:dataDump <http://egonw.github.io/create-bridgedb-hmdb/hmdb/3.6.0/hmdb_ls_cas.ttl> .
 :HMDB void:subset <http://egonw.github.io/create-bridgedb-hmdb/hmdb/3.6.0/hmdb_ls_cas.void.ttl#LS-CAS> .
-:HMDB void:dataDump <http://egonw.github.io/create-bridgedb-hmdb/hmdb/3.6.0/hmdb_ls_pubchem.ttl> .
 :HMDB void:subset <http://egonw.github.io/create-bridgedb-hmdb/hmdb/3.6.0/hmdb_ls_pubchem.void.ttl#LS-PUBCHEM> .
-:HMDB void:dataDump <http://egonw.github.io/create-bridgedb-hmdb/hmdb/3.6.0/hmdb_ls_wp.ttl> .
 :HMDB void:subset <http://egonw.github.io/create-bridgedb-hmdb/hmdb/3.6.0/hmdb_ls_wp.void.ttl#LS-WP> .
-:HMDB void:dataDump <http://egonw.github.io/create-bridgedb-hmdb/hmdb/3.6.0/hmdb_ls_kegg.ttl> .
 :HMDB void:subset <http://egonw.github.io/create-bridgedb-hmdb/hmdb/3.6.0/hmdb_ls_kegg.void.ttl#LS-KEGG> .

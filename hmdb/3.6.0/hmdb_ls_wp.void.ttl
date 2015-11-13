@@ -14,6 +14,7 @@
 @prefix freq: <http://purl.org/cld/freq/> .
 @prefix cheminf: <http://semanticscience.org/resource/> .
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix bdb: <http://vocabularies.bridgedb.org/ops#> .
 
 @prefix : <#> .
 
@@ -26,12 +27,15 @@
   void:dataDump <http://egonw.github.io/create-bridgedb-hmdb/hmdb/3.6.0/hmdb_ls_wp.ttl> ;
   pav:version "3.6.0"^^xsd:string ;
   pav:createdBy <http://egonw.github.com/#me> ;
-  pav:createdOn "2015-11-13T12:47:24Z"^^xsd:dateTime ;
+  dcterms:publisher <http://egonw.github.com/#me> ;
+  pav:createdOn "2015-11-13T15:48:42Z"^^xsd:dateTime ;
   pav:createdWith <https://github.com/egonw/create-bridgedb-hmdb/> ;
   void:linkPredicate skos:relatedMatch ;
-  dul:expresses <http://semanticscience.org/resource/SIO_001171> ;
+  bdb:linksetJustification <http://semanticscience.org/resource/SIO_001171> ;
   void:subjectsTarget <http://egonw.github.io/create-bridgedb-hmdb/hmdb/3.6.0/hmdb_ls.void.ttl#HMDB> ;
+  bdb:subjectsDatatype <http://semanticscience.org/resource/SIO_010004> ;
   void:objectsTarget :WP ;
+  bdb:objectsDatatype <http://semanticscience.org/resource/SIO_010004> ;
   voag:frequencyOfChange <http://purl.org/cld/freq/irregular> ;
   pav:authoredBy <http://www.hmdb.ca/>;
   pav:authoredOn "2013-05-29T10:02:00Z"^^xsd:dateTime .
@@ -39,6 +43,6 @@
 
 :WP a dctypes:Dataset ;
   dcterms:title "Wikipedia via DBPedia" ;
-  foaf:homepage <http://dbpedia.org/> .
+  dcat:landingPage <http://dbpedia.org/> .
 
 :LS-WP void:triples 5438 .
