@@ -26,12 +26,13 @@
   void:dataDump <http://egonw.github.io/create-bridgedb-hmdb/hmdb/3.6.0/hmdb_ls_kegg.ttl> ;
   pav:version "3.6.0"^^xsd:string ;
   pav:createdBy <http://egonw.github.com/#me> ;
-  pav:createdOn "2015-09-01T19:02:17Z"^^xsd:dateTime ;
+  pav:createdOn "2015-11-13T12:47:42Z"^^xsd:dateTime ;
   pav:createdWith <https://github.com/egonw/create-bridgedb-hmdb/> ;
   void:linkPredicate skos:relatedMatch ;
   dul:expresses <http://semanticscience.org/resource/SIO_001171> ;
   void:subjectsTarget <http://egonw.github.io/create-bridgedb-hmdb/hmdb/3.6.0/hmdb_ls.void.ttl#HMDB> ;
   void:objectsTarget :KEGG ;
+  voag:frequencyOfChange <http://purl.org/cld/freq/irregular> ;
   pav:authoredBy <http://www.hmdb.ca/>;
   pav:authoredOn "2013-05-29T10:02:00Z"^^xsd:dateTime .
 
