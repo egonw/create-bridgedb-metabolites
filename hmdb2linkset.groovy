@@ -17,6 +17,7 @@ datasets = [
   [
     name: "ChemSpider",
     acronym: "chemspider",
+    landingPage: "http://chemspider.com/",
     targetNSprefix: "http://rdf.chemspider.com/",
     targetNSpostfix: "",
     objectsTarget: "<ftp://ftp.rsc-us.org/OPS/20130408/void_2013-04-08.ttl#chemSpiderDataset>",
@@ -33,7 +34,7 @@ datasets = [
     extraVoID: """
 :CAS a dctypes:Dataset ;
   dcterms:title "CAS Common Chemistry" ;
-  foaf:homepage <http://commonchemistry.org/> .
+  dcat:landingPage <http://commonchemistry.org/> .
 """
   ],
   [
@@ -46,7 +47,7 @@ datasets = [
     extraVoID: """
 :PubChem a dctypes:Dataset ;
   dcterms:title "PubChem Compounds" ;
-  foaf:homepage <http://pubchem.ncbi.nlm.nih.gov/> .
+  dcat:landingPage <http://pubchem.ncbi.nlm.nih.gov/> .
 """
   ],
   [
@@ -59,7 +60,7 @@ datasets = [
     extraVoID: """
 :WP a dctypes:Dataset ;
   dcterms:title "Wikipedia via DBPedia" ;
-  foaf:homepage <http://dbpedia.org/> .
+  dcat:landingPage <http://dbpedia.org/> .
 """
   ],
   [
@@ -72,7 +73,7 @@ datasets = [
     extraVoID: """
 :KEGG a dctypes:Dataset ;
   dcterms:title "KEGG" ;
-  foaf:homepage <http://www.genome.jp/kegg/> .
+  dcat:landingPage <http://www.genome.jp/kegg/> .
 """
   ]
 ]
@@ -111,21 +112,23 @@ voidOut.println """
   pav:createdOn "2013-05-27T18:49:00Z"^^xsd:dateTime ;
   pav:createdWith <https://github.com/egonw/create-bridgedb-hmdb/> ;
   pav:lastUpdateOn "${current_date}Z"^^xsd:dateTime ;
+  dcterms:issued "${current_date}Z"^^xsd:dateTime ;
   foaf:primaryTopic :HMDB .
 
 :HMDB a void:Dataset ;
-  dcterms:title "Human Metabolite Database";
-  dcterms:description "The Human Metabolite Database (HMDB) is a database with information about metabolites, drugs and (other) xenobiotics found in the human organism. It is described in this paper: Wishart DS, Jewison T, Guo AC, Wilson M, Knox C, et al., HMDB 3.0 — The Human Metabolome Database in 2013. Nucleic Acids Res. 2013. Jan 1;41(D1):D801-7."@en;
+  dcterms:publisher <http://www.hmdb.ca/> ;
+  dcterms:title "Human Metabolite Database" ;
+  dcterms:description "The Human Metabolite Database (HMDB) is a database with information about metabolites, drugs and (other) xenobiotics found in the human organism. It is described in this paper: Wishart DS, Jewison T, Guo AC, Wilson M, Knox C, et al., HMDB 3.0 - The Human Metabolome Database in 2013. Nucleic Acids Res. 2013. Jan 1;41(D1):D801-7."@en;
   dcterms:license <http://www.hmdb.ca/citing>;
   foaf:homepage <http://www.hmdb.ca/>;
-  foaf:page <http://www.hmdb.ca/>;
+  dcat:landingPage <http://www.hmdb.ca/>;
+  dcterms:issued "2015-01-01T00:00:00Z"^^xsd:dateTime ;
   pav:retrievedBy <http://egonw.github.com/#me> ;
   pav:retrievedFrom <http://www.hmdb.ca/downloads> ;
   pav:retrievedOn "2015-08-26T09:21:00Z"^^xsd:dateTime ;
   void:uriSpace <$hmdbNS> ;
-  void:dataDump <${uploadLocation}> ;
   void:exampleResource <http://identifiers.org/hmdb/HMDB00005> ;
-  voag:frequencyOfChange <http://purl.org/cld/freq/irregular> ;
+  dcterms:accuralPeriodicity <http://purl.org/cld/freq/irregular> ;
   pav:version "3.6".
 """
 
@@ -166,6 +169,7 @@ for (i in 0..(datasets.size()-1)) {
 @prefix freq: <http://purl.org/cld/freq/> .
 @prefix cheminf: <http://semanticscience.org/resource/> .
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix bdb: <http://vocabularies.bridgedb.org/ops#> .
 
 @prefix : <#> .
 
@@ -178,12 +182,16 @@ for (i in 0..(datasets.size()-1)) {
   void:dataDump <${uploadLocation}${lsFilename}> ;
   pav:version "$version"^^xsd:string ;
   pav:createdBy <http://egonw.github.com/#me> ;
+  dcterms:publisher <http://egonw.github.com/#me> ;
   pav:createdOn "${current_date}Z"^^xsd:dateTime ;
   pav:createdWith <https://github.com/egonw/create-bridgedb-hmdb/> ;
   void:linkPredicate $predicate ;
-  dul:expresses <http://semanticscience.org/resource/SIO_001171> ;
+  bdb:linksetJustification <http://semanticscience.org/resource/SIO_001171> ;
   void:subjectsTarget <${uploadLocation}${voidFilename}#HMDB> ;
+  bdb:subjectsDatatype <http://semanticscience.org/resource/SIO_010004> ;
   void:objectsTarget ${datasets[i].objectsTarget} ;
+  bdb:objectsDatatype <http://semanticscience.org/resource/SIO_010004> ;
+  voag:frequencyOfChange <http://purl.org/cld/freq/irregular> ;
   pav:authoredBy <http://www.hmdb.ca/>;
   pav:authoredOn "2013-05-29T10:02:00Z"^^xsd:dateTime .
 """
@@ -223,7 +231,7 @@ for (i in 0..(datasets.size()-1)) {
   lsvoidOut.close()
   lsOut.close()
 
-  voidOut.println "<${uploadLocation}${voidFilename}#HMDB> void:subset <${uploadLocation}${lsvoidFilename}#LS-${lsCode}> ."
+  voidOut.println ":HMDB void:subset <${uploadLocation}${lsvoidFilename}#LS-${lsCode}> ."
 }
 
 voidOut.close()
