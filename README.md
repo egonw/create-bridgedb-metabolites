@@ -39,11 +39,40 @@ Run the script
   mv database_accession.tsv chebi_database_accession.tsv
   ```
 
-4. run the script with Groovy:
+4. make sure the Wikidata file is saved
+
+Run the following SPARQL queries at http://queries.wikidata.org/ and save the
+output as CSV files:
+
+4.1 CAS registry numbers
+
+SPARQL query of which the output is to be saved as "cas2wikidata.csv":
+
+4.2 ChemSpider
+
+SPARQL query of which the output is to be saved as "cs2wikidata.csv":
+
+4.3 PubChem CIDs
+
+SPARQL query of which the output is to be saved as "pubchem2wikidata.csv":
+
+4.4 KEGG compound IDs
+
+SPARQL query of which the output is to be saved as "kegg2wikidata.csv":
+
+4.4 KnAPSaCK IDs
+
+SPARQL query of which the output is to be saved as "ksnapsack2wikidata.csv":
+
+4.4 LIPIDMAP IDs
+
+SPARQL query of which the output is to be saved as "lm2wikidata.csv":
+
+5. run the script with Groovy:
 
   groovy hmdb2derby.groovy
 
-5. open the file in PathVisio
+6. open the file in PathVisio
 
 References
 ----------

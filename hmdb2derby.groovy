@@ -28,20 +28,22 @@ chebiDS = BioDataSource.CHEBI
 keggDS = BioDataSource.KEGG_COMPOUND
 keggDrugDS = DataSource.register ("Kd", "KEGG Drug").asDataSource()
 wikidataDS = DataSource.register ("Wd", "Wikidata").asDataSource()
+lmDS = DataSource.register ("Lm", "LIPID MAPS").asDataSource()
+knapsackDS = DataSource.register ("Cks", "KNApSAcK").asDataSource()
 // drugbankDS = BioDataSource.DRUGBANK
 wikipediaDS = BioDataSource.WIKIPEDIA
 
 String dateStr = new SimpleDateFormat("yyyyMMdd").format(new Date());
 database.setInfo("BUILDDATE", dateStr);
-database.setInfo("DATASOURCENAME", "HMDB36CHEBI");
-database.setInfo("DATASOURCEVERSION", "metabolites_" + dateStr);
+database.setInfo("DATASOURCENAME", "HMDB_CHEBI_WIKIDATA");
+database.setInfo("DATASOURCEVERSION", "3.6_142_20150401" + dateStr);
 database.setInfo("DATATYPE", "Metabolite");
 database.setInfo("SERIES", "standard_metabolite");
 
 def addXRef(GdbConstruct database, Xref ref, String node, DataSource source, Set genesDone) {
    id = node.trim()
    if (id.length() > 0) {
-     println "id: $id"
+     println "id($source): $id"
      ref2 = new Xref(id, source);
      if (!genesDone.contains(ref2.toString())) {
        if (database.addGene(ref2)) println "Error (addGene): " + database.recentException().getMessage()
@@ -309,6 +311,60 @@ new File("cs2wikidata.csv").eachLine { line ->
   counter++
   if (counter % commitInterval == 0) {
     println "errors: " + error + " (ChemSpider)"
+    database.commit()
+  }
+}
+
+// LIPID MAPS registry numbers
+counter = 0
+error = 0
+new File("lm2wikidata.csv").eachLine { line ->
+  fields = line.split(",")
+  rootid = fields[0]
+  Xref ref = new Xref(rootid, lmDS);
+  if (!genesDone.contains(ref.toString())) {
+    addError = database.addGene(ref);
+    if (addError != 0) println "Error (addGene): " + database.recentException().getMessage()
+    error += addError
+    linkError = database.addLink(ref,ref);
+    if (linkError != 0) println "Error (addLinkItself): " + database.recentException().getMessage()
+    error += linkError
+    genesDone.add(ref.toString())
+  }
+
+  // add external identifiers
+  addXRef(database, ref, fields[1], chemspiderDS, genesDone);
+
+  counter++
+  if (counter % commitInterval == 0) {
+    println "errors: " + error + " (LIPIDMAPS)"
+    database.commit()
+  }
+}
+
+// KNApSAcK registry numbers
+counter = 0
+error = 0
+new File("knapsack2wikidata.csv").eachLine { line ->
+  fields = line.split(",")
+  rootid = fields[0]
+  Xref ref = new Xref(rootid, knapsackDS);
+  if (!genesDone.contains(ref.toString())) {
+    addError = database.addGene(ref);
+    if (addError != 0) println "Error (addGene): " + database.recentException().getMessage()
+    error += addError
+    linkError = database.addLink(ref,ref);
+    if (linkError != 0) println "Error (addLinkItself): " + database.recentException().getMessage()
+    error += linkError
+    genesDone.add(ref.toString())
+  }
+
+  // add external identifiers
+  addXRef(database, ref, fields[1], chemspiderDS, genesDone);
+
+  counter++
+  if (counter % commitInterval == 0) {
+    println "errors: " + error + " (KNApSAcK)"
     database.commit()
   }
 }
