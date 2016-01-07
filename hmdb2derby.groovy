@@ -35,8 +35,8 @@ wikipediaDS = BioDataSource.WIKIPEDIA
 
 String dateStr = new SimpleDateFormat("yyyyMMdd").format(new Date());
 database.setInfo("BUILDDATE", dateStr);
-database.setInfo("DATASOURCENAME", "HMDB_CHEBI_WIKIDATA");
-database.setInfo("DATASOURCEVERSION", "3.6_142_20150401" + dateStr);
+database.setInfo("DATASOURCENAME", "HMDB-CHEBI-WIKIDATA");
+database.setInfo("DATASOURCEVERSION", "HMDB3.6-CHEBI142-WIKIDATA20150401" + dateStr);
 database.setInfo("DATATYPE", "Metabolite");
 database.setInfo("SERIES", "standard_metabolite");
 
