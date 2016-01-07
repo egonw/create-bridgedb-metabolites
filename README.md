@@ -42,31 +42,83 @@ Run the script
 4. make sure the Wikidata file is saved
 
 Run the following SPARQL queries at http://queries.wikidata.org/ and save the
-output as CSV files:
+output as CSV files [4]:
 
 4.1 CAS registry numbers
 
-SPARQL query of which the output is to be saved as "cas2wikidata.csv":
+  ```
+  SPARQL query of which the output is to be saved as "cas2wikidata.csv":
+  
+  PREFIX wdt: <http://www.wikidata.org/prop/direct/>
+  SELECT (count(?id) as ?count) WHERE {
+    ?compound wdt:P231 ?id .
+  }
+  ```
 
 4.2 ChemSpider
 
 SPARQL query of which the output is to be saved as "cs2wikidata.csv":
 
+  ```
+  SPARQL query of which the output is to be saved as "cas2wikidata.csv":
+  
+  PREFIX wdt: <http://www.wikidata.org/prop/direct/>
+  SELECT (count(?id) as ?count) WHERE {
+    ?compound wdt:P661 ?id .
+  }
+  ```
+
 4.3 PubChem CIDs
 
 SPARQL query of which the output is to be saved as "pubchem2wikidata.csv":
+
+  ```
+  SPARQL query of which the output is to be saved as "cas2wikidata.csv":
+  
+  PREFIX wdt: <http://www.wikidata.org/prop/direct/>
+  SELECT (count(?id) as ?count) WHERE {
+    ?compound wdt:P662 ?id .
+  }
+  ```
 
 4.4 KEGG compound IDs
 
 SPARQL query of which the output is to be saved as "kegg2wikidata.csv":
 
-4.4 KnAPSaCK IDs
+  ```
+  SPARQL query of which the output is to be saved as "cas2wikidata.csv":
+  
+  PREFIX wdt: <http://www.wikidata.org/prop/direct/>
+  SELECT (count(?id) as ?count) WHERE {
+    ?compound wdt:P665 ?id .
+  }
+  ```
+
+4.5 KnAPSaCK IDs
 
 SPARQL query of which the output is to be saved as "ksnapsack2wikidata.csv":
 
-4.4 LIPIDMAP IDs
+  ```
+  SPARQL query of which the output is to be saved as "cas2wikidata.csv":
+  
+  PREFIX wdt: <http://www.wikidata.org/prop/direct/>
+  SELECT (count(?id) as ?count) WHERE {
+    ?compound wdt:P2064 ?id .
+  }
+  ```
+
+4.6 LIPIDMAP IDs
 
 SPARQL query of which the output is to be saved as "lm2wikidata.csv":
+
+  ```
+  SPARQL query of which the output is to be saved as "cas2wikidata.csv":
+  
+  PREFIX wdt: <http://www.wikidata.org/prop/direct/>
+  SELECT (count(?id) as ?count) WHERE {
+    ?compound wdt:P2063 ?id .
+  }
+  ```
 
 5. run the script with Groovy:
 
@@ -80,3 +132,4 @@ References
 1. http://svn.bigcat.unimaas.nl/bridgedbcreator/trunk/src/org/bridgedb/creator/
 2. http://bridgedb.org/
 3. http://hmdb.ca/
+4. https://chem-bla-ics.blogspot.nl/2015/12/new-edition-getting-cas-registry.html
