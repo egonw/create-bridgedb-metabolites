@@ -55,7 +55,7 @@ def addXRef(GdbConstruct database, Xref ref, String node, DataSource source, Set
 
 def addAttribute(GdbConstruct database, Xref ref, String key, String value) {
    id = value.trim()
-   println "attrib($key): $id"
+   // println "attrib($key): $id"
    if (id.length() > 255) {
      println "Warn: attribute does not fit the Derby SQL schema: $id"
    } else if (id.length() > 0) {
