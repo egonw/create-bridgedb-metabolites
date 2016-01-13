@@ -348,7 +348,7 @@ new File("lm2wikidata.csv").eachLine { line ->
     }
 
     // add external identifiers
-    addXRef(database, ref, fields[1], chemspiderDS, genesDone);
+    addXRef(database, ref, fields[1], lmDS, genesDone);
   }
   counter++
   if (counter % commitInterval == 0) {
@@ -376,7 +376,7 @@ new File("knapsack2wikidata.csv").eachLine { line ->
     }
 
     // add external identifiers
-    addXRef(database, ref, fields[1], chemspiderDS, genesDone);
+    addXRef(database, ref, fields[1], knapsackDS, genesDone);
   }
   counter++
   if (counter % commitInterval == 0) {
