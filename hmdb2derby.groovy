@@ -182,7 +182,9 @@ mappedIDs.eachLine { line->
   error = 0
   Xref ref = new Xref(rootid, BioDataSource.CHEBI);
   if (type == "CAS Registry Number") {
-    addXRef(database, ref, id, BioDataSource.CAS, genesDone);
+    if (!id.contains(" ") && !id.contains(":") && id.contains("-")) {
+      addXRef(database, ref, id, BioDataSource.CAS, genesDone);
+    }
   } else if (type == "KEGG COMPOUND accession") {
     addXRef(database, ref, id, BioDataSource.KEGG_COMPOUND, genesDone);
   } else if (type == "Chemspider accession") {
