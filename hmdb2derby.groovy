@@ -43,7 +43,7 @@ database.setInfo("SERIES", "standard_metabolite");
 def addXRef(GdbConstruct database, Xref ref, String node, DataSource source, Set genesDone) {
    id = node.trim()
    if (id.length() > 0) {
-     println "id($source): $id"
+     // println "id($source): $id"
      ref2 = new Xref(id, source);
      if (!genesDone.contains(ref2.toString())) {
        if (database.addGene(ref2)) println "Error (addGene): " + database.recentException().getMessage()
