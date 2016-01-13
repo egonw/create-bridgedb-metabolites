@@ -193,6 +193,12 @@ mappedIDs.eachLine { line->
     addXRef(database, ref, id, wikipediaDS, genesDone);
   } else if (type == "Pubchem accession") {
     addXRef(database, ref, id, pubchemDS, genesDone);
+  } else if (type == "LIPID MAPS class accession") {
+    addXRef(database, ref, id, lmDS, genesDone);
+  } else if (type == "LIPID MAPS instance accession") {
+    addXRef(database, ref, id, lmDS, genesDone);
+  } else if (type == "KNApSAcK accession") {
+    addXRef(database, ref, id, knapsackDS, genesDone);
   }
   println "errors: " + error + " (ChEBI)"
   counter++
