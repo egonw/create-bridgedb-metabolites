@@ -200,9 +200,11 @@ mappedIDs.eachLine { line->
   } else if (type == "KNApSAcK accession") {
     addXRef(database, ref, id, knapsackDS, genesDone);
   }
-  println "errors: " + error + " (ChEBI)"
   counter++
-  if (counter % commitInterval == 0) database.commit()
+  if (counter % commitInterval == 0) {
+    println "errors: " + error + " (ChEBI)"
+    database.commit()
+  }
 }
 
 // load the Wikidata content
