@@ -328,7 +328,7 @@ new File("lm2wikidata.csv").eachLine { line ->
   if (counter > 0) {
     fields = line.split(",")
     rootid = fields[0].substring(31)
-    Xref ref = new Xref(rootid, lmDS);
+    Xref ref = new Xref(rootid, wikidataDS);
     if (!genesDone.contains(ref.toString())) {
       addError = database.addGene(ref);
       if (addError != 0) println "Error (addGene): " + database.recentException().getMessage()
@@ -356,7 +356,7 @@ new File("knapsack2wikidata.csv").eachLine { line ->
   if (counter > 0) {
     fields = line.split(",")
     rootid = fields[0].substring(31)
-    Xref ref = new Xref(rootid, knapsackDS);
+    Xref ref = new Xref(rootid, wikidataDS);
     if (!genesDone.contains(ref.toString())) {
       addError = database.addGene(ref);
       if (addError != 0) println "Error (addGene): " + database.recentException().getMessage()
