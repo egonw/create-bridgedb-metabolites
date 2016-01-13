@@ -50,7 +50,7 @@ SPARQL query of which the output is to be saved as "cas2wikidata.csv":
 
   ```
   PREFIX wdt: <http://www.wikidata.org/prop/direct/>
-  SELECT (count(?id) as ?count) WHERE {
+  SELECT ?compound ?id WHERE {
     ?compound wdt:P231 ?id .
   }
   ```
@@ -61,7 +61,7 @@ SPARQL query of which the output is to be saved as "cs2wikidata.csv":
 
   ```
   PREFIX wdt: <http://www.wikidata.org/prop/direct/>
-  SELECT (count(?id) as ?count) WHERE {
+  SELECT ?compound ?id WHERE {
     ?compound wdt:P661 ?id .
   }
   ```
@@ -72,7 +72,7 @@ SPARQL query of which the output is to be saved as "pubchem2wikidata.csv":
 
   ```
   PREFIX wdt: <http://www.wikidata.org/prop/direct/>
-  SELECT (count(?id) as ?count) WHERE {
+  SELECT ?compound ?id WHERE {
     ?compound wdt:P662 ?id .
   }
   ```
@@ -83,7 +83,7 @@ SPARQL query of which the output is to be saved as "kegg2wikidata.csv":
 
   ```
   PREFIX wdt: <http://www.wikidata.org/prop/direct/>
-  SELECT (count(?id) as ?count) WHERE {
+  SELECT ?compound ?id WHERE {
     ?compound wdt:P665 ?id .
   }
   ```
@@ -94,7 +94,7 @@ SPARQL query of which the output is to be saved as "ksnapsack2wikidata.csv":
 
   ```
   PREFIX wdt: <http://www.wikidata.org/prop/direct/>
-  SELECT (count(?id) as ?count) WHERE {
+  SELECT ?compound ?id WHERE {
     ?compound wdt:P2064 ?id .
   }
   ```
@@ -105,7 +105,7 @@ SPARQL query of which the output is to be saved as "lm2wikidata.csv":
 
   ```
   PREFIX wdt: <http://www.wikidata.org/prop/direct/>
-  SELECT (count(?id) as ?count) WHERE {
+  SELECT ?compound ?id WHERE {
     ?compound wdt:P2063 ?id .
   }
   ```
