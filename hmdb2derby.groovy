@@ -30,6 +30,7 @@ blacklist.add("C02737")
 blacklist.add("363-24-6")
 blacklist.add("104404-17-3")
 blacklist.add("CHEBI:17636")
+blacklist.add("HMDB00912") // see bug #6
 
 //inchiDS = DataSource.register ("Cin", "InChI").asDataSource()
 inchikeyDS = DataSource.register ("Ik", "InChIKey").asDataSource()
