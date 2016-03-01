@@ -19,6 +19,18 @@ GdbConstruct database = GdbConstructImpl3.createInstance(
 database.createGdbTables();
 database.preInsert();
 
+blacklist = new HashSet<String>();
+blacklist.add("C00350")
+blacklist.add("C00157")
+blacklist.add("C00422")
+blacklist.add("C00165")
+blacklist.add("C02530")
+blacklist.add("C00416")
+blacklist.add("C02737")
+blacklist.add("363-24-6")
+blacklist.add("104404-17-3")
+blacklist.add("CHEBI:17636")
+
 //inchiDS = DataSource.register ("Cin", "InChI").asDataSource()
 inchikeyDS = DataSource.register ("Ik", "InChIKey").asDataSource()
 chemspiderDS = DataSource.register ("Cs", "Chemspider").asDataSource()
@@ -118,27 +130,35 @@ zipFile.entries().each { entry ->
 
      // add external identifiers
      // addXRef(database, ref, rootNode.accession.toString(), BioDataSource.HMDB);
-     addXRef(database, ref, rootNode.cas_registry_number.toString(), casDS, genesDone);
-     addXRef(database, ref, rootNode.pubchem_compound_id.toString(), pubchemDS, genesDone);
-     addXRef(database, ref, rootNode.chemspider_id.toString(), chemspiderDS, genesDone);
-     String chebID = rootNode.chebi_id.toString().trim()
-     if (chebID.startsWith("CHEBI:")) {
-       addXRef(database, ref, chebID, chebiDS, genesDone);
-       addXRef(database, ref, chebID.substring(6), chebiDS, genesDone);
-     } else if (chebID.length() > 0) {
-       addXRef(database, ref, chebID, chebiDS, genesDone);
-       addXRef(database, ref, "CHEBI:" + chebID, chebiDS, genesDone);
-     }
-     String keggID = rootNode.kegg_id.toString();
-     if (keggID.length() > 0 && keggID.charAt(0) == 'C') {
-       addXRef(database, ref, keggID, keggDS, genesDone);
-     } else if (keggID.length() > 0 && keggID.charAt(0) == 'D') {
-       addXRef(database, ref, keggID, keggDrugDS, genesDone);
-     }
-     addXRef(database, ref, rootNode.wikipedia.toString(), wikipediaDS, genesDone);
+     if (!blacklist.contains(rootid)) {
+       addXRef(database, ref, rootNode.cas_registry_number.toString(), casDS, genesDone);
+       addXRef(database, ref, rootNode.pubchem_compound_id.toString(), pubchemDS, genesDone);
+       addXRef(database, ref, rootNode.chemspider_id.toString(), chemspiderDS, genesDone);
+       String chebID = rootNode.chebi_id.toString().trim()
+       if (chebID.startsWith("CHEBI:")) {
+         addXRef(database, ref, chebID, chebiDS, genesDone);
+         addXRef(database, ref, chebID.substring(6), chebiDS, genesDone);
+       } else if (chebID.length() > 0) {
+         addXRef(database, ref, chebID, chebiDS, genesDone);
+         addXRef(database, ref, "CHEBI:" + chebID, chebiDS, genesDone);
+       }
+       String keggID = rootNode.kegg_id.toString();
+       if (keggID.length() > 0 && keggID.charAt(0) == 'C') {
+         if (!blacklist.contains(keggID)) {
+           addXRef(database, ref, keggID, keggDS, genesDone);
+         } else {
+           println "No external IDs added for: " + keggID
+         }
+       } else if (keggID.length() > 0 && keggID.charAt(0) == 'D') {
+         addXRef(database, ref, keggID, keggDrugDS, genesDone);
+       }
+       addXRef(database, ref, rootNode.wikipedia.toString(), wikipediaDS, genesDone);
 //      addXRef(database, ref, rootNode.nugowiki.toString(), nugoDS);
 //      addXRef(database, ref, rootNode.drugbank_id.toString(), drugbankDS);
 //      addXRef(database, ref, rootNode.inchi.toString(), inchiDS);
+     } else {
+       println "No external IDs added for: " + rootid
+     }
 
      println "errors: " + error + " (ChEBI)"
      counter++
@@ -177,28 +197,32 @@ mappedIDs.eachLine { line->
   columns = line.split('\t')
   rootid = "CHEBI:" + columns[1]
   type = columns[3]
-  id = columns[4]
-  println "$rootid -($type)-> $id"
   error = 0
-  Xref ref = new Xref(rootid, BioDataSource.CHEBI);
-  if (type == "CAS Registry Number") {
-    if (!id.contains(" ") && !id.contains(":") && id.contains("-")) {
-      addXRef(database, ref, id, BioDataSource.CAS, genesDone);
+  if (!blacklist.contains(rootid)) {
+    id = columns[4]
+    println "$rootid -($type)-> $id"
+    Xref ref = new Xref(rootid, BioDataSource.CHEBI);
+    if (type == "CAS Registry Number") {
+      if (!id.contains(" ") && !id.contains(":") && id.contains("-")) {
+        addXRef(database, ref, id, BioDataSource.CAS, genesDone);
+      }
+    } else if (type == "KEGG COMPOUND accession") {
+      addXRef(database, ref, id, BioDataSource.KEGG_COMPOUND, genesDone);
+    } else if (type == "Chemspider accession") {
+      addXRef(database, ref, id, chemspiderDS, genesDone);
+    } else if (type == "Wikipedia accession") {
+      addXRef(database, ref, id, wikipediaDS, genesDone);
+    } else if (type == "Pubchem accession") {
+      addXRef(database, ref, id, pubchemDS, genesDone);
+    } else if (type == "LIPID MAPS class accession") {
+      addXRef(database, ref, id, lmDS, genesDone);
+    } else if (type == "LIPID MAPS instance accession") {
+      addXRef(database, ref, id, lmDS, genesDone);
+    } else if (type == "KNApSAcK accession") {
+      addXRef(database, ref, id, knapsackDS, genesDone);
     }
-  } else if (type == "KEGG COMPOUND accession") {
-    addXRef(database, ref, id, BioDataSource.KEGG_COMPOUND, genesDone);
-  } else if (type == "Chemspider accession") {
-    addXRef(database, ref, id, chemspiderDS, genesDone);
-  } else if (type == "Wikipedia accession") {
-    addXRef(database, ref, id, wikipediaDS, genesDone);
-  } else if (type == "Pubchem accession") {
-    addXRef(database, ref, id, pubchemDS, genesDone);
-  } else if (type == "LIPID MAPS class accession") {
-    addXRef(database, ref, id, lmDS, genesDone);
-  } else if (type == "LIPID MAPS instance accession") {
-    addXRef(database, ref, id, lmDS, genesDone);
-  } else if (type == "KNApSAcK accession") {
-    addXRef(database, ref, id, knapsackDS, genesDone);
+  } else {
+    println "No external IDs added for: " + rootid
   }
   counter++
   if (counter % commitInterval == 0) {
