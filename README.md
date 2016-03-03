@@ -41,7 +41,7 @@ Run the script
 
 4. make sure the Wikidata file is saved
 
-Run the following SPARQL queries at http://queries.wikidata.org/ and save the
+Run the following SPARQL queries at http://query.wikidata.org/ and save the
 output as CSV files [4]:
 
 4.1 CAS registry numbers
