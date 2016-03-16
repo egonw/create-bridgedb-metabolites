@@ -24,7 +24,7 @@ Run the script
 2. make sure the HMDB data file is saved as hmdb_metabolites.zip
 
   ```
-  wget http://www.hmdb.ca/downloads/hmdb_metabolites.zip
+  wget http://www.hmdb.ca/system/downloads/current/hmdb_metabolites.zip
   ```
 
 3. make sure the ChEBI data file is saved
