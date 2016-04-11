@@ -5,3 +5,6 @@ hmdb_metabolites.zip
 *.bridge.zip
 hmdb_ls_*.ttl
 hmdb_ls_*.void
+*.log
+*.qc
+HMDB*.xml
