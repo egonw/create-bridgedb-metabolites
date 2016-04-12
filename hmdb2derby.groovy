@@ -49,7 +49,7 @@ wikipediaDS = BioDataSource.WIKIPEDIA
 String dateStr = new SimpleDateFormat("yyyyMMdd").format(new Date());
 database.setInfo("BUILDDATE", dateStr);
 database.setInfo("DATASOURCENAME", "HMDB-CHEBI-WIKIDATA");
-database.setInfo("DATASOURCEVERSION", "HMDB3.6-CHEBI137-WIKIDATA20160303" + dateStr);
+database.setInfo("DATASOURCEVERSION", "HMDB3.6-CHEBI138-WIKIDATA20160411" + dateStr);
 database.setInfo("DATATYPE", "Metabolite");
 database.setInfo("SERIES", "standard_metabolite");
 

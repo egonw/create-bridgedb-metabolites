@@ -4,7 +4,15 @@ Create BridgeDB Identity Mapping files for HMDB
 This groovy script is loosly build on code developed by Martina Kutmon [1]
 and creates a Derby file for BridgeDB [2] for use in PathVisio, etc.
 
-The script has been tested with HMDB 3.6 [3], ChEBI 125, and Wikidata from April 2015.
+The script has been tested with HMDB 3.6 [3], ChEBI 138, and Wikidata from April 2016.
+
+I'm indebted to all that worked on identifier mappings in these projects:
+
+- http://hmdb.ca/
+- http://www.ebi.ac.uk/chebi/
+- http://wikidata.org/
+
+Everyone can contribute ID mappings to the latter project.
 
 License
 -------
