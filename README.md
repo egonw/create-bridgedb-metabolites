@@ -14,6 +14,8 @@ I'm indebted to all that worked on identifier mappings in these projects:
 
 Everyone can contribute ID mappings to the latter project.
 
+![](https://upload.wikimedia.org/wikipedia/commons/thumb/c/cd/Wikidata_stamp.png/288px-Wikidata_stamp.png)
+
 License
 -------
 
