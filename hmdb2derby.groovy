@@ -13,6 +13,9 @@ import org.bridgedb.rdb.construct.DataDerby;
 import org.bridgedb.rdb.construct.GdbConstruct;
 import org.bridgedb.rdb.construct.GdbConstructImpl3;
 
+commitInterval = 500
+genesDone = new java.util.HashSet();
+
 GdbConstruct database = GdbConstructImpl3.createInstance(
   "hmdb_chebi_wikidata_metabolites", new DataDerby(), DBConnector.PROP_RECREATE
 );
@@ -84,11 +87,8 @@ def cleanKey(String inchikey) {
    cleanKey
 }
 
-commitInterval = 500
-
 // load the HMDB content
 counter = 0
-genesDone = new java.util.HashSet();
 def zipFile = new java.util.zip.ZipFile(new File('hmdb_metabolites.zip'))
 zipFile.entries().each { entry ->
    if (!entry.isDirectory() && entry.name != "hmdb_metabolites.xml") {
@@ -173,9 +173,20 @@ counter = 0
 def chebiNames = new File('data/chebi_names.tsv')
 chebiNames.eachLine { line->
   columns = line.split('\t')
-  rootid = "CHEBI:" + columns[1]
+  shortid = columns[1]
+  rootid = "CHEBI:" + shortid
   name = columns[4]
   // println rootid + " -> " + name
+  Xref shortRef = new Xref(shortid, BioDataSource.CHEBI);
+  if (!genesDone.contains(shortRef.toString())) {
+    addError = database.addGene(shortRef);
+    if (addError != 0) println "Error (addGene): " + database.recentException().getMessage()
+    error += addError
+    linkError += database.addLink(shortRef,shortRef);
+    if (linkError != 0) println "Error (addLinkItself): " + database.recentException().getMessage()
+    error += linkError
+    genesDone.add(shortRef.toString())
+  }
   Xref ref = new Xref(rootid, BioDataSource.CHEBI);
   if (!genesDone.contains(ref.toString())) {
     addError = database.addGene(ref);
@@ -382,10 +393,10 @@ new File("lm2wikidata.csv").eachLine { line ->
   }
 }
 
-// KNApSAcK registry numbers
+// HMDB registry numbers
 counter = 0
 error = 0
-new File("knapsack2wikidata.csv").eachLine { line ->
+new File("hmdb2wikidata.csv").eachLine { line ->
   if (counter > 0) {
     fields = line.split(",")
     rootid = fields[0].substring(31)
@@ -401,11 +412,80 @@ new File("knapsack2wikidata.csv").eachLine { line ->
     }
 
     // add external identifiers
-    addXRef(database, ref, fields[1], knapsackDS, genesDone);
+    addXRef(database, ref, fields[1], BioDataSource.HMDB, genesDone);
   }
   counter++
   if (counter % commitInterval == 0) {
-    println "errors: " + error + " (KNApSAcK)"
+    println "errors: " + error + " (HMDB)"
+    database.commit()
+  }
+}
+
+// ChEBI registry numbers
+counter = 0
+error = 0
+new File("chebi2wikidata.csv").eachLine { line ->
+  if (counter > 0) {
+    fields = line.split(",")
+    rootid = fields[0].substring(31)
+    Xref ref = new Xref(rootid, wikidataDS);
+    if (!genesDone.contains(ref.toString())) {
+      addError = database.addGene(ref);
+      if (addError != 0) println "Error (addGene): " + database.recentException().getMessage()
+      error += addError
+      linkError = database.addLink(ref,ref);
+      if (linkError != 0) println "Error (addLinkItself): " + database.recentException().getMessage()
+      error += linkError
+      genesDone.add(ref.toString())
+    }
+
+    // add external identifiers
+    shortid = fields[1]
+    chebiid = "CHEBI:" + shortid
+    Xref chebiRef = new Xref(rootid, BioDataSource.CHEBI);
+    addXRef(database, ref, shortid, BioDataSource.CHEBI, genesDone);
+    addXRef(database, ref, chebiid, BioDataSource.CHEBI, genesDone);
+    addXRef(database, chebiRef, rootid, wikidataDS, genesDone);
+  }
+  counter++
+  if (counter % commitInterval == 0) {
+    println "errors: " + error + " (ChEBI)"
+    database.commit()
+  }
+}
+
+// Wikidata names
+counter = 0
+error = 0
+new File("names4wikidata.tsv").eachLine { line ->
+  if (counter > 0) {
+    fields = line.split("\t")
+    if (fields.length >= 3) {
+      rootid = fields[0].substring(31)
+      key = fields[1].trim()
+      synonym = fields[2].trim()
+      Xref ref = new Xref(rootid, wikidataDS);
+      if (!genesDone.contains(ref.toString())) {
+        addError = database.addGene(ref);
+        if (addError != 0) println "Error (addGene): " + database.recentException().getMessage()
+        error += addError
+        linkError = database.addLink(ref,ref);
+        if (linkError != 0) println "Error (addLinkItself): " + database.recentException().getMessage()
+        error += linkError
+        genesDone.add(ref.toString())
+      }
+      if (synonym.length() > 0) {
+        addAttribute(database, ref, "Symbol", synonym)
+        addXRef(database, ref, key, inchikeyDS, genesDone);
+      }
+      if (key.length() > 0) {
+        addAttribute(database, ref, "InChIKey", key);
+      }
+    }
+  }
+  counter++
+  if (counter % commitInterval == 0) {
+    println "errors: " + error + " (label)"
     database.commit()
   }
 }

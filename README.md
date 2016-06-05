@@ -120,6 +120,46 @@ SPARQL query of which the output is to be saved as "lm2wikidata.csv":
   }
   ```
 
+4.7 HMDB IDs
+
+SPARQL query of which the output is to be saved as "hmdb2wikidata.csv":
+
+  ```
+  PREFIX wdt: <http://www.wikidata.org/prop/direct/>
+  SELECT ?compound ?id WHERE {
+    ?compound wdt:P2057 ?id .
+  }
+  ```
+
+4.8 ChEBI IDs
+
+SPARQL query of which the output is to be saved as "chebi2wikidata.csv":
+
+  ```
+  PREFIX wdt: <http://www.wikidata.org/prop/direct/>
+  SELECT ?compound ?id WHERE {
+    ?compound wdt:P683 ?id .
+  }
+  ```
+
+4.9 Get compound labels
+
+SPARQL query of which the output is to be downloaded as simple TSV and saved as "names4wikidata.tsv":
+
+  ```
+  PREFIX wdt: <http://www.wikidata.org/prop/direct/>
+  SELECT ?compound ?key ?name WHERE {
+    ?compound wdt:P31 wd:Q11173 .
+    OPTIONAL {
+      ?compound rdfs:label ?name
+      FILTER((LANG(?name)) = "en")
+    }
+    OPTIONAL {
+      ?compound wdt:P235 ?key
+    }
+  }
+  ```
+
 5. run the script with Groovy:
 
   groovy hmdb2derby.groovy
