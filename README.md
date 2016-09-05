@@ -1,10 +1,10 @@
 Create BridgeDB Identity Mapping files for HMDB
 ===============================================
 
-This groovy script is loosly build on code developed by Martina Kutmon [1]
-and creates a Derby file for BridgeDB [2] for use in PathVisio, etc.
+This groovy script creates a Derby file for BridgeDB [1] for use in PathVisio,
+etc.
 
-The script has been tested with HMDB 3.6 [3], ChEBI 138, and Wikidata from April 2016.
+The script has been tested with HMDB 3.6 [2], ChEBI 150, and Wikidata from June 2016.
 
 I'm indebted to all that worked on identifier mappings in these projects:
 
@@ -15,6 +15,13 @@ I'm indebted to all that worked on identifier mappings in these projects:
 Everyone can contribute ID mappings to the latter project.
 
 ![](https://upload.wikimedia.org/wikipedia/commons/thumb/c/cd/Wikidata_stamp.png/288px-Wikidata_stamp.png)
+
+Releases
+--------
+
+The files are released via the BridgeDb Website: http://www.bridgedb.org/mapping-databases/hmdb-metabolite-mappings/
+
+The mapping files are also archived on Figshare: https://figshare.com/search?q=metabolite+bridgedb+mapping+database&quick=1
 
 License
 -------
@@ -52,7 +59,7 @@ Run the script
 4. make sure the Wikidata file is saved
 
 Run the following SPARQL queries at http://query.wikidata.org/ and save the
-output as CSV files [4]:
+output as CSV files [3]:
 
 4.1 CAS registry numbers
 
@@ -169,7 +176,6 @@ SPARQL query of which the output is to be downloaded as simple TSV and saved as 
 References
 ----------
 
-1. http://svn.bigcat.unimaas.nl/bridgedbcreator/trunk/src/org/bridgedb/creator/
-2. http://bridgedb.org/
-3. http://hmdb.ca/
-4. https://chem-bla-ics.blogspot.nl/2015/12/new-edition-getting-cas-registry.html
+1. http://bridgedb.org/
+2. http://hmdb.ca/
+3. https://chem-bla-ics.blogspot.nl/2015/12/new-edition-getting-cas-registry.html
