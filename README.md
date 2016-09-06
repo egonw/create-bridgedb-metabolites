@@ -72,6 +72,12 @@ SPARQL query of which the output is to be saved as "cas2wikidata.csv":
   }
   ```
 
+With curl the following command can be run:
+
+  ```
+  curl -i -H "Accept: text/csv" --data-urlencode query@wikidata/cas.rq -G https://query.wikidata.org/bigdata/namespace/wdq/sparql -o cas2wikidata.csv  
+  ```
+
 4.2 ChemSpider
 
 SPARQL query of which the output is to be saved as "cs2wikidata.csv":
