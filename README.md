@@ -56,121 +56,37 @@ Run the script
   mv database_accession.tsv chebi_database_accession.tsv
   ```
 
-4. make sure the Wikidata file is saved
+4. make sure the Wikidata files are saved
 
-Run the following SPARQL queries at http://query.wikidata.org/ and save the
-output as CSV files [3]:
+4.1 ID mappings
 
-4.1 CAS registry numbers
+A set of SPARQL queries have been compiled and saved in the wikidata/ folder.
+These queries can be manually executed at http://query.wikidata.org/. These
+queries download mappings from Wikidata for CAS registry numbers (cas.rq),
+ChemSpider (cs.rq), PubChem (pubchem.rq), KEGG compounds (kegg.rq),
+KnAPSaCK IDs (knapsack.rq)
 
-SPARQL query of which the output is to be saved as "cas2wikidata.csv":
-
-  ```
-  PREFIX wdt: <http://www.wikidata.org/prop/direct/>
-  SELECT ?compound ?id WHERE {
-    ?compound wdt:P231 ?id .
-  }
-  ```
-
-With curl the following command can be run:
+However, you can also use the below curl command line operations.
 
   ```
-  curl -i -H "Accept: text/csv" --data-urlencode query@wikidata/cas.rq -G https://query.wikidata.org/bigdata/namespace/wdq/sparql -o cas2wikidata.csv  
+  curl -H "Accept: text/csv" --data-urlencode query@wikidata/cas.rq -G https://query.wikidata.org/bigdata/namespace/wdq/sparql -o cas2wikidata.csv
+  curl -H "Accept: text/csv" --data-urlencode query@wikidata/cs.rq -G https://query.wikidata.org/bigdata/namespace/wdq/sparql -o cs2wikidata.csv
+  curl -H "Accept: text/csv" --data-urlencode query@wikidata/pubchem.rq -G https://query.wikidata.org/bigdata/namespace/wdq/sparql -o pubchem2wikidata.csv
+  curl -H "Accept: text/csv" --data-urlencode query@wikidata/chebi.rq -G https://query.wikidata.org/bigdata/namespace/wdq/sparql -o chebi2wikidata.csv
+  curl -H "Accept: text/csv" --data-urlencode query@wikidata/kegg.rq -G https://query.wikidata.org/bigdata/namespace/wdq/sparql -o kegg2wikidata.csv
+  curl -H "Accept: text/csv" --data-urlencode query@wikidata/hmdb.rq -G https://query.wikidata.org/bigdata/namespace/wdq/sparql -o hmdb2wikidata.csv
+  curl -H "Accept: text/csv" --data-urlencode query@wikidata/lm.rq -G https://query.wikidata.org/bigdata/namespace/wdq/sparql -o lm2wikidata.csv
+  curl -H "Accept: text/csv" --data-urlencode query@wikidata/knapsack.rq -G https://query.wikidata.org/bigdata/namespace/wdq/sparql -o knapsack2wikidata.csv
   ```
 
-4.2 ChemSpider
+4.2 Get compound labels and InChIKeys
 
-SPARQL query of which the output is to be saved as "cs2wikidata.csv":
-
-  ```
-  PREFIX wdt: <http://www.wikidata.org/prop/direct/>
-  SELECT ?compound ?id WHERE {
-    ?compound wdt:P661 ?id .
-  }
-  ```
-
-4.3 PubChem CIDs
-
-SPARQL query of which the output is to be saved as "pubchem2wikidata.csv":
+With a similar SPARQL query (names.rq) the compounds labels (English only) and
+InChIKeys can be downloaded as simple TSV and saved as "names4wikidata.tsv"
+(note that this file is TAB separated):
 
   ```
-  PREFIX wdt: <http://www.wikidata.org/prop/direct/>
-  SELECT ?compound ?id WHERE {
-    ?compound wdt:P662 ?id .
-  }
-  ```
-
-4.4 KEGG compound IDs
-
-SPARQL query of which the output is to be saved as "kegg2wikidata.csv":
-
-  ```
-  PREFIX wdt: <http://www.wikidata.org/prop/direct/>
-  SELECT ?compound ?id WHERE {
-    ?compound wdt:P665 ?id .
-  }
-  ```
-
-4.5 KnAPSaCK IDs
-
-SPARQL query of which the output is to be saved as "ksnapsack2wikidata.csv":
-
-  ```
-  PREFIX wdt: <http://www.wikidata.org/prop/direct/>
-  SELECT ?compound ?id WHERE {
-    ?compound wdt:P2064 ?id .
-  }
-  ```
-
-4.6 LIPIDMAP IDs
-
-SPARQL query of which the output is to be saved as "lm2wikidata.csv":
-
-  ```
-  PREFIX wdt: <http://www.wikidata.org/prop/direct/>
-  SELECT ?compound ?id WHERE {
-    ?compound wdt:P2063 ?id .
-  }
-  ```
-
-4.7 HMDB IDs
-
-SPARQL query of which the output is to be saved as "hmdb2wikidata.csv":
-
-  ```
-  PREFIX wdt: <http://www.wikidata.org/prop/direct/>
-  SELECT ?compound ?id WHERE {
-    ?compound wdt:P2057 ?id .
-  }
-  ```
-
-4.8 ChEBI IDs
-
-SPARQL query of which the output is to be saved as "chebi2wikidata.csv":
-
-  ```
-  PREFIX wdt: <http://www.wikidata.org/prop/direct/>
-  SELECT ?compound ?id WHERE {
-    ?compound wdt:P683 ?id .
-  }
-  ```
-
-4.9 Get compound labels
-
-SPARQL query of which the output is to be downloaded as simple TSV and saved as "names4wikidata.tsv":
-
-  ```
-  PREFIX wdt: <http://www.wikidata.org/prop/direct/>
-  SELECT ?compound ?key ?name WHERE {
-    ?compound wdt:P31 wd:Q11173 .
-    OPTIONAL {
-      ?compound rdfs:label ?name
-      FILTER((LANG(?name)) = "en")
-    }
-    OPTIONAL {
-      ?compound wdt:P235 ?key
-    }
-  }
+  curl -H "Accept: text/tab-separated-values" --data-urlencode query@wikidata/names.rq -G https://query.wikidata.org/bigdata/namespace/wdq/sparql -o names2wikidata.tsv
   ```
 
 5. run the script with Groovy:

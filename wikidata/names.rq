@@ -1,0 +1,11 @@
+PREFIX wdt: <http://www.wikidata.org/prop/direct/>
+SELECT ?compound ?key (str(?nameLit) as ?name) WHERE {
+  ?compound wdt:P31 wd:Q11173 .
+  OPTIONAL {
+    ?compound rdfs:label ?nameLit
+    FILTER((LANG(?nameLit)) = "en")
+  }
+  OPTIONAL {
+    ?compound wdt:P235 ?key
+  }
+}

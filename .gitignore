@@ -8,3 +8,4 @@ hmdb_ls_*.void
 *.log
 *.qc
 HMDB*.xml
+*wikidata.?sv
