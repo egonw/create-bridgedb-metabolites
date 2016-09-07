@@ -327,7 +327,7 @@ new File("kegg2wikidata.csv").eachLine { line ->
     } else if (keggID.charAt(0) == 'D') {
       addXRef(database, ref, keggID, keggDrugDS, genesDone);
     } else {
-      println "unclear KEGG ID: " + keggID
+      println "unclear KEGG ID ($rootid): " + keggID
     }
   }
   counter++
