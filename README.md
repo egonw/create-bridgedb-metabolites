@@ -91,7 +91,10 @@ InChIKeys can be downloaded as simple TSV and saved as "names4wikidata.tsv"
 
 5. run the script with Groovy:
 
+  ```
+  export CLASSPATH=`ls -1 *.jar | tr '\n' ':'`
   groovy hmdb2derby.groovy
+  ```
 
 6. open the file in PathVisio
 
