@@ -46,6 +46,7 @@ keggDrugDS = DataSource.register ("Kd", "KEGG Drug").asDataSource()
 wikidataDS = DataSource.register ("Wd", "Wikidata").asDataSource()
 lmDS = DataSource.register ("Lm", "LIPID MAPS").asDataSource()
 knapsackDS = DataSource.register ("Cks", "KNApSAcK").asDataSource()
+dtxDS = DataSource.register ("Dtx", "EPA CompTox Dashboard").asDataSource()
 // drugbankDS = BioDataSource.DRUGBANK
 wikipediaDS = BioDataSource.WIKIPEDIA
 
@@ -141,7 +142,7 @@ zipFile.entries().each { entry ->
          addXRef(database, ref, chebID.substring(6), chebiDS, genesDone);
        } else if (chebID.length() > 0) {
          addXRef(database, ref, chebID, chebiDS, genesDone);
-         addXRef(database, ref, "CHEBI:" + chebID, chebiDS, genesDone);
+         addXRef(database, ref, "CHEBI:" + chebID, chebiDS, genesDone);Cks
        }
        String keggID = rootNode.kegg_id.toString();
        if (keggID.length() > 0 && keggID.charAt(0) == 'C') {
