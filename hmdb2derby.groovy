@@ -93,7 +93,6 @@ counter = 0
 def zipFile = new java.util.zip.ZipFile(new File('hmdb_metabolites.zip'))
 zipFile.entries().each { entry ->
    if (!entry.isDirectory() && entry.name != "hmdb_metabolites.xml") {
-     println entry.name
      inputStream = zipFile.getInputStream(entry)
      def rootNode = new XmlSlurper().parse(inputStream)
      error = 0
@@ -142,7 +141,7 @@ zipFile.entries().each { entry ->
          addXRef(database, ref, chebID.substring(6), chebiDS, genesDone);
        } else if (chebID.length() > 0) {
          addXRef(database, ref, chebID, chebiDS, genesDone);
-         addXRef(database, ref, "CHEBI:" + chebID, chebiDS, genesDone);Cks
+         addXRef(database, ref, "CHEBI:" + chebID, chebiDS, genesDone);
        }
        String keggID = rootNode.kegg_id.toString();
        if (keggID.length() > 0 && keggID.charAt(0) == 'C') {
@@ -162,7 +161,7 @@ zipFile.entries().each { entry ->
        println "No external IDs added for: " + rootid
      }
 
-     println "errors: " + error + " (ChEBI)"
+     if (error > 0) println "errors: " + error + " (HMDB: ${entry.name})"
      counter++
      if (counter % commitInterval == 0) database.commit()
   }
@@ -173,6 +172,7 @@ counter = 0
 // load the names
 def chebiNames = new File('data/chebi_names.tsv')
 chebiNames.eachLine { line->
+  error = 0
   columns = line.split('\t')
   shortid = columns[1]
   rootid = "CHEBI:" + shortid
@@ -198,9 +198,10 @@ chebiNames.eachLine { line->
     error += linkError
     genesDone.add(ref.toString())
   }
+  addAttribute(database, shortRef, "Synonym", name);
   addAttribute(database, ref, "Synonym", name);
 
-  println "errors: " + error + " (ChEBI)"
+  if (error > 0) println "errors: " + error + " (ChEBI: $rootid)"
   counter++
   if (counter % commitInterval == 0) database.commit()
 }
@@ -238,8 +239,8 @@ mappedIDs.eachLine { line->
     println "No external IDs added for: " + rootid
   }
   counter++
+  if (error > 0) println "errors: " + error + " (ChEBI: $rootid)"
   if (counter % commitInterval == 0) {
-    println "errors: " + error + " (ChEBI)"
     database.commit()
   }
 }
