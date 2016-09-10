@@ -198,8 +198,7 @@ chebiNames.eachLine { line->
     error += linkError
     genesDone.add(ref.toString())
   }
-  addAttribute(database, shortRef, "Synonym", name);
-  addAttribute(database, ref, "Synonym", name);
+  addAttribute(database, ref, "Symbol", name);
 
   if (error > 0) println "errors: " + error + " (ChEBI: $rootid)"
   counter++
