@@ -171,7 +171,9 @@ zipFile.entries().each { entry ->
 counter = 0
 // load the names
 def chebiNames = new File('data/chebi_names.tsv')
-chebiNames.eachLine { line->
+chebiNames.eachLine { line,number ->
+  if (number == 1) return // skip the first line
+
   error = 0
   columns = line.split('\t')
   shortid = columns[1]
@@ -206,7 +208,9 @@ chebiNames.eachLine { line->
 }
 // load the mappings
 def mappedIDs = new File('data/chebi_database_accession.tsv')
-mappedIDs.eachLine { line->
+mappedIDs.eachLine { line,number ->
+  if (number == 1) return // skip the first line
+
   columns = line.split('\t')
   rootid = "CHEBI:" + columns[1]
   type = columns[3]
@@ -250,24 +254,25 @@ mappedIDs.eachLine { line->
 counter = 0
 error = 0
 genesDone = new java.util.HashSet();
-new File("cas2wikidata.csv").eachLine { line ->
-  if (counter > 0) {
-    fields = line.split(",")
-    rootid = fields[0].substring(31)
-    Xref ref = new Xref(rootid, wikidataDS);
-    if (!genesDone.contains(ref.toString())) {
-      addError = database.addGene(ref);
-      if (addError != 0) println "Error (addGene): " + database.recentException().getMessage()
-      error += addError
-      linkError = database.addLink(ref,ref);
-      if (linkError != 0) println "Error (addLinkItself): " + database.recentException().getMessage()
-      error += linkError
-      genesDone.add(ref.toString())
-    }
+new File("cas2wikidata.csv").eachLine { line,number ->
+  if (number == 1) return // skip the first line
 
-    // add external identifiers
-    addXRef(database, ref, fields[1], casDS, genesDone);
+  fields = line.split(",")
+  rootid = fields[0].substring(31)
+  Xref ref = new Xref(rootid, wikidataDS);
+  if (!genesDone.contains(ref.toString())) {
+    addError = database.addGene(ref);
+    if (addError != 0) println "Error (addGene): " + database.recentException().getMessage()
+    error += addError
+    linkError = database.addLink(ref,ref);
+    if (linkError != 0) println "Error (addLinkItself): " + database.recentException().getMessage()
+    error += linkError
+    genesDone.add(ref.toString())
   }
+
+  // add external identifiers
+  addXRef(database, ref, fields[1], casDS, genesDone);
+
   counter++
   if (counter % commitInterval == 0) {
     println "errors: " + error + " (CAS)"
@@ -278,24 +283,25 @@ new File("cas2wikidata.csv").eachLine { line ->
 // PubChem registry numbers
 counter = 0
 error = 0
-new File("pubchem2wikidata.csv").eachLine { line ->
-  if (counter > 0) {
-    fields = line.split(",")
-    rootid = fields[0].substring(31)
-    Xref ref = new Xref(rootid, wikidataDS);
-    if (!genesDone.contains(ref.toString())) {
-      addError = database.addGene(ref);
-      if (addError != 0) println "Error (addGene): " + database.recentException().getMessage()
-      error += addError
-      linkError = database.addLink(ref,ref);
-      if (linkError != 0) println "Error (addLinkItself): " + database.recentException().getMessage()
-      error += linkError
-      genesDone.add(ref.toString())
-    }
+new File("pubchem2wikidata.csv").eachLine { line,number ->
+  if (number == 1) return // skip the first line
 
-    // add external identifiers
-    addXRef(database, ref, fields[1], pubchemDS, genesDone);
+  fields = line.split(",")
+  rootid = fields[0].substring(31)
+  Xref ref = new Xref(rootid, wikidataDS);
+  if (!genesDone.contains(ref.toString())) {
+    addError = database.addGene(ref);
+    if (addError != 0) println "Error (addGene): " + database.recentException().getMessage()
+    error += addError
+    linkError = database.addLink(ref,ref);
+    if (linkError != 0) println "Error (addLinkItself): " + database.recentException().getMessage()
+    error += linkError
+    genesDone.add(ref.toString())
   }
+
+  // add external identifiers
+  addXRef(database, ref, fields[1], pubchemDS, genesDone);
+
   counter++
   if (counter % commitInterval == 0) {
     println "errors: " + error + " (PubChem)"
@@ -306,30 +312,30 @@ new File("pubchem2wikidata.csv").eachLine { line ->
 // KEGG registry numbers
 counter = 0
 error = 0
-new File("kegg2wikidata.csv").eachLine { line ->
-  if (counter > 0) {
-    fields = line.split(",")
-    rootid = fields[0].substring(31)
-    Xref ref = new Xref(rootid, wikidataDS);
-    if (!genesDone.contains(ref.toString())) {
-      addError = database.addGene(ref);
-      if (addError != 0) println "Error (addGene): " + database.recentException().getMessage()
-      error += addError
-      linkError = database.addLink(ref,ref);
-      if (linkError != 0) println "Error (addLinkItself): " + database.recentException().getMessage()
-      error += linkError
-      genesDone.add(ref.toString())
-    }
+new File("kegg2wikidata.csv").eachLine { line,number ->
+  if (number == 1) return // skip the first line
 
-    // add external identifiers
-    keggID = fields[1]
-    if (keggID.charAt(0) == 'C') {
-      addXRef(database, ref, keggID, keggDS, genesDone);
-    } else if (keggID.charAt(0) == 'D') {
-      addXRef(database, ref, keggID, keggDrugDS, genesDone);
-    } else {
-      println "unclear KEGG ID ($rootid): " + keggID
-    }
+  fields = line.split(",")
+  rootid = fields[0].substring(31)
+  Xref ref = new Xref(rootid, wikidataDS);
+  if (!genesDone.contains(ref.toString())) {
+    addError = database.addGene(ref);
+    if (addError != 0) println "Error (addGene): " + database.recentException().getMessage()
+    error += addError
+    linkError = database.addLink(ref,ref);
+    if (linkError != 0) println "Error (addLinkItself): " + database.recentException().getMessage()
+    error += linkError
+    genesDone.add(ref.toString())
+  }
+
+  // add external identifiers
+  keggID = fields[1]
+  if (keggID.charAt(0) == 'C') {
+    addXRef(database, ref, keggID, keggDS, genesDone);
+  } else if (keggID.charAt(0) == 'D') {
+    addXRef(database, ref, keggID, keggDrugDS, genesDone);
+  } else {
+    println "unclear KEGG ID ($rootid): " + keggID
   }
   counter++
   if (counter % commitInterval == 0) {
@@ -341,24 +347,25 @@ new File("kegg2wikidata.csv").eachLine { line ->
 // ChemSpider registry numbers
 counter = 0
 error = 0
-new File("cs2wikidata.csv").eachLine { line ->
-  if (counter > 0) {
-    fields = line.split(",")
-    rootid = fields[0].substring(31)
-    Xref ref = new Xref(rootid, wikidataDS);
-    if (!genesDone.contains(ref.toString())) {
-      addError = database.addGene(ref);
-      if (addError != 0) println "Error (addGene): " + database.recentException().getMessage()
-      error += addError
-      linkError = database.addLink(ref,ref);
-      if (linkError != 0) println "Error (addLinkItself): " + database.recentException().getMessage()
-      error += linkError
-      genesDone.add(ref.toString())
-    }
+new File("cs2wikidata.csv").eachLine { line,number ->
+  if (number == 1) return // skip the first line
 
-    // add external identifiers
-    addXRef(database, ref, fields[1], chemspiderDS, genesDone);
+  fields = line.split(",")
+  rootid = fields[0].substring(31)
+  Xref ref = new Xref(rootid, wikidataDS);
+  if (!genesDone.contains(ref.toString())) {
+    addError = database.addGene(ref);
+    if (addError != 0) println "Error (addGene): " + database.recentException().getMessage()
+    error += addError
+    linkError = database.addLink(ref,ref);
+    if (linkError != 0) println "Error (addLinkItself): " + database.recentException().getMessage()
+    error += linkError
+    genesDone.add(ref.toString())
   }
+
+  // add external identifiers
+  addXRef(database, ref, fields[1], chemspiderDS, genesDone);
+
   counter++
   if (counter % commitInterval == 0) {
     println "errors: " + error + " (ChemSpider)"
@@ -369,24 +376,25 @@ new File("cs2wikidata.csv").eachLine { line ->
 // LIPID MAPS registry numbers
 counter = 0
 error = 0
-new File("lm2wikidata.csv").eachLine { line ->
-  if (counter > 0) {
-    fields = line.split(",")
-    rootid = fields[0].substring(31)
-    Xref ref = new Xref(rootid, wikidataDS);
-    if (!genesDone.contains(ref.toString())) {
-      addError = database.addGene(ref);
-      if (addError != 0) println "Error (addGene): " + database.recentException().getMessage()
-      error += addError
-      linkError = database.addLink(ref,ref);
-      if (linkError != 0) println "Error (addLinkItself): " + database.recentException().getMessage()
-      error += linkError
-      genesDone.add(ref.toString())
-    }
+new File("lm2wikidata.csv").eachLine { line,number ->
+  if (number == 1) return // skip the first line
 
-    // add external identifiers
-    addXRef(database, ref, fields[1], lmDS, genesDone);
+  fields = line.split(",")
+  rootid = fields[0].substring(31)
+  Xref ref = new Xref(rootid, wikidataDS);
+  if (!genesDone.contains(ref.toString())) {
+    addError = database.addGene(ref);
+    if (addError != 0) println "Error (addGene): " + database.recentException().getMessage()
+    error += addError
+    linkError = database.addLink(ref,ref);
+    if (linkError != 0) println "Error (addLinkItself): " + database.recentException().getMessage()
+    error += linkError
+    genesDone.add(ref.toString())
   }
+
+  // add external identifiers
+  addXRef(database, ref, fields[1], lmDS, genesDone);
+
   counter++
   if (counter % commitInterval == 0) {
     println "errors: " + error + " (LIPIDMAPS)"
@@ -397,24 +405,25 @@ new File("lm2wikidata.csv").eachLine { line ->
 // HMDB registry numbers
 counter = 0
 error = 0
-new File("hmdb2wikidata.csv").eachLine { line ->
-  if (counter > 0) {
-    fields = line.split(",")
-    rootid = fields[0].substring(31)
-    Xref ref = new Xref(rootid, wikidataDS);
-    if (!genesDone.contains(ref.toString())) {
-      addError = database.addGene(ref);
-      if (addError != 0) println "Error (addGene): " + database.recentException().getMessage()
-      error += addError
-      linkError = database.addLink(ref,ref);
-      if (linkError != 0) println "Error (addLinkItself): " + database.recentException().getMessage()
-      error += linkError
-      genesDone.add(ref.toString())
-    }
+new File("hmdb2wikidata.csv").eachLine { line,number ->
+  if (number == 1) return // skip the first line
 
-    // add external identifiers
-    addXRef(database, ref, fields[1], BioDataSource.HMDB, genesDone);
+  fields = line.split(",")
+  rootid = fields[0].substring(31)
+  Xref ref = new Xref(rootid, wikidataDS);
+  if (!genesDone.contains(ref.toString())) {
+    addError = database.addGene(ref);
+    if (addError != 0) println "Error (addGene): " + database.recentException().getMessage()
+    error += addError
+    linkError = database.addLink(ref,ref);
+    if (linkError != 0) println "Error (addLinkItself): " + database.recentException().getMessage()
+    error += linkError
+    genesDone.add(ref.toString())
   }
+
+  // add external identifiers
+  addXRef(database, ref, fields[1], BioDataSource.HMDB, genesDone);
+
   counter++
   if (counter % commitInterval == 0) {
     println "errors: " + error + " (HMDB)"
@@ -425,29 +434,30 @@ new File("hmdb2wikidata.csv").eachLine { line ->
 // ChEBI registry numbers
 counter = 0
 error = 0
-new File("chebi2wikidata.csv").eachLine { line ->
-  if (counter > 0) {
-    fields = line.split(",")
-    rootid = fields[0].substring(31)
-    Xref ref = new Xref(rootid, wikidataDS);
-    if (!genesDone.contains(ref.toString())) {
-      addError = database.addGene(ref);
-      if (addError != 0) println "Error (addGene): " + database.recentException().getMessage()
-      error += addError
-      linkError = database.addLink(ref,ref);
-      if (linkError != 0) println "Error (addLinkItself): " + database.recentException().getMessage()
-      error += linkError
-      genesDone.add(ref.toString())
-    }
+new File("chebi2wikidata.csv").eachLine { line,number ->
+  if (number == 1) return // skip the first line
 
-    // add external identifiers
-    shortid = fields[1]
-    chebiid = "CHEBI:" + shortid
-    Xref chebiRef = new Xref(rootid, BioDataSource.CHEBI);
-    addXRef(database, ref, shortid, BioDataSource.CHEBI, genesDone);
-    addXRef(database, ref, chebiid, BioDataSource.CHEBI, genesDone);
-    addXRef(database, chebiRef, rootid, wikidataDS, genesDone);
+  fields = line.split(",")
+  rootid = fields[0].substring(31)
+  Xref ref = new Xref(rootid, wikidataDS);
+  if (!genesDone.contains(ref.toString())) {
+    addError = database.addGene(ref);
+    if (addError != 0) println "Error (addGene): " + database.recentException().getMessage()
+    error += addError
+    linkError = database.addLink(ref,ref);
+    if (linkError != 0) println "Error (addLinkItself): " + database.recentException().getMessage()
+    error += linkError
+    genesDone.add(ref.toString())
   }
+
+  // add external identifiers
+  shortid = fields[1]
+  chebiid = "CHEBI:" + shortid
+  Xref chebiRef = new Xref(rootid, BioDataSource.CHEBI);
+  addXRef(database, ref, shortid, BioDataSource.CHEBI, genesDone);
+  addXRef(database, ref, chebiid, BioDataSource.CHEBI, genesDone);
+  addXRef(database, chebiRef, rootid, wikidataDS, genesDone);
+
   counter++
   if (counter % commitInterval == 0) {
     println "errors: " + error + " (ChEBI)"
@@ -458,30 +468,30 @@ new File("chebi2wikidata.csv").eachLine { line ->
 // Wikidata names
 counter = 0
 error = 0
-new File("names4wikidata.tsv").eachLine { line ->
-  if (counter > 0) {
-    fields = line.split("\t")
-    if (fields.length >= 3) {
-      rootid = fields[0].substring(31)
-      key = fields[1].trim()
-      synonym = fields[2].trim()
-      Xref ref = new Xref(rootid, wikidataDS);
-      if (!genesDone.contains(ref.toString())) {
-        addError = database.addGene(ref);
-        if (addError != 0) println "Error (addGene): " + database.recentException().getMessage()
-        error += addError
-        linkError = database.addLink(ref,ref);
-        if (linkError != 0) println "Error (addLinkItself): " + database.recentException().getMessage()
-        error += linkError
-        genesDone.add(ref.toString())
-      }
-      if (synonym.length() > 0) {
-        addAttribute(database, ref, "Symbol", synonym)
-        addXRef(database, ref, key, inchikeyDS, genesDone);
-      }
-      if (key.length() > 0) {
-        addAttribute(database, ref, "InChIKey", key);
-      }
+new File("names4wikidata.tsv").eachLine { line,number ->
+  if (number == 1) return // skip the first line
+
+  fields = line.split("\t")
+  if (fields.length >= 3) {
+    rootid = fields[0].substring(31)
+    key = fields[1].trim()
+    synonym = fields[2].trim()
+    Xref ref = new Xref(rootid, wikidataDS);
+    if (!genesDone.contains(ref.toString())) {
+      addError = database.addGene(ref);
+      if (addError != 0) println "Error (addGene): " + database.recentException().getMessage()
+      error += addError
+      linkError = database.addLink(ref,ref);
+      if (linkError != 0) println "Error (addLinkItself): " + database.recentException().getMessage()
+      error += linkError
+      genesDone.add(ref.toString())
+    }
+    if (synonym.length() > 0) {
+      addAttribute(database, ref, "Symbol", synonym)
+      addXRef(database, ref, key, inchikeyDS, genesDone);
+    }
+    if (key.length() > 0) {
+      addAttribute(database, ref, "InChIKey", key);
     }
   }
   counter++
