@@ -53,7 +53,7 @@ wikipediaDS = BioDataSource.WIKIPEDIA
 String dateStr = new SimpleDateFormat("yyyyMMdd").format(new Date());
 database.setInfo("BUILDDATE", dateStr);
 database.setInfo("DATASOURCENAME", "HMDB-CHEBI-WIKIDATA");
-database.setInfo("DATASOURCEVERSION", "HMDB3.6-CHEBI142-WIKIDATA20160907" + dateStr);
+database.setInfo("DATASOURCEVERSION", "HMDB3.6-CHEBI144-WIKIDATA20161011" + dateStr);
 database.setInfo("DATATYPE", "Metabolite");
 database.setInfo("SERIES", "standard_metabolite");
 
@@ -468,7 +468,7 @@ new File("chebi2wikidata.csv").eachLine { line,number ->
 // Wikidata names
 counter = 0
 error = 0
-new File("names4wikidata.tsv").eachLine { line,number ->
+new File("names2wikidata.tsv").eachLine { line,number ->
   if (number == 1) return // skip the first line
 
   fields = line.split("\t")
