@@ -1,5 +1,5 @@
-Create BridgeDB Identity Mapping files for HMDB
-===============================================
+Create BridgeDB Identity Mapping files
+======================================
 
 This groovy script creates a Derby file for BridgeDB [1] for use in PathVisio,
 etc.
