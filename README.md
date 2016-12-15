@@ -1,7 +1,7 @@
-Create BridgeDB Identity Mapping files
+Create BridgeDb Identity Mapping files
 ======================================
 
-This groovy script creates a Derby file for BridgeDB [1] for use in PathVisio,
+This groovy script creates a Derby file for BridgeDb [1] for use in PathVisio,
 etc.
 
 The script has been tested with HMDB 3.6 [2], ChEBI 150, and Wikidata from September 2016.
@@ -29,7 +29,7 @@ License
 This repository: New BSD.
 
 Derby License -> http://db.apache.org/derby/license.html
-BridgeDB License -> http://www.bridgedb.org/browser/trunk/LICENSE-2.0.txt
+BridgeDb License -> http://www.bridgedb.org/browser/trunk/LICENSE-2.0.txt
 
 Run the script
 --------------
