@@ -49,7 +49,6 @@ lmDS = DataSource.register ("Lm", "LIPID MAPS").asDataSource()
 knapsackDS = DataSource.register ("Cks", "KNApSAcK").asDataSource()
 dtxDS = DataSource.register ("Dtx", "EPA CompTox Dashboard").asDataSource()
 // drugbankDS = BioDataSource.DRUGBANK
-wikipediaDS = BioDataSource.WIKIPEDIA
 
 String dateStr = new SimpleDateFormat("yyyyMMdd").format(new Date());
 database.setInfo("BUILDDATE", dateStr);
@@ -164,7 +163,6 @@ zipFile.entries().each { entry ->
        } else if (keggID.length() > 0 && keggID.charAt(0) == 'D') {
          addXRef(database, ref, keggID, keggDrugDS, genesDone, linksDone);
        }
-       addXRef(database, ref, rootNode.wikipedia.toString(), wikipediaDS, genesDone, linksDone);
 //      addXRef(database, ref, rootNode.nugowiki.toString(), nugoDS);
 //      addXRef(database, ref, rootNode.drugbank_id.toString(), drugbankDS);
 //      addXRef(database, ref, rootNode.inchi.toString(), inchiDS);
@@ -238,8 +236,6 @@ mappedIDs.eachLine { line,number ->
       addXRef(database, ref, id, BioDataSource.KEGG_COMPOUND, genesDone, linksDone);
     } else if (type == "Chemspider accession") {
       addXRef(database, ref, id, chemspiderDS, genesDone, linksDone);
-    } else if (type == "Wikipedia accession") {
-      addXRef(database, ref, id, wikipediaDS, genesDone, linksDone);
     } else if (type == "Pubchem accession") {
       addXRef(database, ref, id, pubchemDS, genesDone, linksDone);
     } else if (type == "LIPID MAPS class accession") {
