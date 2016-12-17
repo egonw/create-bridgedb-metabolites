@@ -281,7 +281,7 @@ new File("cas2wikidata.csv").eachLine { line,number ->
 
   counter++
   if (counter % commitInterval == 0) {
-    println "errors: " + error + " (CAS)"
+    println "Info: errors: " + error + " (CAS)"
     database.commit()
   }
 }
@@ -310,7 +310,7 @@ new File("pubchem2wikidata.csv").eachLine { line,number ->
 
   counter++
   if (counter % commitInterval == 0) {
-    println "errors: " + error + " (PubChem)"
+    println "Info: errors: " + error + " (PubChem)"
     database.commit()
   }
 }
@@ -345,7 +345,7 @@ new File("kegg2wikidata.csv").eachLine { line,number ->
   }
   counter++
   if (counter % commitInterval == 0) {
-    println "errors: " + error + " (KEGG)"
+    println "Info: errors: " + error + " (KEGG)"
     database.commit()
   }
 }
@@ -374,7 +374,7 @@ new File("cs2wikidata.csv").eachLine { line,number ->
 
   counter++
   if (counter % commitInterval == 0) {
-    println "errors: " + error + " (ChemSpider)"
+    println "Info: errors: " + error + " (ChemSpider)"
     database.commit()
   }
 }
@@ -403,7 +403,7 @@ new File("lm2wikidata.csv").eachLine { line,number ->
 
   counter++
   if (counter % commitInterval == 0) {
-    println "errors: " + error + " (LIPIDMAPS)"
+    println "Info: errors: " + error + " (LIPIDMAPS)"
     database.commit()
   }
 }
@@ -432,7 +432,7 @@ new File("hmdb2wikidata.csv").eachLine { line,number ->
 
   counter++
   if (counter % commitInterval == 0) {
-    println "errors: " + error + " (HMDB)"
+    println "Info: errors: " + error + " (HMDB)"
     database.commit()
   }
 }
@@ -466,7 +466,7 @@ new File("chebi2wikidata.csv").eachLine { line,number ->
 
   counter++
   if (counter % commitInterval == 0) {
-    println "errors: " + error + " (ChEBI)"
+    println "Info: errors: " + error + " (ChEBI)"
     database.commit()
   }
 }
