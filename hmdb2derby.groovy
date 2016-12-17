@@ -15,6 +15,7 @@ import org.bridgedb.rdb.construct.GdbConstructImpl3;
 
 commitInterval = 500
 genesDone = new java.util.HashSet();
+linksDone = new java.util.HashSet();
 
 GdbConstruct database = GdbConstructImpl3.createInstance(
   "hmdb_chebi_wikidata_metabolites", new DataDerby(), DBConnector.PROP_RECREATE
@@ -57,7 +58,7 @@ database.setInfo("DATASOURCEVERSION", "HMDB3.6-CHEBI145-WIKIDATA20161105" + date
 database.setInfo("DATATYPE", "Metabolite");
 database.setInfo("SERIES", "standard_metabolite");
 
-def addXRef(GdbConstruct database, Xref ref, String node, DataSource source, Set genesDone) {
+def addXRef(GdbConstruct database, Xref ref, String node, DataSource source, Set genesDone, Set linkesDone) {
    id = node.trim()
    if (id.length() > 0) {
      // println "id($source): $id"
@@ -69,10 +70,13 @@ def addXRef(GdbConstruct database, Xref ref, String node, DataSource source, Set
        }
        genesDone.add(ref2.toString())
      }
-     if (database.addLink(ref, ref2) != 0) {
-       println "Error (addXRef.addLink): " + database.recentException().getMessage()
-       println "                 id(origin):  " + ref.toString()
-       println "                 id($source): $id"
+     if (!linksDone.contains(ref.toString()+ref2.toString())) {
+       if (database.addLink(ref, ref2) != 0) {
+         println "Error (addXRef.addLink): " + database.recentException().getMessage()
+         println "                 id(origin):  " + ref.toString()
+         println "                 id($source): $id"
+       }
+       linksDone.add(ref.toString()+ref2.toString())
      }
    }
 }
@@ -129,7 +133,7 @@ zipFile.entries().each { entry ->
      key = cleanKey(rootNode.inchikey.toString().trim());
      if (key.length() == 27) {
        addAttribute(database, ref, "InChIKey", key);
-       addXRef(database, ref, key, inchikeyDS, genesDone);
+       addXRef(database, ref, key, inchikeyDS, genesDone, linksDone);
      }
      addAttribute(database, ref, "SMILES", rootNode.smiles.toString());
      addAttribute(database, ref, "BrutoFormula", rootNode.chemical_formula.toString());
@@ -139,28 +143,28 @@ zipFile.entries().each { entry ->
      // add external identifiers
      // addXRef(database, ref, rootNode.accession.toString(), BioDataSource.HMDB);
      if (!blacklist.contains(rootid)) {
-       addXRef(database, ref, rootNode.cas_registry_number.toString(), casDS, genesDone);
-       addXRef(database, ref, rootNode.pubchem_compound_id.toString(), pubchemDS, genesDone);
-       addXRef(database, ref, rootNode.chemspider_id.toString(), chemspiderDS, genesDone);
+       addXRef(database, ref, rootNode.cas_registry_number.toString(), casDS, genesDone, linksDone);
+       addXRef(database, ref, rootNode.pubchem_compound_id.toString(), pubchemDS, genesDone, linksDone);
+       addXRef(database, ref, rootNode.chemspider_id.toString(), chemspiderDS, genesDone, linksDone);
        String chebID = rootNode.chebi_id.toString().trim()
        if (chebID.startsWith("CHEBI:")) {
-         addXRef(database, ref, chebID, chebiDS, genesDone);
-         addXRef(database, ref, chebID.substring(6), chebiDS, genesDone);
+         addXRef(database, ref, chebID, chebiDS, genesDone, linksDone);
+         addXRef(database, ref, chebID.substring(6), chebiDS, genesDone, linksDone);
        } else if (chebID.length() > 0) {
-         addXRef(database, ref, chebID, chebiDS, genesDone);
-         addXRef(database, ref, "CHEBI:" + chebID, chebiDS, genesDone);
+         addXRef(database, ref, chebID, chebiDS, genesDone, linksDone);
+         addXRef(database, ref, "CHEBI:" + chebID, chebiDS, genesDone, linksDone);
        }
        String keggID = rootNode.kegg_id.toString();
        if (keggID.length() > 0 && keggID.charAt(0) == 'C') {
          if (!blacklist.contains(keggID)) {
-           addXRef(database, ref, keggID, keggDS, genesDone);
+           addXRef(database, ref, keggID, keggDS, genesDone, linksDone);
          } else {
            println "Warn: No external IDs added for: " + keggID
          }
        } else if (keggID.length() > 0 && keggID.charAt(0) == 'D') {
-         addXRef(database, ref, keggID, keggDrugDS, genesDone);
+         addXRef(database, ref, keggID, keggDrugDS, genesDone, linksDone);
        }
-       addXRef(database, ref, rootNode.wikipedia.toString(), wikipediaDS, genesDone);
+       addXRef(database, ref, rootNode.wikipedia.toString(), wikipediaDS, genesDone, linksDone);
 //      addXRef(database, ref, rootNode.nugowiki.toString(), nugoDS);
 //      addXRef(database, ref, rootNode.drugbank_id.toString(), drugbankDS);
 //      addXRef(database, ref, rootNode.inchi.toString(), inchiDS);
@@ -228,22 +232,22 @@ mappedIDs.eachLine { line,number ->
     Xref ref = new Xref(rootid, BioDataSource.CHEBI);
     if (type == "CAS Registry Number") {
       if (!id.contains(" ") && !id.contains(":") && id.contains("-")) {
-        addXRef(database, ref, id, BioDataSource.CAS, genesDone);
+        addXRef(database, ref, id, BioDataSource.CAS, genesDone, linksDone);
       }
     } else if (type == "KEGG COMPOUND accession") {
-      addXRef(database, ref, id, BioDataSource.KEGG_COMPOUND, genesDone);
+      addXRef(database, ref, id, BioDataSource.KEGG_COMPOUND, genesDone, linksDone);
     } else if (type == "Chemspider accession") {
-      addXRef(database, ref, id, chemspiderDS, genesDone);
+      addXRef(database, ref, id, chemspiderDS, genesDone, linksDone);
     } else if (type == "Wikipedia accession") {
-      addXRef(database, ref, id, wikipediaDS, genesDone);
+      addXRef(database, ref, id, wikipediaDS, genesDone, linksDone);
     } else if (type == "Pubchem accession") {
-      addXRef(database, ref, id, pubchemDS, genesDone);
+      addXRef(database, ref, id, pubchemDS, genesDone, linksDone);
     } else if (type == "LIPID MAPS class accession") {
-      addXRef(database, ref, id, lmDS, genesDone);
+      addXRef(database, ref, id, lmDS, genesDone, linksDone);
     } else if (type == "LIPID MAPS instance accession") {
-      addXRef(database, ref, id, lmDS, genesDone);
+      addXRef(database, ref, id, lmDS, genesDone, linksDone);
     } else if (type == "KNApSAcK accession") {
-      addXRef(database, ref, id, knapsackDS, genesDone);
+      addXRef(database, ref, id, knapsackDS, genesDone, linksDone);
     }
   } else {
     println "No external IDs added for: " + rootid
@@ -261,6 +265,7 @@ mappedIDs.eachLine { line,number ->
 counter = 0
 error = 0
 genesDone = new java.util.HashSet();
+linksDone = new java.util.HashSet();
 new File("cas2wikidata.csv").eachLine { line,number ->
   if (number == 1) return // skip the first line
 
@@ -278,7 +283,7 @@ new File("cas2wikidata.csv").eachLine { line,number ->
   }
 
   // add external identifiers
-  addXRef(database, ref, fields[1], casDS, genesDone);
+  addXRef(database, ref, fields[1], casDS, genesDone, linksDone);
 
   counter++
   if (counter % commitInterval == 0) {
@@ -307,7 +312,7 @@ new File("pubchem2wikidata.csv").eachLine { line,number ->
   }
 
   // add external identifiers
-  addXRef(database, ref, fields[1], pubchemDS, genesDone);
+  addXRef(database, ref, fields[1], pubchemDS, genesDone, linksDone);
 
   counter++
   if (counter % commitInterval == 0) {
@@ -338,9 +343,9 @@ new File("kegg2wikidata.csv").eachLine { line,number ->
   // add external identifiers
   keggID = fields[1]
   if (keggID.charAt(0) == 'C') {
-    addXRef(database, ref, keggID, keggDS, genesDone);
+    addXRef(database, ref, keggID, keggDS, genesDone, linksDone);
   } else if (keggID.charAt(0) == 'D') {
-    addXRef(database, ref, keggID, keggDrugDS, genesDone);
+    addXRef(database, ref, keggID, keggDrugDS, genesDone, linksDone);
   } else {
     println "unclear KEGG ID ($rootid): " + keggID
   }
@@ -371,7 +376,7 @@ new File("cs2wikidata.csv").eachLine { line,number ->
   }
 
   // add external identifiers
-  addXRef(database, ref, fields[1], chemspiderDS, genesDone);
+  addXRef(database, ref, fields[1], chemspiderDS, genesDone, linksDone);
 
   counter++
   if (counter % commitInterval == 0) {
@@ -400,7 +405,7 @@ new File("lm2wikidata.csv").eachLine { line,number ->
   }
 
   // add external identifiers
-  addXRef(database, ref, fields[1], lmDS, genesDone);
+  addXRef(database, ref, fields[1], lmDS, genesDone, linksDone);
 
   counter++
   if (counter % commitInterval == 0) {
@@ -429,7 +434,7 @@ new File("hmdb2wikidata.csv").eachLine { line,number ->
   }
 
   // add external identifiers
-  addXRef(database, ref, fields[1], BioDataSource.HMDB, genesDone);
+  addXRef(database, ref, fields[1], BioDataSource.HMDB, genesDone, linksDone);
 
   counter++
   if (counter % commitInterval == 0) {
@@ -461,9 +466,9 @@ new File("chebi2wikidata.csv").eachLine { line,number ->
   shortid = fields[1]
   chebiid = "CHEBI:" + shortid
   Xref chebiRef = new Xref(rootid, BioDataSource.CHEBI);
-  addXRef(database, ref, shortid, BioDataSource.CHEBI, genesDone);
-  addXRef(database, ref, chebiid, BioDataSource.CHEBI, genesDone);
-  addXRef(database, chebiRef, rootid, wikidataDS, genesDone);
+  addXRef(database, ref, shortid, BioDataSource.CHEBI, genesDone, linksDone);
+  addXRef(database, ref, chebiid, BioDataSource.CHEBI, genesDone, linksDone);
+  addXRef(database, chebiRef, rootid, wikidataDS, genesDone, linksDone);
 
   counter++
   if (counter % commitInterval == 0) {
@@ -495,7 +500,7 @@ new File("names2wikidata.tsv").eachLine { line,number ->
     }
     if (synonym.length() > 0) {
       addAttribute(database, ref, "Symbol", synonym)
-      addXRef(database, ref, key, inchikeyDS, genesDone);
+      addXRef(database, ref, key, inchikeyDS, genesDone, linksDone);
     }
     if (key.length() > 0) {
       addAttribute(database, ref, "InChIKey", key);
