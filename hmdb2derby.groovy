@@ -63,10 +63,17 @@ def addXRef(GdbConstruct database, Xref ref, String node, DataSource source, Set
      // println "id($source): $id"
      ref2 = new Xref(id, source);
      if (!genesDone.contains(ref2.toString())) {
-       if (database.addGene(ref2)) println "Error (addGene): " + database.recentException().getMessage()
+       if (database.addGene(ref2) != 0) {
+          println "Error (addXRef.addGene): " + database.recentException().getMessage()
+          println "                 id($source): $id"
+       }
        genesDone.add(ref2.toString())
      }
-     if (database.addLink(ref, ref2)) println "Error (addLink): " + database.recentException().getMessage()
+     if (database.addLink(ref, ref2) != 0) {
+       println "Error (addXRef.addLink): " + database.recentException().getMessage()
+       println "                 id(origin):  " + ref.toString()
+       println "                 id($source): $id"
+     }
    }
 }
 
@@ -148,7 +155,7 @@ zipFile.entries().each { entry ->
          if (!blacklist.contains(keggID)) {
            addXRef(database, ref, keggID, keggDS, genesDone);
          } else {
-           println "No external IDs added for: " + keggID
+           println "Warn: No external IDs added for: " + keggID
          }
        } else if (keggID.length() > 0 && keggID.charAt(0) == 'D') {
          addXRef(database, ref, keggID, keggDrugDS, genesDone);
@@ -158,7 +165,7 @@ zipFile.entries().each { entry ->
 //      addXRef(database, ref, rootNode.drugbank_id.toString(), drugbankDS);
 //      addXRef(database, ref, rootNode.inchi.toString(), inchiDS);
      } else {
-       println "No external IDs added for: " + rootid
+       println "Warn: No external IDs added for: " + rootid
      }
 
      if (error > 0) println "errors: " + error + " (HMDB: ${entry.name})"
