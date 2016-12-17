@@ -260,8 +260,6 @@ mappedIDs.eachLine { line,number ->
 // CAS registry numbers
 counter = 0
 error = 0
-genesDone = new java.util.HashSet();
-linksDone = new java.util.HashSet();
 new File("cas2wikidata.csv").eachLine { line,number ->
   if (number == 1) return // skip the first line
 
