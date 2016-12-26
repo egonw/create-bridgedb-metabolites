@@ -1,10 +1,10 @@
 Create BridgeDb Identity Mapping files
 ======================================
 
-This groovy script creates a Derby file for BridgeDb [1] for use in PathVisio,
+This groovy script creates a Derby file for BridgeDb [1,2] for use in PathVisio,
 etc.
 
-The script has been tested with HMDB 3.6 [2,3], ChEBI 150, and Wikidata from December 2016.
+The script has been tested with HMDB 3.6 [3,4], ChEBI 150 [5], and Wikidata from December 2016.
 
 I'm indebted to all that worked on identifier mappings in these projects:
 
@@ -64,7 +64,7 @@ A set of SPARQL queries have been compiled and saved in the wikidata/ folder.
 These queries can be manually executed at http://query.wikidata.org/. These
 queries download mappings from Wikidata for CAS registry numbers (cas.rq),
 ChemSpider (cs.rq), PubChem (pubchem.rq), KEGG compounds (kegg.rq),
-KnAPSaCK IDs (knapsack.rq) [5].
+KnAPSaCK IDs (knapsack.rq) [6].
 
 However, you can also use the below curl command line operations.
 
@@ -105,4 +105,5 @@ References
 2. Van Iersel, M. P., Pico, A. R., Kelder, T., Gao, J., Ho, I., Hanspers, K., Conklin, B. R., Evelo, C. T., Jan. 2010. The BridgeDb framework: standardized access to gene, protein and metabolite identifier mapping services. BMC bioinformatics 11 (1), 5+. http://dx.doi.org/10.1186/1471-2105-11-5
 3. http://hmdb.ca/
 4. Wishart, D. S., Jewison, T., Guo, A. C. C., Wilson, M., Knox, C., Liu, Y., Djoumbou, Y., Mandal, R., Aziat, F., Dong, E., Bouatra, S., Sinelnikov, I., Arndt, D., Xia, J., Liu, P., Yallou, F., Bjorndahl, T., Perez-Pineiro, R., Eisner, R., Allen, F., Neveu, V., Greiner, R., Scalbert, A., Jan. 2013. HMDB 3.0-The human metabolome database in 2013. Nucleic acids research 41 (Database issue), D801-D807. http://dx.doi.org/10.1093/nar/gks1065
-5. https://chem-bla-ics.blogspot.nl/2015/12/new-edition-getting-cas-registry.html
+5. Degtyarenko, K., de Matos, P., Ennis, M., Hastings, J., Zbinden, M., McNaught, A., Alcántara, R., Darsow, M., Guedj, M., Ashburner, M., Jan. 2008. ChEBI: a database and ontology for chemical entities of biological interest. Nucleic Acids Research 36 (suppl 1), D344-D350. http://dx.doi.org/10.1093/nar/gkm791
+6. https://chem-bla-ics.blogspot.nl/2015/12/new-edition-getting-cas-registry.html
