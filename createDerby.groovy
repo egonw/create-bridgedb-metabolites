@@ -457,7 +457,7 @@ new File("comptox2wikidata.csv").eachLine { line,number ->
   }
 
   // add external identifiers
-  addXRef(database, ref, fields[1], dtxDS, genesDone, linksDone);
+  // addXRef(database, ref, fields[1], dtxDS, genesDone, linksDone);
 
   counter++
   if (counter % commitInterval == 0) {
