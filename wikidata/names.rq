@@ -1,11 +1,16 @@
 PREFIX wdt: <http://www.wikidata.org/prop/direct/>
-SELECT (str(?compoundRes) as ?compound) ?key (str(?nameLit) as ?name) WHERE {
-  ?compoundRes wdt:P31 wd:Q11173 .
-  OPTIONAL {
-    ?compoundRes rdfs:label ?nameLit
-    FILTER((LANG(?nameLit)) = "en")
+SELECT ?compoundRes (str(?compoundRes) as ?compound) ?key ?compoundResLabel
+WITH {
+  SELECT ?compoundRes ?key WHERE {
+    VALUES ?type { wd:Q11173 wd:Q407595 wd:Q12140 }
+    ?compoundRes wdt:P31 ?type .
   }
-  OPTIONAL {
-    ?compoundRes wdt:P235 ?key
-  }
+} AS %result
+WHERE {
+  INCLUDE %result
+
+  OPTIONAL { ?compoundRes wdt:P235 ?key }
+
+  SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],en". }
 }
+
