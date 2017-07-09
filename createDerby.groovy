@@ -53,7 +53,7 @@ dtxDS = DataSource.register ("Dtx", "EPA CompTox Dashboard").asDataSource()
 String dateStr = new SimpleDateFormat("yyyyMMdd").format(new Date());
 database.setInfo("BUILDDATE", dateStr);
 database.setInfo("DATASOURCENAME", "HMDB-CHEBI-WIKIDATA");
-database.setInfo("DATASOURCEVERSION", "HMDB3.6-CHEBI152-WIKIDATA20170621" + dateStr);
+database.setInfo("DATASOURCEVERSION", "HMDB3.6-CHEBI153-WIKIDATA20170709" + dateStr);
 database.setInfo("DATATYPE", "Metabolite");
 database.setInfo("SERIES", "standard_metabolite");
 
