@@ -47,7 +47,7 @@ keggDrugDS = DataSource.register ("Kd", "KEGG Drug").asDataSource()
 wikidataDS = DataSource.register ("Wd", "Wikidata").asDataSource()
 lmDS = DataSource.register ("Lm", "LIPID MAPS").asDataSource()
 knapsackDS = DataSource.register ("Cks", "KNApSAcK").asDataSource()
-dtxDS = DataSource.register ("Dtx", "EPA CompTox Dashboard").asDataSource()
+dtxDS = DataSource.register ("Ect", "EPA CompTox").asDataSource()
 // drugbankDS = BioDataSource.DRUGBANK
 
 String dateStr = new SimpleDateFormat("yyyyMMdd").format(new Date());
@@ -457,7 +457,7 @@ new File("comptox2wikidata.csv").eachLine { line,number ->
   }
 
   // add external identifiers
-  // addXRef(database, ref, fields[1], dtxDS, genesDone, linksDone);
+  addXRef(database, ref, fields[1], dtxDS, genesDone, linksDone);
 
   counter++
   if (counter % commitInterval == 0) {
