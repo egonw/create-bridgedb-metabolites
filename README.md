@@ -38,10 +38,17 @@ Run the script
 
   export CLASSPATH=\`ls -1 *.jar | tr '\n' ':'\`
 
-2. make sure the HMDB data file is saved as hmdb_metabolites.zip
+2. make sure the HMDB data file is saved as hmdb_metabolites.zip and to create a new
+   zip file will each metabolite in separate XML file:
 
   ```
+  mkdir hmdb
+  cd hmdb
   wget http://www.hmdb.ca/system/downloads/current/hmdb_metabolites.zip
+  unzip hmdb_metabolites.zip
+  xml_split -v -l 1 ../hmdb_metabolites.xml
+  cd ..
+  zip -r hmdb_metabolites_split.zip hmdb
   ```
 
 3. make sure the ChEBI data file is saved

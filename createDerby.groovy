@@ -100,7 +100,7 @@ def cleanKey(String inchikey) {
 
 // load the HMDB content
 counter = 0
-def zipFile = new java.util.zip.ZipFile(new File('hmdb_metabolites.zip'))
+def zipFile = new java.util.zip.ZipFile(new File('hmdb_metabolites_split.zip'))
 zipFile.entries().each { entry ->
    if (!entry.isDirectory() && entry.name != "hmdb_metabolites.xml") {
      inputStream = zipFile.getInputStream(entry)
