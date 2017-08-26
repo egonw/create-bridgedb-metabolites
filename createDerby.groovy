@@ -108,6 +108,9 @@ zipFile.entries().each { entry ->
      error = 0
 
      String rootid = rootNode.accession.toString()
+     if (rootid.length() == 11) {
+       rootid = "HMDB" + rootid.substring(6) // use the pre-16 August 2017 identifier pattern
+     }
      Xref ref = new Xref(rootid, BioDataSource.HMDB);
      if (!genesDone.contains(ref.toString())) {
        addError = database.addGene(ref);
