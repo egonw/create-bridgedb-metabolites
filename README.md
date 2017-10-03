@@ -9,7 +9,7 @@ The script has been tested with HMDB 3.6 [3,4], ChEBI 150 [5], and Wikidata from
 I'm indebted to all that worked on identifier mappings in these projects:
 
 - http://hmdb.ca/
-- http://www.ebi.ac.uk/chebi/
+- https://www.ebi.ac.uk/chebi/
 - http://wikidata.org/
 
 Everyone can contribute ID mappings to the latter project.
