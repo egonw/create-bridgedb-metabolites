@@ -140,7 +140,7 @@ zipFile.entries().each { entry ->
      addAttribute(database, ref, "SMILES", rootNode.smiles.toString());
      addAttribute(database, ref, "BrutoFormula", rootNode.chemical_formula.toString());
      addAttribute(database, ref, "Taxonomy Parent", rootNode.direct_parent.toString());
-     addAttribute(database, ref, "Monoisotopic Weight", rootNode.monisotopic_moleculate_weight.toString());
+     addAttribute(database, ref, "Monoisotopic Weight", rootNode.monisotopic_molecular_weight.toString());
 
      // add external identifiers
      // addXRef(database, ref, rootNode.accession.toString(), BioDataSource.HMDB);
