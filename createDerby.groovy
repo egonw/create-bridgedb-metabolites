@@ -34,6 +34,7 @@ blacklist.add("C02737")
 blacklist.add("363-24-6")
 blacklist.add("104404-17-3")
 blacklist.add("CHEBI:17636")
+blacklist.add("HMDB0000912") // see bug #6
 blacklist.add("HMDB00912") // see bug #6
 
 //inchiDS = DataSource.register ("Cin", "InChI").asDataSource()
@@ -431,7 +432,11 @@ new File("hmdb2wikidata.csv").eachLine { line,number ->
   }
 
   // add external identifiers
-  addXRef(database, ref, fields[1], BioDataSource.HMDB, genesDone, linksDone);
+  hmdbid = fields[1]
+  if (hmdbid.length() == 11) {
+    hmdbid = "HMDB" + hmdbid.substring(6) // use the pre-16 August 2017 identifier pattern
+  }
+  addXRef(database, ref, hmdbid, BioDataSource.HMDB, genesDone, linksDone);
 
   counter++
   if (counter % commitInterval == 0) {
