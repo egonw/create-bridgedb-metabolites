@@ -1,5 +1,7 @@
 *~
 hmdb_metabolites.zip
+hmdb_metabolites.xml
+hmdb_metabolites_split.zip
 *.derby
 *.bridge
 *.bridge.zip
@@ -9,3 +11,5 @@ hmdb_ls_*.void
 *.qc
 HMDB*.xml
 *wikidata.?sv
+data/
+*.gpml
