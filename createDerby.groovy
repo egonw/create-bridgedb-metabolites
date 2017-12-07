@@ -105,7 +105,13 @@ def zipFile = new java.util.zip.ZipFile(new File('hmdb_metabolites_split.zip'))
 zipFile.entries().each { entry ->
    if (!entry.isDirectory() && entry.name != "hmdb_metabolites.xml") {
      inputStream = zipFile.getInputStream(entry)
-     def rootNode = new XmlSlurper().parse(inputStream)
+     def rootNode = null
+     try {
+       rootNode = new XmlSlurper().parse(inputStream)
+     } catch (Exception exception) {
+       println "Error while reading XML from file $entry: " + exception.message
+       return
+     }
      error = 0
 
      String rootid = rootNode.accession.toString()
