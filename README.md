@@ -31,8 +31,8 @@ This repository: New BSD.
 Derby License -> http://db.apache.org/derby/license.html
 BridgeDb License -> http://www.bridgedb.org/browser/trunk/LICENSE-2.0.txt
 
-Run the script
---------------
+Run the script and test the results
+-----------------------------------
 
 1. add the jars to your classpath, e.g. on Linux with:
 
@@ -106,7 +106,9 @@ InChIKeys can be downloaded as simple TSV and saved as "names4wikidata.tsv"
   groovy createDerby.groovy
   ```
 
-6. open the file in PathVisio
+6. Test the resulting Derby file by opening it in PathVisio
+
+7. Use the BridgeDb QC tool to compare it with the previous mapping file
 
 References
 ----------
