@@ -110,6 +110,11 @@ InChIKeys can be downloaded as simple TSV and saved as "names4wikidata.tsv"
 
 7. Use the BridgeDb QC tool to compare it with the previous mapping file
 
+8. Upload the data to Figshare and update the following pages:
+
+* http://www.bridgedb.org/mapping-databases/hmdb-metabolite-mappings/
+* http://bridgedb.org/data/gene_database/
+
 References
 ----------
 
