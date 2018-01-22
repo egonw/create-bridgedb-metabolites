@@ -4,7 +4,7 @@ Create BridgeDb Identity Mapping files
 This groovy script creates a Derby file for BridgeDb [1,2] for use in PathVisio,
 etc.
 
-The script has been tested with HMDB 4.0 [3,4,5], ChEBI 158 [6], and Wikidata from December 2017.
+The script has been tested with HMDB 4.0 [3,4,5], ChEBI 159 [6], and Wikidata from January 2018.
 
 I'm indebted to all that worked on identifier mappings in these projects:
 
@@ -92,7 +92,7 @@ However, you can also use the below curl command line operations.
 4.2 Get compound labels and InChIKeys
 
 With a similar SPARQL query (names.rq) the compounds labels (English only) and
-InChIKeys can be downloaded as simple TSV and saved as "names4wikidata.tsv"
+InChIKeys can be downloaded as simple TSV and saved as "names2wikidata.tsv"
 (note that this file is TAB separated):
 
   ```
