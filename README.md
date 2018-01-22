@@ -4,7 +4,7 @@ Create BridgeDb Identity Mapping files
 This groovy script creates a Derby file for BridgeDb [1,2] for use in PathVisio,
 etc.
 
-The script has been tested with HMDB 4.0 [3,4,5], ChEBI 159 [6], and Wikidata from January 2018.
+The script has been tested with HMDB 4.0 [3,4,5], ChEBI 159 [6], and Wikidata [7,8] from January 2018.
 
 I'm indebted to all that worked on identifier mappings in these projects:
 
@@ -73,7 +73,7 @@ A set of SPARQL queries have been compiled and saved in the wikidata/ folder.
 These queries can be manually executed at http://query.wikidata.org/. These
 queries download mappings from Wikidata for CAS registry numbers (cas.rq),
 ChemSpider (cs.rq), PubChem (pubchem.rq), KEGG compounds (kegg.rq),
-KnAPSaCK IDs (knapsack.rq) [7].
+KnAPSaCK IDs (knapsack.rq) [9].
 
 However, you can also use the below curl command line operations.
 
@@ -124,4 +124,6 @@ References
 4. Wishart, D. S., Jewison, T., Guo, A. C. C., Wilson, M., Knox, C., Liu, Y., Djoumbou, Y., Mandal, R., Aziat, F., Dong, E., Bouatra, S., Sinelnikov, I., Arndt, D., Xia, J., Liu, P., Yallou, F., Bjorndahl, T., Perez-Pineiro, R., Eisner, R., Allen, F., Neveu, V., Greiner, R., Scalbert, A., Jan. 2013. HMDB 3.0-The human metabolome database in 2013. Nucleic acids research 41 (Database issue), D801-D807. http://dx.doi.org/10.1093/nar/gks1065
 5. Wishart, D. S., Feunang, Y. D., Marcu, A., Guo, A. C., Liang, K., Vázquez-Fresno, R., Sajed, T., Johnson, D., Li, C., Karu, N., Sayeeda, Z., Lo, E., Assempour, N., Berjanskii, M., Singhal, S., Arndt, D., Liang, Y., Badran, H., Grant, J., Serra-Cayuela, A., Liu, Y., Mandal, R., Neveu, V., Pon, A., Knox, C., Wilson, M., Manach, C., Scalbert, A., Nov. 2017. HMDB 4.0: the human metabolome database for 2018. Nucleic Acids Research. http://dx.doi.org/10.1093/nar/gkx1089
 6. Degtyarenko, K., de Matos, P., Ennis, M., Hastings, J., Zbinden, M., McNaught, A., Alcántara, R., Darsow, M., Guedj, M., Ashburner, M., Jan. 2008. ChEBI: a database and ontology for chemical entities of biological interest. Nucleic Acids Research 36 (suppl 1), D344-D350. http://dx.doi.org/10.1093/nar/gkm791
-7. https://chem-bla-ics.blogspot.nl/2015/12/new-edition-getting-cas-registry.html
+7. Vrandečić, Denny. "Wikidata: a new platform for collaborative data collection." Proceedings of the 21st International Conference on World Wide Web. ACM, 2012. https://doi.org/10.1145/2187980.2188242
+8. Mietchen D, Hagedorn G, Willighagen E, Rico M, Gómez-Pérez A, Aibar E, Rafes K, Germain C, Dunning A, Pintscher L, Kinzler D (2015) Enabling Open Science: Wikidata for Research (Wiki4R). Research Ideas and Outcomes 1: e7573. https://doi.org/10.3897/rio.1.e7573
+9. https://chem-bla-ics.blogspot.nl/2015/12/new-edition-getting-cas-registry.html
