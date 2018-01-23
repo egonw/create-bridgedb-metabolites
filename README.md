@@ -110,10 +110,35 @@ InChIKeys can be downloaded as simple TSV and saved as "names2wikidata.tsv"
 
 7. Use the BridgeDb QC tool to compare it with the previous mapping file
 
+The BridgeDb repository has a tool to perform quality control (qc) on ID
+mapping files:
+
+  ```
+  sh qc.sh old.bridge new.bridge
+  ```
+
 8. Upload the data to Figshare and update the following pages:
 
 * http://www.bridgedb.org/mapping-databases/hmdb-metabolite-mappings/
 * http://bridgedb.org/data/gene_database/
+
+9. Tag this repository with the DOI of the latest release.
+
+To ensure we know exactly which repository version was used to generate
+a specific release, the latest commit used for that release is tagged
+with the DOI on Figshare. To list all current tags:
+
+  ```
+  git tag
+  ```
+
+To make a new tag, run:
+
+  ```
+  git tag $DOR
+  ````
+
+where $DOI is replaced with the DOI of the release.
 
 References
 ----------
