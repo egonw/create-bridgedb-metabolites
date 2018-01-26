@@ -117,11 +117,11 @@ zipFile.entries().each { entry ->
      String rootid = rootNode.accession.toString()
      String newid = null
      if (rootid.length() == 11) {
-       newid = rootid
+	    newid = rootid
        rootid = "HMDB" + rootid.substring(6) // use the pre-16 August 2017 identifier pattern
-     } else {
-       newid = "HMDB00" + rootid.substring(4)
-     }
+	} else if (rootid.length() == 9) {
+       rootid = "HMDB00" + rootid.substring(4)
+	}
      Xref ref = new Xref(rootid, BioDataSource.HMDB);
      Xref newref = new Xref(newid, BioDataSource.HMDB);
      if (!genesDone.contains(ref.toString())) {
