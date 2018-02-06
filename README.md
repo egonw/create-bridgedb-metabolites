@@ -140,6 +140,14 @@ To make a new tag, run:
 
 where $DOI is replaced with the DOI of the release.
 
+10. Inform downstream projects
+
+At least the following projects need to be informed about the availability of the new mapping database:
+
+* BridgeDb webservice
+* WikiPathways RDF generation team (Jenkins server)
+* WikiPathways indexer (supporting the WikiPathways web service)
+
 References
 ----------
 
