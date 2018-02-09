@@ -101,104 +101,107 @@ def cleanKey(String inchikey) {
 
 // load the HMDB content
 counter = 0
-def zipFile = new java.util.zip.ZipFile(new File('hmdb_metabolites_split.zip'))
-zipFile.entries().each { entry ->
-   if (!entry.isDirectory() && entry.name != "hmdb_metabolites.xml") {
-     inputStream = zipFile.getInputStream(entry)
-     def rootNode = null
-     try {
-       rootNode = new XmlSlurper().parse(inputStream)
-     } catch (Exception exception) {
-       println "Error while reading XML from file $entry: " + exception.message
-       return
-     }
-     error = 0
-
-     String rootid = rootNode.accession.toString()
-     String newid = null
-     if (rootid.length() == 11) {
-       newid = rootid
-       rootid = "HMDB" + rootid.substring(6) // use the pre-16 August 2017 identifier pattern
-     } else {
-       newid = "HMDB00" + rootid.substring(4)
-     }
-     Xref ref = new Xref(rootid, BioDataSource.HMDB);
-     Xref newref = new Xref(newid, BioDataSource.HMDB);
-     if (!genesDone.contains(ref.toString())) {
-       addError = database.addGene(ref);
-       if (addError != 0) println "Error (addGene): " + database.recentException().getMessage()
-       error += addError
-       addError = database.addGene(newref);
-       if (addError != 0) println "Error (addGene): " + database.recentException().getMessage()
-       error += addError
-       linkError = database.addLink(ref,ref);
-       if (linkError != 0) println "Error (addLinkItself): " + database.recentException().getMessage()
-       error += linkError
-       linkError = database.addLink(newref,newref);
-       if (linkError != 0) println "Error (addLinkItself): " + database.recentException().getMessage()
-       error += linkError
-       linkError = database.addLink(ref,newref);
-       if (linkError != 0) println "Error (addLinkNewOld): " + database.recentException().getMessage()
-       error += linkError
-       genesDone.add(ref.toString())
-     }
-
-     // add the synonyms
-     addAttribute(database, ref, "Symbol", rootNode.name.toString());
-     rootNode.synonyms.synonym.each { synonym ->
-       addAttribute(database, ref, "Synonym", synonym.toString())
-     }
-     addAttribute(database, ref, "Synonym", rootNode.traditional_iupac.toString());
-     addAttribute(database, ref, "Synonym", rootNode.iupac_name.toString());
-
-     // add the SMILES, InChIKey, etc
-     addAttribute(database, ref, "InChI", cleanKey(rootNode.inchi.toString()));
-     key = cleanKey(rootNode.inchikey.toString().trim());
-     if (key.length() == 27) {
-       addAttribute(database, ref, "InChIKey", key);
-       addXRef(database, ref, key, inchikeyDS, genesDone, linksDone);
-     }
-     addAttribute(database, ref, "SMILES", rootNode.smiles.toString());
-     addAttribute(database, ref, "BrutoFormula", rootNode.chemical_formula.toString());
-     addAttribute(database, ref, "Taxonomy Parent", rootNode.direct_parent.toString());
-     addAttribute(database, ref, "Monoisotopic Weight", rootNode.monisotopic_molecular_weight.toString());
-
-     // add external identifiers
-     // addXRef(database, ref, rootNode.accession.toString(), BioDataSource.HMDB);
-     if (!blacklist.contains(rootid)) {
-       addXRef(database, ref, rootNode.cas_registry_number.toString(), casDS, genesDone, linksDone);
-       addXRef(database, ref, rootNode.pubchem_compound_id.toString(), pubchemDS, genesDone, linksDone);
-       addXRef(database, ref, rootNode.chemspider_id.toString(), chemspiderDS, genesDone, linksDone);
-       String chebID = rootNode.chebi_id.toString().trim()
-       if (chebID.startsWith("CHEBI:")) {
-         addXRef(database, ref, chebID, chebiDS, genesDone, linksDone);
-         addXRef(database, ref, chebID.substring(6), chebiDS, genesDone, linksDone);
-       } else if (chebID.length() > 0) {
-         addXRef(database, ref, chebID, chebiDS, genesDone, linksDone);
-         addXRef(database, ref, "CHEBI:" + chebID, chebiDS, genesDone, linksDone);
+hmdbFile = new File('hmdb_metabolites_split.zip')
+if (hmdbFile.exists()) {
+  def zipFile = new java.util.zip.ZipFile(hmdbFile)
+  zipFile.entries().each { entry ->
+     if (!entry.isDirectory() && entry.name != "hmdb_metabolites.xml") {
+       inputStream = zipFile.getInputStream(entry)
+       def rootNode = null
+       try {
+         rootNode = new XmlSlurper().parse(inputStream)
+       } catch (Exception exception) {
+         println "Error while reading XML from file $entry: " + exception.message
+         return
        }
-       String keggID = rootNode.kegg_id.toString();
-       if (keggID.length() > 0 && keggID.charAt(0) == 'C') {
-         if (!blacklist.contains(keggID)) {
-           addXRef(database, ref, keggID, keggDS, genesDone, linksDone);
-         } else {
-           println "Warn: No external IDs added for: " + keggID
+       error = 0
+  
+       String rootid = rootNode.accession.toString()
+       String newid = null
+       if (rootid.length() == 11) {
+         newid = rootid
+         rootid = "HMDB" + rootid.substring(6) // use the pre-16 August 2017 identifier pattern
+       } else {
+         newid = "HMDB00" + rootid.substring(4)
+       }
+       Xref ref = new Xref(rootid, BioDataSource.HMDB);
+       Xref newref = new Xref(newid, BioDataSource.HMDB);
+       if (!genesDone.contains(ref.toString())) {
+         addError = database.addGene(ref);
+         if (addError != 0) println "Error (addGene): " + database.recentException().getMessage()
+         error += addError
+         addError = database.addGene(newref);
+         if (addError != 0) println "Error (addGene): " + database.recentException().getMessage()
+         error += addError
+         linkError = database.addLink(ref,ref);
+         if (linkError != 0) println "Error (addLinkItself): " + database.recentException().getMessage()
+         error += linkError
+         linkError = database.addLink(newref,newref);
+         if (linkError != 0) println "Error (addLinkItself): " + database.recentException().getMessage()
+         error += linkError
+         linkError = database.addLink(ref,newref);
+         if (linkError != 0) println "Error (addLinkNewOld): " + database.recentException().getMessage()
+         error += linkError
+         genesDone.add(ref.toString())
+       }
+  
+       // add the synonyms
+       addAttribute(database, ref, "Symbol", rootNode.name.toString());
+       rootNode.synonyms.synonym.each { synonym ->
+         addAttribute(database, ref, "Synonym", synonym.toString())
+       }
+       addAttribute(database, ref, "Synonym", rootNode.traditional_iupac.toString());
+       addAttribute(database, ref, "Synonym", rootNode.iupac_name.toString());
+  
+       // add the SMILES, InChIKey, etc
+       addAttribute(database, ref, "InChI", cleanKey(rootNode.inchi.toString()));
+       key = cleanKey(rootNode.inchikey.toString().trim());
+       if (key.length() == 27) {
+         addAttribute(database, ref, "InChIKey", key);
+         addXRef(database, ref, key, inchikeyDS, genesDone, linksDone);
+       }
+       addAttribute(database, ref, "SMILES", rootNode.smiles.toString());
+       addAttribute(database, ref, "BrutoFormula", rootNode.chemical_formula.toString());
+       addAttribute(database, ref, "Taxonomy Parent", rootNode.direct_parent.toString());
+       addAttribute(database, ref, "Monoisotopic Weight", rootNode.monisotopic_molecular_weight.toString());
+  
+       // add external identifiers
+       // addXRef(database, ref, rootNode.accession.toString(), BioDataSource.HMDB);
+       if (!blacklist.contains(rootid)) {
+         addXRef(database, ref, rootNode.cas_registry_number.toString(), casDS, genesDone, linksDone);
+         addXRef(database, ref, rootNode.pubchem_compound_id.toString(), pubchemDS, genesDone, linksDone);
+         addXRef(database, ref, rootNode.chemspider_id.toString(), chemspiderDS, genesDone, linksDone);
+         String chebID = rootNode.chebi_id.toString().trim()
+         if (chebID.startsWith("CHEBI:")) {
+           addXRef(database, ref, chebID, chebiDS, genesDone, linksDone);
+           addXRef(database, ref, chebID.substring(6), chebiDS, genesDone, linksDone);
+         } else if (chebID.length() > 0) {
+           addXRef(database, ref, chebID, chebiDS, genesDone, linksDone);
+           addXRef(database, ref, "CHEBI:" + chebID, chebiDS, genesDone, linksDone);
          }
-       } else if (keggID.length() > 0 && keggID.charAt(0) == 'D') {
-         addXRef(database, ref, keggID, keggDrugDS, genesDone, linksDone);
+         String keggID = rootNode.kegg_id.toString();
+         if (keggID.length() > 0 && keggID.charAt(0) == 'C') {
+           if (!blacklist.contains(keggID)) {
+             addXRef(database, ref, keggID, keggDS, genesDone, linksDone);
+           } else {
+             println "Warn: No external IDs added for: " + keggID
+           }
+         } else if (keggID.length() > 0 && keggID.charAt(0) == 'D') {
+           addXRef(database, ref, keggID, keggDrugDS, genesDone, linksDone);
+         }
+  //      addXRef(database, ref, rootNode.nugowiki.toString(), nugoDS);
+  //      addXRef(database, ref, rootNode.drugbank_id.toString(), drugbankDS);
+  //      addXRef(database, ref, rootNode.inchi.toString(), inchiDS);
+       } else {
+         println "Warn: No external IDs added for: " + rootid
        }
-//      addXRef(database, ref, rootNode.nugowiki.toString(), nugoDS);
-//      addXRef(database, ref, rootNode.drugbank_id.toString(), drugbankDS);
-//      addXRef(database, ref, rootNode.inchi.toString(), inchiDS);
-     } else {
-       println "Warn: No external IDs added for: " + rootid
-     }
-
-     if (error > 0) println "errors: " + error + " (HMDB: ${entry.name})"
-     counter++
-     if (counter % commitInterval == 0) database.commit()
+  
+       if (error > 0) println "errors: " + error + " (HMDB: ${entry.name})"
+       counter++
+       if (counter % commitInterval == 0) database.commit()
+    }
   }
-}
+} // else HMDB does not exist and do nothing
 
 // load the ChEBI content
 counter = 0
