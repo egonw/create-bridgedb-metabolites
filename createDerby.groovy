@@ -231,7 +231,7 @@ chebiNames.eachLine { line,number ->
     addError = database.addGene(shortRef);
     if (addError != 0) println "Error (addGene): " + database.recentException().getMessage()
     error += addError
-    linkError += database.addLink(shortRef,shortRef);
+    linkError = database.addLink(shortRef,shortRef);
     if (linkError != 0) println "Error (addLinkItself): " + database.recentException().getMessage()
     error += linkError
     genesDone.add(shortRef.toString())
@@ -241,7 +241,7 @@ chebiNames.eachLine { line,number ->
     addError = database.addGene(ref);
     if (addError != 0) println "Error (addGene): " + database.recentException().getMessage()
     error += addError
-    linkError += database.addLink(ref,ref);
+    linkError = database.addLink(ref,ref);
     if (linkError != 0) println "Error (addLinkItself): " + database.recentException().getMessage()
     error += linkError
     genesDone.add(ref.toString())
