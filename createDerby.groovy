@@ -17,6 +17,10 @@ commitInterval = 500
 genesDone = new java.util.HashSet();
 linksDone = new java.util.HashSet();
 
+unitReport = new File("creation.xml")
+unitReport << "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
+unitReport << "<testsuite tests=\"1\">\n"
+
 GdbConstruct database = GdbConstructImpl3.createInstance(
   "hmdb_chebi_wikidata_metabolites", new DataDerby(), DBConnector.PROP_RECREATE
 );
@@ -201,7 +205,13 @@ if (hmdbFile.exists()) {
        if (counter % commitInterval == 0) database.commit()
     }
   }
-} // else HMDB does not exist and do nothing
+  unitReport << "  <testcase classname=\"HMDBCreation\" name=\"HMDBInputFound\"/>\n"
+} else { // else HMDB does not exist and do nothing
+  unitReport << "  <testcase classname=\"HMDBCreation\" name=\"HMDBInputFound\">\n"
+  unitReport << "    <failure type=\"FileNotFound\">HMDB input file not found</failure>\n"
+  unitReport << "  </testcase>\n"
+}
+unitReport << "</testsuite>\n"
 
 // load the ChEBI content
 counter = 0
