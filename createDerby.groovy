@@ -19,7 +19,7 @@ linksDone = new java.util.HashSet();
 
 unitReport = new File("creation.xml")
 unitReport << "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
-unitReport << "<testsuite tests=\"1\">\n"
+unitReport << "<testsuite tests=\"12\">\n"
 
 GdbConstruct database = GdbConstructImpl3.createInstance(
   "hmdb_chebi_wikidata_metabolites", new DataDerby(), DBConnector.PROP_RECREATE
@@ -211,7 +211,6 @@ if (hmdbFile.exists()) {
   unitReport << "    <failure type=\"FileNotFound\">HMDB input file not found</failure>\n"
   unitReport << "  </testcase>\n"
 }
-unitReport << "</testsuite>\n"
 
 // load the ChEBI content
 counter = 0
@@ -252,6 +251,7 @@ chebiNames.eachLine { line,number ->
   counter++
   if (counter % commitInterval == 0) database.commit()
 }
+unitReport << "  <testcase classname=\"ChEBICreation\" name=\"NamesFound\"/>\n"
 // load the mappings
 def mappedIDs = new File('data/chebi_database_accession.tsv')
 mappedIDs.eachLine { line,number ->
@@ -291,6 +291,7 @@ mappedIDs.eachLine { line,number ->
     database.commit()
   }
 }
+unitReport << "  <testcase classname=\"ChEBICreation\" name=\"AccessionsFound\"/>\n"
 
 // load the Wikidata content
 
@@ -322,6 +323,7 @@ new File("cas2wikidata.csv").eachLine { line,number ->
     database.commit()
   }
 }
+unitReport << "  <testcase classname=\"WikidataCreation\" name=\"CASNumbersFound\"/>\n"
 
 // PubChem registry numbers
 counter = 0
@@ -351,6 +353,7 @@ new File("pubchem2wikidata.csv").eachLine { line,number ->
     database.commit()
   }
 }
+unitReport << "  <testcase classname=\"WikidataCreation\" name=\"PubChemFound\"/>\n"
 
 // KEGG registry numbers
 counter = 0
@@ -386,6 +389,7 @@ new File("kegg2wikidata.csv").eachLine { line,number ->
     database.commit()
   }
 }
+unitReport << "  <testcase classname=\"WikidataCreation\" name=\"KEGGFound\"/>\n"
 
 // ChemSpider registry numbers
 counter = 0
@@ -415,6 +419,7 @@ new File("cs2wikidata.csv").eachLine { line,number ->
     database.commit()
   }
 }
+unitReport << "  <testcase classname=\"WikidataCreation\" name=\"ChemSpiderFound\"/>\n"
 
 // LIPID MAPS registry numbers
 counter = 0
@@ -444,6 +449,7 @@ new File("lm2wikidata.csv").eachLine { line,number ->
     database.commit()
   }
 }
+unitReport << "  <testcase classname=\"WikidataCreation\" name=\"LipidMapsFound\"/>\n"
 
 // HMDB registry numbers
 counter = 0
@@ -477,6 +483,7 @@ new File("hmdb2wikidata.csv").eachLine { line,number ->
     database.commit()
   }
 }
+unitReport << "  <testcase classname=\"WikidataCreation\" name=\"HMDBFound\"/>\n"
 
 // EPA CompTox Dashboard numbers
 counter = 0
@@ -506,6 +513,7 @@ new File("comptox2wikidata.csv").eachLine { line,number ->
     database.commit()
   }
 }
+unitReport << "  <testcase classname=\"WikidataCreation\" name=\"EPACompToxFound\"/>\n"
 
 // ChEBI registry numbers
 counter = 0
@@ -540,6 +548,7 @@ new File("chebi2wikidata.csv").eachLine { line,number ->
     database.commit()
   }
 }
+unitReport << "  <testcase classname=\"WikidataCreation\" name=\"ChEBIFound\"/>\n"
 
 // Wikidata names
 counter = 0
@@ -579,6 +588,8 @@ new File("names2wikidata.tsv").eachLine { line,number ->
     database.commit()
   }
 }
+unitReport << "  <testcase classname=\"WikidataCreation\" name=\"NamesFound\"/>\n"
+unitReport << "</testsuite>\n"
 
 database.commit();
 database.finalize();
