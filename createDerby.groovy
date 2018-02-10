@@ -125,8 +125,11 @@ if (hmdbFile.exists()) {
        if (rootid.length() == 11) {
          newid = rootid
          rootid = "HMDB" + rootid.substring(6) // use the pre-16 August 2017 identifier pattern
-       } else {
+       } else if (rootid.length() > 4) {
          newid = "HMDB00" + rootid.substring(4)
+       } else {
+         error = 1
+         println "Error (incorrect HMDB): " + rootid
        }
        Xref ref = new Xref(rootid, BioDataSource.HMDB);
        Xref newref = new Xref(newid, BioDataSource.HMDB);
