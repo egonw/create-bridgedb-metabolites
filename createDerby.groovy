@@ -553,6 +553,36 @@ new File("chebi2wikidata.csv").eachLine { line,number ->
 }
 unitReport << "  <testcase classname=\"WikidataCreation\" name=\"ChEBIFound\"/>\n"
 
+// KNApSAcK registry numbers
+counter = 0
+error = 0
+new File("knapsack2wikidata.csv").eachLine { line,number ->
+  if (number == 1) return // skip the first line
+
+  fields = line.split(",")
+  rootid = fields[0].substring(31)
+  Xref ref = new Xref(rootid, wikidataDS);
+  if (!genesDone.contains(ref.toString())) {
+    addError = database.addGene(ref);
+    if (addError != 0) println "Error (addGene): " + database.recentException().getMessage()
+    error += addError
+    linkError = database.addLink(ref,ref);
+    if (linkError != 0) println "Error (addLinkItself): " + database.recentException().getMessage()
+    error += linkError
+    genesDone.add(ref.toString())
+  }
+
+  // add external identifiers
+  addXRef(database, ref, fields[1], knapsackDS, genesDone, linksDone);
+
+  counter++
+  if (counter % commitInterval == 0) {
+    println "Info: errors: " + error + " (ChEBI)"
+    database.commit()
+  }
+}
+unitReport << "  <testcase classname=\"WikidataCreation\" name=\"KNApSAcKFound\"/>\n"
+
 // Wikidata names
 counter = 0
 error = 0
