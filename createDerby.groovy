@@ -58,7 +58,7 @@ dtxDS = DataSource.register ("Ect", "EPA CompTox").asDataSource()
 String dateStr = new SimpleDateFormat("yyyyMMdd").format(new Date());
 database.setInfo("BUILDDATE", dateStr);
 database.setInfo("DATASOURCENAME", "HMDB-CHEBI-WIKIDATA");
-database.setInfo("DATASOURCEVERSION", "HMDB4.0.20180304-CHEBI161-WIKIDATA20180304" + dateStr);
+database.setInfo("DATASOURCEVERSION", "HMDB4.0.20180318-CHEBI161-WIKIDATA20180304" + dateStr);
 database.setInfo("DATATYPE", "Metabolite");
 database.setInfo("SERIES", "standard_metabolite");
 
