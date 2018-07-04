@@ -58,7 +58,7 @@ dtxDS = DataSource.register ("Ect", "EPA CompTox").asDataSource()
 String dateStr = new SimpleDateFormat("yyyyMMdd").format(new Date());
 database.setInfo("BUILDDATE", dateStr);
 database.setInfo("DATASOURCENAME", "HMDB-CHEBI-WIKIDATA");
-database.setInfo("DATASOURCEVERSION", "HMDB4.0.20180506-CHEBI163-WIKIDATA20180508" + dateStr);
+database.setInfo("DATASOURCEVERSION", "HMDB4.0.20180618-CHEBI165-WIKIDATA20180704" + dateStr);
 database.setInfo("DATATYPE", "Metabolite");
 database.setInfo("SERIES", "standard_metabolite");
 
@@ -124,9 +124,9 @@ if (hmdbFile.exists()) {
        String newid = null
        if (rootid.length() == 11) {
          newid = rootid
-         rootid = "HMDB" + rootid.substring(6) // use the pre-16 August 2017 identifier pattern
+         rootid = "HMDB" + rootid.substring(7) // use the pre-16 August 2017 identifier pattern
        } else if (rootid.length() > 4) {
-         newid = "HMDB00" + rootid.substring(4)
+         newid = "HMDB00" + rootid.substring(5)
        } else {
          error = 1
          println "Error (incorrect HMDB): " + rootid
