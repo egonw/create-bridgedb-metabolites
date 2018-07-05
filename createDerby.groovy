@@ -124,8 +124,10 @@ if (hmdbFile.exists()) {
        String newid = null
        println "HMDB original: ${rootid}"
        if (rootid.length() == 11) {
-         newid = rootid
-         rootid = "HMDB" + rootid.substring(6) // use the pre-16 August 2017 identifier pattern
+         if (rootid.startsWith("HMDB00")) {
+           newid = rootid
+           rootid = "HMDB" + rootid.substring(6) // use the pre-16 August 2017 identifier pattern
+         } // otherwise: assume there only is a new ID
        } else if (rootid.length() > 4) {
          newid = "HMDB00" + rootid.substring(4)
        } else {
@@ -134,23 +136,25 @@ if (hmdbFile.exists()) {
        }
        println "HMDB old: ${rootid} -> ${newid}"
        Xref ref = new Xref(rootid, BioDataSource.HMDB);
-       Xref newref = new Xref(newid, BioDataSource.HMDB);
+       Xref newref = (newid == null) ? null : new Xref(newid, BioDataSource.HMDB);
        if (!genesDone.contains(ref.toString())) {
          addError = database.addGene(ref);
-         if (addError != 0) println "Error (addGene): " + database.recentException().getMessage()
-         error += addError
-         addError = database.addGene(newref);
          if (addError != 0) println "Error (addGene): " + database.recentException().getMessage()
          error += addError
          linkError = database.addLink(ref,ref);
          if (linkError != 0) println "Error (addLinkItself): " + database.recentException().getMessage()
          error += linkError
-         linkError = database.addLink(newref,newref);
-         if (linkError != 0) println "Error (addLinkItself): " + database.recentException().getMessage()
-         error += linkError
-         linkError = database.addLink(ref,newref);
-         if (linkError != 0) println "Error (addLinkNewOld): " + database.recentException().getMessage()
-         error += linkError
+         if (newref != null) {
+           addError = database.addGene(newref);
+           if (addError != 0) println "Error (addGene): " + database.recentException().getMessage()
+           error += addError
+           linkError = database.addLink(newref,newref);
+           if (linkError != 0) println "Error (addLinkItself): " + database.recentException().getMessage()
+           error += linkError
+           linkError = database.addLink(ref,newref);
+           if (linkError != 0) println "Error (addLinkNewOld): " + database.recentException().getMessage()
+           error += linkError
+         }
          genesDone.add(ref.toString())
        }
   
