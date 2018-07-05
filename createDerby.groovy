@@ -65,7 +65,7 @@ database.setInfo("SERIES", "standard_metabolite");
 def addXRef(GdbConstruct database, Xref ref, String node, DataSource source, Set genesDone, Set linkesDone) {
    id = node.trim()
    if (id.length() > 0) {
-     println "id($source): $id"
+     // println "id($source): $id"
      ref2 = new Xref(id, source);
      if (!genesDone.contains(ref2.toString())) {
        if (database.addGene(ref2) != 0) {
@@ -122,7 +122,7 @@ if (hmdbFile.exists()) {
   
        String rootid = rootNode.accession.toString()
        String newid = null
-       println "HMDB original: ${rootid}"
+       // println "HMDB original: ${rootid}"
        if (rootid.length() == 11) {
          if (rootid.startsWith("HMDB00")) {
            newid = rootid
@@ -134,7 +134,7 @@ if (hmdbFile.exists()) {
          error = 1
          println "Error (incorrect HMDB): " + rootid
        }
-       println "HMDB old: ${rootid} -> ${newid}"
+       // println "HMDB old: ${rootid} -> ${newid}"
        Xref ref = new Xref(rootid, BioDataSource.HMDB);
        Xref newref = (newid == null) ? null : new Xref(newid, BioDataSource.HMDB);
        if (!genesDone.contains(ref.toString())) {
