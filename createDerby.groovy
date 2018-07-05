@@ -58,14 +58,14 @@ dtxDS = DataSource.register ("Ect", "EPA CompTox").asDataSource()
 String dateStr = new SimpleDateFormat("yyyyMMdd").format(new Date());
 database.setInfo("BUILDDATE", dateStr);
 database.setInfo("DATASOURCENAME", "HMDB-CHEBI-WIKIDATA");
-database.setInfo("DATASOURCEVERSION", "HMDB4.0.20180618-CHEBI165-WIKIDATA20180704" + dateStr);
+database.setInfo("DATASOURCEVERSION", "HMDB4.0.20180618-CHEBI165-WIKIDATA20180705" + dateStr);
 database.setInfo("DATATYPE", "Metabolite");
 database.setInfo("SERIES", "standard_metabolite");
 
 def addXRef(GdbConstruct database, Xref ref, String node, DataSource source, Set genesDone, Set linkesDone) {
    id = node.trim()
    if (id.length() > 0) {
-     // println "id($source): $id"
+     println "id($source): $id"
      ref2 = new Xref(id, source);
      if (!genesDone.contains(ref2.toString())) {
        if (database.addGene(ref2) != 0) {
@@ -124,9 +124,9 @@ if (hmdbFile.exists()) {
        String newid = null
        if (rootid.length() == 11) {
          newid = rootid
-         rootid = "HMDB" + rootid.substring(7) // use the pre-16 August 2017 identifier pattern
+         rootid = "HMDB" + rootid.substring(6) // use the pre-16 August 2017 identifier pattern
        } else if (rootid.length() > 4) {
-         newid = "HMDB00" + rootid.substring(5)
+         newid = "HMDB00" + rootid.substring(4)
        } else {
          error = 1
          println "Error (incorrect HMDB): " + rootid
