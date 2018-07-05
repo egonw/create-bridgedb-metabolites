@@ -122,6 +122,7 @@ if (hmdbFile.exists()) {
   
        String rootid = rootNode.accession.toString()
        String newid = null
+       println "HMDB original: ${rootid}"
        if (rootid.length() == 11) {
          newid = rootid
          rootid = "HMDB" + rootid.substring(6) // use the pre-16 August 2017 identifier pattern
