@@ -4,6 +4,8 @@ WHERE {
   { ?compoundRes p:P31/ps:P31 wd:Q11173 }
   UNION
   { ?compoundRes p:P31/ps:P31 wd:Q36496 }
+  UNION
+  { ?compoundRes p:P279/ps:P279 wd:Q11173 }
   OPTIONAL { ?compoundRes wdt:P235 ?key }
   OPTIONAL {
     ?compoundRes rdfs:label ?compoundResLabel
