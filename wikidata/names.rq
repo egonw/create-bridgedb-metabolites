@@ -1,12 +1,23 @@
 PREFIX wdt: <http://www.wikidata.org/prop/direct/>
-SELECT ?compoundRes ?key ?compoundResLabel
-WHERE {
-  { ?compoundRes p:P31/ps:P31 wd:Q11173 }
-  UNION
-  { ?compoundRes p:P31/ps:P31 wd:Q36496 }
+SELECT ?compoundRes ?key ?compoundResLabel WITH {
+  SELECT ?compoundRes
+  WHERE {
+    { ?compoundRes p:P31/ps:P31 wd:Q11173 }
+    UNION
+    { ?compoundRes p:P31/ps:P31 wd:Q36496 }
+    UNION
+    { ?compoundRes p:P31/ps:P31 wd:Q79529 }
+    UNION
+    { ?compoundRes p:P279/ps:P279 wd:Q11173 }
+    UNION
+    { ?compoundRes p:P279/ps:P279 wd:Q79529 }
+  }
+} AS %RESULTS {
+  INCLUDE %RESULTS
   OPTIONAL { ?compoundRes wdt:P235 ?key }
   OPTIONAL {
     ?compoundRes rdfs:label ?compoundResLabel
     FILTER((LANG(?compoundResLabel)) = "en")
   }
 }
+

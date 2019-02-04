@@ -17,6 +17,10 @@ commitInterval = 500
 genesDone = new java.util.HashSet();
 linksDone = new java.util.HashSet();
 
+unitReport = new File("creation.xml")
+// unitReport << "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
+unitReport << "<testsuite tests=\"12\">\n"
+
 GdbConstruct database = GdbConstructImpl3.createInstance(
   "hmdb_chebi_wikidata_metabolites", new DataDerby(), DBConnector.PROP_RECREATE
 );
@@ -54,7 +58,7 @@ dtxDS = DataSource.register ("Ect", "EPA CompTox").asDataSource()
 String dateStr = new SimpleDateFormat("yyyyMMdd").format(new Date());
 database.setInfo("BUILDDATE", dateStr);
 database.setInfo("DATASOURCENAME", "HMDB-CHEBI-WIKIDATA");
-database.setInfo("DATASOURCEVERSION", "HMDB4.0.20171217-CHEBI159-WIKIDATA20180118" + dateStr);
+database.setInfo("DATASOURCEVERSION", "HMDB4.0.20180929-CHEBI170-WIKIDATA20181224" + dateStr);
 database.setInfo("DATATYPE", "Metabolite");
 database.setInfo("SERIES", "standard_metabolite");
 
@@ -235,7 +239,7 @@ chebiNames.eachLine { line,number ->
     addError = database.addGene(shortRef);
     if (addError != 0) println "Error (addGene): " + database.recentException().getMessage()
     error += addError
-    linkError += database.addLink(shortRef,shortRef);
+    linkError = database.addLink(shortRef,shortRef);
     if (linkError != 0) println "Error (addLinkItself): " + database.recentException().getMessage()
     error += linkError
     genesDone.add(shortRef.toString())
@@ -245,7 +249,7 @@ chebiNames.eachLine { line,number ->
     addError = database.addGene(ref);
     if (addError != 0) println "Error (addGene): " + database.recentException().getMessage()
     error += addError
-    linkError += database.addLink(ref,ref);
+    linkError = database.addLink(ref,ref);
     if (linkError != 0) println "Error (addLinkItself): " + database.recentException().getMessage()
     error += linkError
     genesDone.add(ref.toString())
@@ -256,6 +260,7 @@ chebiNames.eachLine { line,number ->
   counter++
   if (counter % commitInterval == 0) database.commit()
 }
+unitReport << "  <testcase classname=\"ChEBICreation\" name=\"NamesFound\"/>\n"
 // load the mappings
 def mappedIDs = new File('data/chebi_database_accession.tsv')
 mappedIDs.eachLine { line,number ->
@@ -295,6 +300,7 @@ mappedIDs.eachLine { line,number ->
     database.commit()
   }
 }
+unitReport << "  <testcase classname=\"ChEBICreation\" name=\"AccessionsFound\"/>\n"
 
 // load the Wikidata content
 
@@ -326,6 +332,7 @@ new File("cas2wikidata.csv").eachLine { line,number ->
     database.commit()
   }
 }
+unitReport << "  <testcase classname=\"WikidataCreation\" name=\"CASNumbersFound\"/>\n"
 
 // PubChem registry numbers
 counter = 0
@@ -355,6 +362,7 @@ new File("pubchem2wikidata.csv").eachLine { line,number ->
     database.commit()
   }
 }
+unitReport << "  <testcase classname=\"WikidataCreation\" name=\"PubChemFound\"/>\n"
 
 // KEGG registry numbers
 counter = 0
@@ -390,6 +398,7 @@ new File("kegg2wikidata.csv").eachLine { line,number ->
     database.commit()
   }
 }
+unitReport << "  <testcase classname=\"WikidataCreation\" name=\"KEGGFound\"/>\n"
 
 // ChemSpider registry numbers
 counter = 0
@@ -419,6 +428,7 @@ new File("cs2wikidata.csv").eachLine { line,number ->
     database.commit()
   }
 }
+unitReport << "  <testcase classname=\"WikidataCreation\" name=\"ChemSpiderFound\"/>\n"
 
 // LIPID MAPS registry numbers
 counter = 0
@@ -448,6 +458,7 @@ new File("lm2wikidata.csv").eachLine { line,number ->
     database.commit()
   }
 }
+unitReport << "  <testcase classname=\"WikidataCreation\" name=\"LipidMapsFound\"/>\n"
 
 // HMDB registry numbers
 counter = 0
@@ -481,6 +492,7 @@ new File("hmdb2wikidata.csv").eachLine { line,number ->
     database.commit()
   }
 }
+unitReport << "  <testcase classname=\"WikidataCreation\" name=\"HMDBFound\"/>\n"
 
 // EPA CompTox Dashboard numbers
 counter = 0
@@ -510,6 +522,7 @@ new File("comptox2wikidata.csv").eachLine { line,number ->
     database.commit()
   }
 }
+unitReport << "  <testcase classname=\"WikidataCreation\" name=\"EPACompToxFound\"/>\n"
 
 // ChEBI registry numbers
 counter = 0
@@ -544,6 +557,37 @@ new File("chebi2wikidata.csv").eachLine { line,number ->
     database.commit()
   }
 }
+unitReport << "  <testcase classname=\"WikidataCreation\" name=\"ChEBIFound\"/>\n"
+
+// KNApSAcK registry numbers
+counter = 0
+error = 0
+new File("knapsack2wikidata.csv").eachLine { line,number ->
+  if (number == 1) return // skip the first line
+
+  fields = line.split(",")
+  rootid = fields[0].substring(31)
+  Xref ref = new Xref(rootid, wikidataDS);
+  if (!genesDone.contains(ref.toString())) {
+    addError = database.addGene(ref);
+    if (addError != 0) println "Error (addGene): " + database.recentException().getMessage()
+    error += addError
+    linkError = database.addLink(ref,ref);
+    if (linkError != 0) println "Error (addLinkItself): " + database.recentException().getMessage()
+    error += linkError
+    genesDone.add(ref.toString())
+  }
+
+  // add external identifiers
+  addXRef(database, ref, fields[1], knapsackDS, genesDone, linksDone);
+
+  counter++
+  if (counter % commitInterval == 0) {
+    println "Info: errors: " + error + " (ChEBI)"
+    database.commit()
+  }
+}
+unitReport << "  <testcase classname=\"WikidataCreation\" name=\"KNApSAcKFound\"/>\n"
 
 // Wikidata names
 counter = 0
@@ -583,6 +627,8 @@ new File("names2wikidata.tsv").eachLine { line,number ->
     database.commit()
   }
 }
+unitReport << "  <testcase classname=\"WikidataCreation\" name=\"NamesFound\"/>\n"
+unitReport << "</testsuite>\n"
 
 database.commit();
 database.finalize();

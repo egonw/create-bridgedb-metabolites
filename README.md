@@ -99,7 +99,7 @@ InChIKeys can be downloaded as simple TSV and saved as "names2wikidata.tsv"
   curl -H "Accept: text/tab-separated-values" --data-urlencode query@wikidata/names.rq -G https://query.wikidata.org/bigdata/namespace/wdq/sparql -o names2wikidata.tsv
   ```
 
-5. Update the [createDerby.groovy file](https://github.com/bridgedb/create-bridgedb-hmdb/blob/master/createDerby.groovy#L57) with the new version numbers ("DATASOURCEVERSION" field) and run the script with Groovy:
+5. Update the [createDerby.groovy file](https://github.com/bridgedb/create-bridgedb-hmdb/blob/master/createDerby.groovy#L61) with the new version numbers ("DATASOURCEVERSION" field) and run the script with Groovy:
 
   ```
   export CLASSPATH=`ls -1 *.jar | tr '\n' ':'`
@@ -139,6 +139,14 @@ To make a new tag, run:
   ````
 
 where $DOI is replaced with the DOI of the release.
+
+10. Inform downstream projects
+
+At least the following projects need to be informed about the availability of the new mapping database:
+
+* BridgeDb webservice
+* WikiPathways RDF generation team (Jenkins server)
+* WikiPathways indexer (supporting the WikiPathways web service)
 
 References
 ----------
