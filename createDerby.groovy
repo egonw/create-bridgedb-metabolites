@@ -54,6 +54,7 @@ lmDS = DataSource.register ("Lm", "LIPID MAPS").asDataSource()
 knapsackDS = DataSource.register ("Cks", "KNApSAcK").asDataSource()
 dtxDS = DataSource.register ("Ect", "EPA CompTox").asDataSource()
 // drugbankDS = BioDataSource.DRUGBANK
+//iupharDS = DataSource.register ("Gpl", "IUPHAR").asDataSource() 
 
 String dateStr = new SimpleDateFormat("yyyyMMdd").format(new Date());
 database.setInfo("BUILDDATE", dateStr);
@@ -184,6 +185,8 @@ if (hmdbFile.exists()) {
          addXRef(database, ref, rootNode.cas_registry_number.toString(), casDS, genesDone, linksDone);
          addXRef(database, ref, rootNode.pubchem_compound_id.toString(), pubchemDS, genesDone, linksDone);
          addXRef(database, ref, rootNode.chemspider_id.toString(), chemspiderDS, genesDone, linksDone);
+	//   addXRef(database, ref, rootNode.iuphar_id, iupharDS, 
+	//   genesDone, linksDone); //No to string needed, since IDs are numbers only
          String chebID = rootNode.chebi_id.toString().trim()
          if (chebID.startsWith("CHEBI:")) {
            addXRef(database, ref, chebID, chebiDS, genesDone, linksDone);
@@ -282,6 +285,8 @@ mappedIDs.eachLine { line,number ->
       addXRef(database, ref, id, BioDataSource.KEGG_COMPOUND, genesDone, linksDone);
     } else if (type == "Chemspider accession") {
       addXRef(database, ref, id, chemspiderDS, genesDone, linksDone);
+//	} else if (type == "IUPHAR accession") {
+//    addXRef(database, ref, id, iupharDS, genesDone, linksDone);
     } else if (type == "Pubchem accession") {
       addXRef(database, ref, id, pubchemDS, genesDone, linksDone);
     } else if (type == "LIPID MAPS class accession") {
@@ -429,6 +434,37 @@ new File("cs2wikidata.csv").eachLine { line,number ->
   }
 }
 unitReport << "  <testcase classname=\"WikidataCreation\" name=\"ChemSpiderFound\"/>\n"
+
+//// IUPHAR registry numbers
+//counter = 0
+//error = 0
+//new File("gpl2wikidata.csv").eachLine { line,number ->
+//  if (number == 1) return // skip the first line
+//
+//  fields = line.split(",")
+//  rootid = fields[0].substring(31)
+//  Xref ref = new Xref(rootid, wikidataDS);
+// if (!genesDone.contains(ref.toString())) {
+//    addError = database.addGene(ref);
+//    if (addError != 0) println "Error (addGene): " + database.recentException().getMessage()
+//    error += addError
+//    linkError = database.addLink(ref,ref);
+//    if (linkError != 0) println "Error (addLinkItself): " + database.recentException().getMessage()
+//    error += linkError
+//   genesDone.add(ref.toString())
+//  }
+//
+//  // add external identifiers
+//  addXRef(database, ref, fields[1], iupharDS, genesDone, linksDone);
+//
+//  counter++
+//  if (counter % commitInterval == 0) {
+//    println "Info: errors: " + error + " (IUPHAR)"
+//    database.commit()
+//  }
+//}
+//unitReport << "  <testcase classname=\"WikidataCreation\" name=\"IUPHARFound\"/>\n"
+
 
 // LIPID MAPS registry numbers
 counter = 0
