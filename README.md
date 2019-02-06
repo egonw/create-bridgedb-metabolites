@@ -88,6 +88,8 @@ However, you can also use the below curl command line operations.
   curl -H "Accept: text/csv" --data-urlencode query@wikidata/knapsack.rq -G https://query.wikidata.org/bigdata/namespace/wdq/sparql -o knapsack2wikidata.csv
   curl -H "Accept: text/csv" --data-urlencode query@wikidata/comptox.rq -G https://query.wikidata.org/bigdata/namespace/wdq/sparql -o comptox2wikidata.csv
   curl -H "Accept: text/csv" --data-urlencode query@wikidata/iuphar.rq -G https://query.wikidata.org/bigdata/namespace/wdq/sparql -o gpl2wikidata.csv
+ curl -H "Accept: text/csv" --data-urlencode query@wikidata/chembl.rq -G https://query.wikidata.org/bigdata/namespace/wdq/sparql -o chembl2wikidata.csv
+ curl -H "Accept: text/csv" --data-urlencode query@wikidata/drugbank.rq -G https://query.wikidata.org/bigdata/namespace/wdq/sparql -o drugbank2wikidata.csv
   ```
 
 4.2 Get compound labels and InChIKeys
