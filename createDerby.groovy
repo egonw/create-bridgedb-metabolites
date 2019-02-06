@@ -54,7 +54,7 @@ lmDS = DataSource.register ("Lm", "LIPID MAPS").asDataSource()
 knapsackDS = DataSource.register ("Cks", "KNApSAcK").asDataSource()
 dtxDS = DataSource.register ("Ect", "EPA CompTox").asDataSource()
 // drugbankDS = BioDataSource.DRUGBANK
-//iupharDS = DataSource.register ("Gpl", "IUPHAR").asDataSource() 
+//iupharDS = DataSource.register ("Gpl", "Guide to Pharmacology").asDataSource() 
 
 String dateStr = new SimpleDateFormat("yyyyMMdd").format(new Date());
 database.setInfo("BUILDDATE", dateStr);
@@ -185,8 +185,6 @@ if (hmdbFile.exists()) {
          addXRef(database, ref, rootNode.cas_registry_number.toString(), casDS, genesDone, linksDone);
          addXRef(database, ref, rootNode.pubchem_compound_id.toString(), pubchemDS, genesDone, linksDone);
          addXRef(database, ref, rootNode.chemspider_id.toString(), chemspiderDS, genesDone, linksDone);
-	//   addXRef(database, ref, rootNode.iuphar_id, iupharDS, 
-	//   genesDone, linksDone); //No to string needed, since IDs are numbers only
          String chebID = rootNode.chebi_id.toString().trim()
          if (chebID.startsWith("CHEBI:")) {
            addXRef(database, ref, chebID, chebiDS, genesDone, linksDone);
@@ -285,8 +283,6 @@ mappedIDs.eachLine { line,number ->
       addXRef(database, ref, id, BioDataSource.KEGG_COMPOUND, genesDone, linksDone);
     } else if (type == "Chemspider accession") {
       addXRef(database, ref, id, chemspiderDS, genesDone, linksDone);
-//	} else if (type == "IUPHAR accession") {
-//    addXRef(database, ref, id, iupharDS, genesDone, linksDone);
     } else if (type == "Pubchem accession") {
       addXRef(database, ref, id, pubchemDS, genesDone, linksDone);
     } else if (type == "LIPID MAPS class accession") {
