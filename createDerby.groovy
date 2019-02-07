@@ -53,7 +53,8 @@ wikidataDS = DataSource.register ("Wd", "Wikidata").asDataSource()
 lmDS = DataSource.register ("Lm", "LIPID MAPS").asDataSource()
 knapsackDS = DataSource.register ("Cks", "KNApSAcK").asDataSource()
 dtxDS = DataSource.register ("Ect", "EPA CompTox").asDataSource()
-drugbankDS = BioDataSource.DRUGBANK
+//drugbankDS = BioDataSource.DRUGBANK
+drugbankDS = DataSource.register ("Dr", "DrugBank").asDataSource() 
 //iupharDS = DataSource.register ("Gpl", "Guide to Pharmacology").asDataSource() 
 chemblDS = DataSource.register ("Cl", "ChEMBL compound").asDataSource() 
 
