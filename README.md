@@ -34,7 +34,11 @@ BridgeDb License -> http://www.bridgedb.org/browser/trunk/LICENSE-2.0.txt
 Run the script and test the results
 -----------------------------------
 
-1. make sure the HMDB data file is saved as hmdb_metabolites.zip and to create a new
+1. add the jars to your classpath, e.g. on Linux with:
+
+  export CLASSPATH=\`ls -1 *.jar | tr '\n' ':'\`
+
+2. make sure the HMDB data file is saved as hmdb_metabolites.zip and to create a new
    zip file will each metabolite in separate XML file:
 
   ```
@@ -49,7 +53,7 @@ Run the script and test the results
   zip -r hmdb_metabolites_split.zip hmdb
   ```
 
-2. make sure the ChEBI data file is saved
+3. make sure the ChEBI data file is saved
 
   ```
   mkdir data
@@ -61,9 +65,9 @@ Run the script and test the results
   mv database_accession.tsv chebi_database_accession.tsv
   ```
 
-3. make sure the Wikidata files are saved
+4. make sure the Wikidata files are saved
 
-3.1 ID mappings
+4.1 ID mappings
 
 A set of SPARQL queries have been compiled and saved in the wikidata/ folder.
 These queries can be manually executed at http://query.wikidata.org/. These
@@ -88,7 +92,7 @@ However, you can also use the below curl command line operations.
  curl -H "Accept: text/csv" --data-urlencode query@wikidata/drugbank.rq -G https://query.wikidata.org/bigdata/namespace/wdq/sparql -o drugbank2wikidata.csv
   ```
 
-3.2 Get compound labels and InChIKeys
+4.2 Get compound labels and InChIKeys
 
 With a similar SPARQL query (names.rq) the compounds labels (English only) and
 InChIKeys can be downloaded as simple TSV and saved as "names2wikidata.tsv"
@@ -98,16 +102,16 @@ InChIKeys can be downloaded as simple TSV and saved as "names2wikidata.tsv"
   curl -H "Accept: text/tab-separated-values" --data-urlencode query@wikidata/names.rq -G https://query.wikidata.org/bigdata/namespace/wdq/sparql -o names2wikidata.tsv
   ```
 
-4. Update the [createDerby.groovy file](https://github.com/bridgedb/create-bridgedb-hmdb/blob/master/createDerby.groovy#L61) with the new version numbers ("DATASOURCEVERSION" field) and run the script with Groovy:
+5. Update the [createDerby.groovy file](https://github.com/bridgedb/create-bridgedb-hmdb/blob/master/createDerby.groovy#L61) with the new version numbers ("DATASOURCEVERSION" field) and run the script with Groovy:
 
   ```
   export CLASSPATH=`ls -1 *.jar | tr '\n' ':'`
   groovy createDerby.groovy
   ```
 
-5. Test the resulting Derby file by opening it in PathVisio
+6. Test the resulting Derby file by opening it in PathVisio
 
-6. Use the BridgeDb QC tool to compare it with the previous mapping file
+7. Use the BridgeDb QC tool to compare it with the previous mapping file
 
 The BridgeDb repository has a tool to perform quality control (qc) on ID
 mapping files:
@@ -116,12 +120,12 @@ mapping files:
   sh qc.sh old.bridge new.bridge
   ```
 
-7. Upload the data to Figshare and update the following pages:
+8. Upload the data to Figshare and update the following pages:
 
 * http://www.bridgedb.org/mapping-databases/hmdb-metabolite-mappings/
 * http://bridgedb.org/data/gene_database/
 
-8. Tag this repository with the DOI of the latest release.
+9. Tag this repository with the DOI of the latest release.
 
 To ensure we know exactly which repository version was used to generate
 a specific release, the latest commit used for that release is tagged
@@ -139,7 +143,7 @@ To make a new tag, run:
 
 where $DOI is replaced with the DOI of the release.
 
-9. Inform downstream projects
+10. Inform downstream projects
 
 At least the following projects need to be informed about the availability of the new mapping database:
 

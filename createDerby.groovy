@@ -1,9 +1,4 @@
-@Grapes([
-  @Grab(group='org.bridgedb', module='org.bridgedb', version='2.3.1'),
-  @Grab(group='org.bridgedb', module='org.bridgedb.bio', version='2.3.1'),
-  @Grab(group='org.bridgedb', module='org.bridgedb.rdb', version='2.3.1'),
-  @Grab(group='org.bridgedb', module='org.bridgedb.rdb.construct', version='2.3.1')
-])
+// export CLASSPATH=`ls -1 *.jar | tr '\n' ':'`
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
