@@ -501,7 +501,7 @@ new File("drugbank2wikidata.csv").eachLine { line,number ->
 
   fields = line.split(",")
   rootid = fields[0].substring(31)
-  wikidataDS = "DB" + wikidataDS
+  //wikidataDS = "DB" + wikidataDS
   Xref ref = new Xref(rootid, wikidataDS);
  if (!genesDone.contains(ref.toString())) {
     addError = database.addGene(ref);
