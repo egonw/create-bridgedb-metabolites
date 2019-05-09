@@ -501,7 +501,8 @@ new File("drugbank2wikidata.csv").eachLine { line,number ->
 
   fields = line.split(",")
   rootid = fields[0].substring(31)
-  wikidataDS = "DB" + fields[1]
+  longDrugbankID = "DB" + fields[1]
+  //wikidataDS = "DB" + fields[1]
   //wikidataDS = "DB" + wikidataDS
   Xref ref = new Xref(rootid, wikidataDS);
  if (!genesDone.contains(ref.toString())) {
@@ -515,7 +516,7 @@ new File("drugbank2wikidata.csv").eachLine { line,number ->
   }
 
   // add external identifiers
-  addXRef(database, ref, fields[1], drugbankDS, genesDone, linksDone);
+  addXRef(database, ref, longDrugbankID, drugbankDS, genesDone, linksDone);
 
   counter++
   if (counter % commitInterval == 0) {
