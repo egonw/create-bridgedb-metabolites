@@ -40,6 +40,8 @@ blacklist.add("104404-17-3")
 blacklist.add("CHEBI:17636")
 blacklist.add("HMDB0000912") // see bug #6
 blacklist.add("HMDB00912") // see bug #6
+blacklist.add("HMDB0006316") //wrong mappings to ChEBI, Pubchem Compound = 0
+blacklist.add("HMDB06316") //wrong mappings to ChEBI, Pubchem Compound = 0
 
 //inchiDS = DataSource.register ("Cin", "InChI").asDataSource()
 inchikeyDS = DataSource.register ("Ik", "InChIKey").asDataSource()
