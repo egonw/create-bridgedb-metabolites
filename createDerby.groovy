@@ -63,7 +63,7 @@ chemblDS = DataSource.register ("Cl", "ChEMBL compound").asDataSource()
 String dateStr = new SimpleDateFormat("yyyyMMdd").format(new Date());
 database.setInfo("BUILDDATE", dateStr);
 database.setInfo("DATASOURCENAME", "HMDB-CHEBI-WIKIDATA");
-database.setInfo("DATASOURCEVERSION", "HMDB4.0.20180929-CHEBI170-WIKIDATA20181224" + dateStr);
+database.setInfo("DATASOURCEVERSION", "HMDB4.0.20190116-CHEBI175-WIKIDATA20190509" + dateStr);
 database.setInfo("DATATYPE", "Metabolite");
 database.setInfo("SERIES", "standard_metabolite");
 
