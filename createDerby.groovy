@@ -97,7 +97,7 @@ def addAttribute(GdbConstruct database, Xref ref, String key, String value) {
      println "Warn: attribute does not fit the Derby SQL schema: $id"
    } else if (id.length() > 0) {
      if (database.addAttribute(ref, key, value) != 0) {
-       println "Error (addAttrib): " + database.getException().getMessage()
+       println "Error (addAttrib): " + database.recentException().getMessage()
      }
    }
 }
