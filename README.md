@@ -34,6 +34,8 @@ BridgeDb License -> http://www.bridgedb.org/browser/trunk/LICENSE-2.0.txt
 Run the script and test the results
 -----------------------------------
 
+0. Update the [createDerby.groovy file](https://github.com/bridgedb/create-bridgedb-hmdb/blob/master/createDerby.groovy#L61) with the new version numbers ("DATASOURCEVERSION" field). this information is stored as metadata, and needed for example in the BridgeDb webservice to correctly display which data is in the mapping file.
+
 1. add the jars to your classpath, e.g. on Linux with:
 
   export CLASSPATH=\`ls -1 *.jar | tr '\n' ':'\`
@@ -102,7 +104,7 @@ InChIKeys can be downloaded as simple TSV and saved as "names2wikidata.tsv"
   curl -H "Accept: text/tab-separated-values" --data-urlencode query@wikidata/names.rq -G https://query.wikidata.org/bigdata/namespace/wdq/sparql -o names2wikidata.tsv
   ```
 
-5. Update the [createDerby.groovy file](https://github.com/bridgedb/create-bridgedb-hmdb/blob/master/createDerby.groovy#L61) with the new version numbers ("DATASOURCEVERSION" field) and run the script with Groovy:
+5. Run the script with Groovy:
 
   ```
   export CLASSPATH=`ls -1 *.jar | tr '\n' ':'`
