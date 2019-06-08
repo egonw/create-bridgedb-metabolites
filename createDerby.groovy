@@ -60,10 +60,16 @@ drugbankDS = DataSource.register ("Dr", "DrugBank").asDataSource()
 iupharDS = DataSource.register ("Gpl", "Guide to Pharmacology").asDataSource() 
 chemblDS = DataSource.register ("Cl", "ChEMBL compound").asDataSource() 
 
+chebiVersionFile = new File('data/chebi.version')
+chebiVersion = "175"
+if (chebiVersionFile.exists() && chebiVersionFile.canRead()) {
+  chebiVersion = chebiVersionFile.text.trim()
+}
+
 String dateStr = new SimpleDateFormat("yyyyMMdd").format(new Date());
 database.setInfo("BUILDDATE", dateStr);
 database.setInfo("DATASOURCENAME", "HMDB-CHEBI-WIKIDATA");
-database.setInfo("DATASOURCEVERSION", "HMDB4.0.20190116-CHEBI175-WIKIDATA" + dateStr);
+database.setInfo("DATASOURCEVERSION", "HMDB4.0.20190116-CHEBI" + chebiVersion + "-WIKIDATA" + dateStr);
 database.setInfo("DATATYPE", "Metabolite");
 database.setInfo("SERIES", "standard_metabolite");
 
