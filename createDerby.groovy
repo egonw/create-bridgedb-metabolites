@@ -235,6 +235,10 @@ chebiNames.eachLine { line,number ->
 
   error = 0
   columns = line.split('\t')
+  if (columns.length < 5) {
+    println "Error (chebi_names.tsv): unexpected line: " + line
+    return;
+  }
   shortid = columns[1]
   rootid = "CHEBI:" + shortid
   name = columns[4]
