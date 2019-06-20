@@ -146,7 +146,7 @@ if (hmdbFile.exists()) {
          println "Error (incorrect HMDB): " + rootid
        }
        // println "HMDB old: ${rootid} -> ${newid}"
-       Xref ref = new Xref(rootid, BioDataSource.HMDB);
+       Xref ref = new Xref(rootid, BioDataSource.HMDB, false);
        Xref newref = (newid == null) ? null : new Xref(newid, BioDataSource.HMDB);
        if (!genesDone.contains(ref.toString())) {
          addError = database.addGene(ref);
