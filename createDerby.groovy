@@ -501,9 +501,9 @@ counter = 0
 error = 0
 new File("Recon_test.csv").eachLine { line,number ->
   if (number == 1) return // skip the first line
-
   fields = line.split(",")
-  rootid = fields[0] //no substring split needed, since we're mapping on inchiKey (for now)
+  rootid = fields[0].trim() //no substring split needed, since we're mapping on inchiKey (for now)
+  recon = fields[1].trim()
   Xref ref = new Xref(rootid, inchikeyDS); // add first column to InchiKey mappings.
  if (!genesDone.contains(ref.toString())) {
     addError = database.addGene(ref);
@@ -516,8 +516,9 @@ new File("Recon_test.csv").eachLine { line,number ->
   }
 
   // add external identifiers
-  addXRef(database, ref, fields[1], vmhmetaboliteDS, genesDone, linksDone);
-
+  
+  addXRef(database, ref, recon, vmhmetaboliteDS, genesDone, linksDone);
+  
   counter++
   if (counter % commitInterval == 0) {
     println "Info: errors: " + error + " (VMH Metabolite)"
