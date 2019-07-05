@@ -60,7 +60,7 @@ drugbankDS = DataSource.register ("Dr", "DrugBank").asDataSource()
 iupharDS = DataSource.register ("Gpl", "Guide to Pharmacology").asDataSource() 
 chemblDS = DataSource.register ("Cl", "ChEMBL compound").asDataSource() 
 
-vmhmetaboliteDS = DataSource.register ("VmhM", "VMH metabolite").asDataSource() //Add this to BridgeDb, update libraries, add to website!
+//vmhmetaboliteDS = DataSource.register ("VmhM", "VMH metabolite").asDataSource() //Add this to BridgeDb, update libraries, add to website!
 
 chebiVersionFile = new File('data/chebi.version')
 chebiVersion = "175"
@@ -496,24 +496,24 @@ new File("gpl2wikidata.csv").eachLine { line,number ->
 }
 unitReport << "  <testcase classname=\"WikidataCreation\" name=\"IUPHARFound\"/>\n"
 
-// VMH Metabolite identifiers
-counter = 0
-error = 0
-new File("Recon_test.csv").eachLine { line,number ->
-  if (number == 1) return // skip the first line
-  fields = line.split(",")
-  rootid = fields[0].trim() //no substring split needed, since we're mapping on inchiKey (for now)
-  recon = fields[1].trim()
-  Xref ref = new Xref(rootid, inchikeyDS); // add first column to InchiKey mappings.
- if (!genesDone.contains(ref.toString())) {
-    addError = database.addGene(ref);
-    if (addError != 0) println "Error (addGene): " + database.recentException().getMessage()
-    error += addError
-    linkError = database.addLink(ref,ref);
-    if (linkError != 0) println "Error (addLinkItself): " + database.recentException().getMessage()
-    error += linkError
-   genesDone.add(ref.toString())
-  }
+//// VMH Metabolite identifiers
+//counter = 0
+//error = 0
+//new File("Recon_test.csv").eachLine { line,number ->
+//  if (number == 1) return // skip the first line
+//  fields = line.split(",")
+//  rootid = fields[0].trim() //no substring split needed, since we're mapping on inchiKey (for now)
+//  recon = fields[1].trim()
+//  Xref ref = new Xref(rootid, inchikeyDS); // add first column to InchiKey mappings.
+// if (!genesDone.contains(ref.toString())) {
+//    addError = database.addGene(ref);
+//    if (addError != 0) println "Error (addGene): " + database.recentException().getMessage()
+//    error += addError
+//    linkError = database.addLink(ref,ref);
+//    if (linkError != 0) println "Error (addLinkItself): " + database.recentException().getMessage()
+//    error += linkError
+//   genesDone.add(ref.toString())
+//  }
 
   // add external identifiers
   
