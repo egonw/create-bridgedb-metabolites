@@ -524,7 +524,7 @@ new File("Recon_test.csv").eachLine { line,number ->
     database.commit()
   }
 }
-//unitReport << "  <testcase classname=\"VMHMetaboliteCreation\" name=\"ReconFound\"/>\n" //Need to check if adapted line functions properly.
+unitReport << "  <testcase classname=\"VMHMetaboliteCreation\" name=\"ReconFound\"/>\n" //Need to check if adapted line functions properly.
 
 
 
