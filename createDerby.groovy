@@ -515,18 +515,17 @@ unitReport << "  <testcase classname=\"WikidataCreation\" name=\"IUPHARFound\"/>
 //   genesDone.add(ref.toString())
 //  }
 
-  // add external identifiers
+//  // add external identifiers
   
-  addXRef(database, ref, recon, vmhmetaboliteDS, genesDone, linksDone);
+//  addXRef(database, ref, recon, vmhmetaboliteDS, genesDone, linksDone);
   
-  counter++
-  if (counter % commitInterval == 0) {
-    println "Info: errors: " + error + " (VMH Metabolite)"
-    database.commit()
-  }
-}
-unitReport << "  <testcase classname=\"VMHMetaboliteCreation\" name=\"ReconFound\"/>\n" //Need to check if adapted line functions properly.
-
+//  counter++
+//  if (counter % commitInterval == 0) {
+//    println "Info: errors: " + error + " (VMH Metabolite)"
+//    database.commit()
+//  }
+//}
+//unitReport << "  <testcase classname=\"VMHMetaboliteCreation\" name=\"ReconFound\"/>\n" //Need to check if adapted line functions properly.
 
 
 // ChEMBL Compound registry numbers
