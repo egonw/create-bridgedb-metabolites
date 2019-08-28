@@ -117,6 +117,7 @@ def addAttribute(GdbConstruct database, Xref ref, String key, String value) {
 def cleanKey(String inchikey) {
    String cleanKey = inchikey.trim()
    if (cleanKey.startsWith("InChIKey=")) cleanKey = cleanKey.substring(9)
+   cleanKey = cleanKey.replace("\"", "")
    cleanKey
 }
 
@@ -765,7 +766,7 @@ new File("names2wikidata.tsv").eachLine { line,number ->
   fields = line.split("\t")
   if (fields.length >= 3) {
     rootid = fields[0].replace("<","").replace(">","").substring(31)
-    key = fields[1].trim()
+    key = cleanKey(fields[1].trim())
     synonym = fields[2].trim().replace("\"","").replace("@en","")
     Xref ref = new Xref(rootid, wikidataDS);
     if (!genesDone.contains(ref.toString())) {
