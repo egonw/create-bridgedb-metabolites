@@ -201,6 +201,7 @@ if (hmdbFile.exists()) {
        if (key.length() == 27) {
          addAttribute(database, ref, "InChIKey", key);
          addXRef(database, ref, key, inchikeyDS, genesDone, linksDone);
+         println "Info:inchikey line 203: " + key + " should be without quotations"
        }
        addAttribute(database, ref, "SMILES", rootNode.smiles.toString());
        addAttribute(database, ref, "BrutoFormula", rootNode.chemical_formula.toString());
@@ -782,11 +783,13 @@ new File("names2wikidata.tsv").eachLine { line,number ->
       println "Adding synonym: " + synonym
       addAttribute(database, ref, "Symbol", synonym)
       addXRef(database, ref, key, inchikeyDS, genesDone, linksDone);
+      println "Info:inchikey line 785: " + key + " should be without quotations"
     } else {
       println "Not adding synonym: " + synonym
     }
     if (key.length() > 0) {
       addAttribute(database, ref, "InChIKey", key);
+      println "Info:inchikey line 790: " + key + " should be without quotations"
     }
   }
   counter++
