@@ -63,7 +63,7 @@ chemblDS = DataSource.register ("Cl", "ChEMBL compound").asDataSource()
 //vmhmetaboliteDS = DataSource.register ("VmhM", "VMH metabolite").asDataSource() //Add this to BridgeDb, update libraries, add to website!
 
 chebiVersionFile = new File('data/chebi.version')
-chebiVersion = "175"
+chebiVersion = "180"
 if (chebiVersionFile.exists() && chebiVersionFile.canRead()) {
   chebiVersion = chebiVersionFile.text.trim()
 }
