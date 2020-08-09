@@ -38,34 +38,36 @@ Run the script and test the results
 
 1. add the jars to your classpath, e.g. on Linux with:
 
-  export CLASSPATH=\`ls -1 *.jar | tr '\n' ':'\`
+```shell
+export CLASSPATH=`ls -1 *.jar | tr '\n' ':'`
+```
 
 2. make sure the HMDB data file is saved as hmdb_metabolites.zip and to create a new
    zip file will each metabolite in separate XML file:
 
-  ```
-  mkdir hmdb
-  wget http://www.hmdb.ca/system/downloads/current/hmdb_metabolites.zip
-  unzip hmdb_metabolites.zip
-  cd hmdb
-  cp ../hmdb_metabolites.xml .
-  xml_split -v -l 1 hmdb_metabolites.xml
-  rm hmdb_metabolites.xml
-  cd ..
-  zip -r hmdb_metabolites_split.zip hmdb
-  ```
+```shell
+mkdir hmdb
+wget http://www.hmdb.ca/system/downloads/current/hmdb_metabolites.zip
+unzip hmdb_metabolites.zip
+cd hmdb
+cp ../hmdb_metabolites.xml .
+xml_split -v -l 1 hmdb_metabolites.xml
+rm hmdb_metabolites.xml
+cd ..
+zip -r hmdb_metabolites_split.zip hmdb
+```
 
 3. make sure the ChEBI data file is saved
 
-  ```
-  mkdir data
-  cd data
-  wget ftp://ftp.ebi.ac.uk/pub/databases/chebi/Flat_file_tab_delimited/names.tsv.gz
-  gunzip names.tsv.gz
-  mv names.tsv chebi_names.tsv
-  wget ftp://ftp.ebi.ac.uk/pub/databases/chebi/Flat_file_tab_delimited/database_accession.tsv
-  mv database_accession.tsv chebi_database_accession.tsv
-  ```
+```shell
+mkdir data
+cd data
+wget ftp://ftp.ebi.ac.uk/pub/databases/chebi/Flat_file_tab_delimited/names.tsv.gz
+gunzip names.tsv.gz
+mv names.tsv chebi_names.tsv
+wget ftp://ftp.ebi.ac.uk/pub/databases/chebi/Flat_file_tab_delimited/database_accession.tsv
+mv database_accession.tsv chebi_database_accession.tsv
+```
 
 4. make sure the Wikidata files are saved
 
@@ -79,20 +81,20 @@ KnAPSaCK IDs (knapsack.rq) [9].
 
 However, you can also use the below curl command line operations.
 
-  ```
-  curl -H "Accept: text/csv" --data-urlencode query@wikidata/cas.rq -G https://query.wikidata.org/bigdata/namespace/wdq/sparql -o cas2wikidata.csv
-  curl -H "Accept: text/csv" --data-urlencode query@wikidata/cs.rq -G https://query.wikidata.org/bigdata/namespace/wdq/sparql -o cs2wikidata.csv
-  curl -H "Accept: text/csv" --data-urlencode query@wikidata/pubchem.rq -G https://query.wikidata.org/bigdata/namespace/wdq/sparql -o pubchem2wikidata.csv
-  curl -H "Accept: text/csv" --data-urlencode query@wikidata/chebi.rq -G https://query.wikidata.org/bigdata/namespace/wdq/sparql -o chebi2wikidata.csv
-  curl -H "Accept: text/csv" --data-urlencode query@wikidata/kegg.rq -G https://query.wikidata.org/bigdata/namespace/wdq/sparql -o kegg2wikidata.csv
-  curl -H "Accept: text/csv" --data-urlencode query@wikidata/hmdb.rq -G https://query.wikidata.org/bigdata/namespace/wdq/sparql -o hmdb2wikidata.csv
-  curl -H "Accept: text/csv" --data-urlencode query@wikidata/lm.rq -G https://query.wikidata.org/bigdata/namespace/wdq/sparql -o lm2wikidata.csv
-  curl -H "Accept: text/csv" --data-urlencode query@wikidata/knapsack.rq -G https://query.wikidata.org/bigdata/namespace/wdq/sparql -o knapsack2wikidata.csv
-  curl -H "Accept: text/csv" --data-urlencode query@wikidata/comptox.rq -G https://query.wikidata.org/bigdata/namespace/wdq/sparql -o comptox2wikidata.csv
-  curl -H "Accept: text/csv" --data-urlencode query@wikidata/iuphar.rq -G https://query.wikidata.org/bigdata/namespace/wdq/sparql -o gpl2wikidata.csv
- curl -H "Accept: text/csv" --data-urlencode query@wikidata/chembl.rq -G https://query.wikidata.org/bigdata/namespace/wdq/sparql -o chembl2wikidata.csv
- curl -H "Accept: text/csv" --data-urlencode query@wikidata/drugbank.rq -G https://query.wikidata.org/bigdata/namespace/wdq/sparql -o drugbank2wikidata.csv
-  ```
+```shell
+curl -H "Accept: text/csv" --data-urlencode query@wikidata/cas.rq -G https://query.wikidata.org/bigdata/namespace/wdq/sparql -o cas2wikidata.csv
+curl -H "Accept: text/csv" --data-urlencode query@wikidata/cs.rq -G https://query.wikidata.org/bigdata/namespace/wdq/sparql -o cs2wikidata.csv
+curl -H "Accept: text/csv" --data-urlencode query@wikidata/pubchem.rq -G https://query.wikidata.org/bigdata/namespace/wdq/sparql -o pubchem2wikidata.csv
+curl -H "Accept: text/csv" --data-urlencode query@wikidata/chebi.rq -G https://query.wikidata.org/bigdata/namespace/wdq/sparql -o chebi2wikidata.csv
+curl -H "Accept: text/csv" --data-urlencode query@wikidata/kegg.rq -G https://query.wikidata.org/bigdata/namespace/wdq/sparql -o kegg2wikidata.csv
+curl -H "Accept: text/csv" --data-urlencode query@wikidata/hmdb.rq -G https://query.wikidata.org/bigdata/namespace/wdq/sparql -o hmdb2wikidata.csv
+curl -H "Accept: text/csv" --data-urlencode query@wikidata/lm.rq -G https://query.wikidata.org/bigdata/namespace/wdq/sparql -o lm2wikidata.csv
+curl -H "Accept: text/csv" --data-urlencode query@wikidata/knapsack.rq -G https://query.wikidata.org/bigdata/namespace/wdq/sparql -o knapsack2wikidata.csv
+curl -H "Accept: text/csv" --data-urlencode query@wikidata/comptox.rq -G https://query.wikidata.org/bigdata/namespace/wdq/sparql -o comptox2wikidata.csv
+curl -H "Accept: text/csv" --data-urlencode query@wikidata/iuphar.rq -G https://query.wikidata.org/bigdata/namespace/wdq/sparql -o gpl2wikidata.csv
+curl -H "Accept: text/csv" --data-urlencode query@wikidata/chembl.rq -G https://query.wikidata.org/bigdata/namespace/wdq/sparql -o chembl2wikidata.csv
+curl -H "Accept: text/csv" --data-urlencode query@wikidata/drugbank.rq -G https://query.wikidata.org/bigdata/namespace/wdq/sparql -o drugbank2wikidata.csv
+```
 
 4.2 Get compound labels and InChIKeys
 
@@ -100,16 +102,16 @@ With a similar SPARQL query (names.rq) the compounds labels (English only) and
 InChIKeys can be downloaded as simple TSV and saved as "names2wikidata.tsv"
 (note that this file is TAB separated):
 
-  ```
-  curl -H "Accept: text/tab-separated-values" --data-urlencode query@wikidata/names.rq -G https://query.wikidata.org/bigdata/namespace/wdq/sparql -o names2wikidata.tsv
-  ```
+```shell
+curl -H "Accept: text/tab-separated-values" --data-urlencode query@wikidata/names.rq -G https://query.wikidata.org/bigdata/namespace/wdq/sparql -o names2wikidata.tsv
+```
 
 5. Run the script with Groovy:
 
-  ```
-  export CLASSPATH=`ls -1 *.jar | tr '\n' ':'`
-  groovy createDerby.groovy
-  ```
+```shell
+export CLASSPATH=`ls -1 *.jar | tr '\n' ':'`
+groovy createDerby.groovy
+```
 
 6. Test the resulting Derby file by opening it in PathVisio
 
@@ -118,9 +120,9 @@ InChIKeys can be downloaded as simple TSV and saved as "names2wikidata.tsv"
 The BridgeDb repository has a tool to perform quality control (qc) on ID
 mapping files:
 
-  ```
-  sh qc.sh old.bridge new.bridge
-  ```
+```shell
+sh qc.sh old.bridge new.bridge
+```
 
 8. Upload the data to Figshare and update the following pages:
 
@@ -133,15 +135,15 @@ To ensure we know exactly which repository version was used to generate
 a specific release, the latest commit used for that release is tagged
 with the DOI on Figshare. To list all current tags:
 
-  ```
-  git tag
-  ```
+```shell
+git tag
+```
 
 To make a new tag, run:
 
-  ```
-  git tag $DOR
-  ````
+```shell
+git tag $DOR
+````
 
 where $DOI is replaced with the DOI of the release.
 
