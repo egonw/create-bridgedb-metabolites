@@ -1,0 +1,18 @@
+PREFIX wdt: <http://www.wikidata.org/prop/direct/>
+SELECT ?compoundRes ?mesh WITH {
+  SELECT ?compoundRes
+  WHERE {
+    { ?compoundRes p:P31/ps:P31 wd:Q11173 }
+    UNION
+    { ?compoundRes p:P31/ps:P31 wd:Q36496 }
+    UNION
+    { ?compoundRes p:P31/ps:P31 wd:Q79529 }
+    UNION
+    { ?compoundRes p:P279/ps:P279 wd:Q11173 }
+    UNION
+    { ?compoundRes p:P279/ps:P279 wd:Q79529 }
+  }
+} AS %RESULTS {
+  INCLUDE %RESULTS
+   ?compoundRes wdt:P486 ?mesh .
+}
