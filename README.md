@@ -124,10 +124,11 @@ mapping files:
 sh qc.sh old.bridge new.bridge
 ```
 
-8. Upload the data to Figshare and update the following pages:
-
-* http://www.bridgedb.org/mapping-databases/hmdb-metabolite-mappings/
-* http://bridgedb.org/data/gene_database/
+8. Upload the data to Figshare and update the following page for the [BridgeDb (Github) Website](https://github.com/bridgedb/data/blob/master/other.json#L20-L27) on the following item (examples provided below):
+- "file":    "metabolites_20200809.bridge",
+- "downloadURL": "https://ndownloader.figshare.com/files/24180464",
+- "doi": "10.6084/m9.figshare.12782264.v1",
+- "size": "1.84 GB"
 
 9. Tag this repository with the DOI of the latest release.
 
