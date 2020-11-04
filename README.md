@@ -34,7 +34,7 @@ BridgeDb License -> http://www.bridgedb.org/browser/trunk/LICENSE-2.0.txt
 Run the script and test the results
 -----------------------------------
 
-0. Update the [createDerby.groovy file](https://github.com/bridgedb/create-bridgedb-hmdb/blob/master/createDerby.groovy#L74) with the new version numbers ("DATASOURCEVERSION" field). this information is stored as metadata, and needed for example in the BridgeDb webservice to correctly display which data is in the mapping file.
+0. Update the [createDerby.groovy file](https://github.com/bridgedb/create-bridgedb-hmdb/blob/master/createDerby.groovy#L78) with the new version numbers ("DATASOURCEVERSION" field). this information is stored as metadata, and needed for example in the BridgeDb webservice to correctly display which data is in the mapping file.
 
 1. add the jars to your classpath, e.g. on Linux with:
 
