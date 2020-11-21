@@ -21,7 +21,7 @@ Releases
 
 The files are released via the BridgeDb Website: http://www.bridgedb.org/mapping-databases/hmdb-metabolite-mappings/
 
-The mapping files are also archived on Figshare: https://figshare.com/search?q=metabolite+bridgedb+mapping+database&quick=1
+The mapping files are also archived on Figshare: https://figshare.com/projects/BridgeDb_metabolites/28500
 
 License
 -------
