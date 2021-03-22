@@ -8,9 +8,15 @@ SELECT ?compoundRes ?key ?compoundResLabel WITH {
     UNION
     { ?compoundRes p:P31/ps:P31 wd:Q79529 }
     UNION
+    { ?compoundRes p:P31/ps:P31 wd:Q55662747 }
+    UNION
     { ?compoundRes p:P279/ps:P279 wd:Q11173 }
     UNION
+    { ?compoundRes p:P279/ps:P279 wd:Q36496 }
+    UNION
     { ?compoundRes p:P279/ps:P279 wd:Q79529 }
+    UNION
+    { ?compoundRes p:P279/ps:P279 wd:Q55662747 }
   }
 } AS %RESULTS {
   INCLUDE %RESULTS
@@ -20,4 +26,3 @@ SELECT ?compoundRes ?key ?compoundResLabel WITH {
     FILTER((LANG(?compoundResLabel)) = "en")
   }
 }
-
