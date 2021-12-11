@@ -94,6 +94,7 @@ curl -H "Accept: text/csv" --data-urlencode query@wikidata/comptox.rq -G https:/
 curl -H "Accept: text/csv" --data-urlencode query@wikidata/iuphar.rq -G https://query.wikidata.org/bigdata/namespace/wdq/sparql -o gpl2wikidata.csv
 curl -H "Accept: text/csv" --data-urlencode query@wikidata/chembl.rq -G https://query.wikidata.org/bigdata/namespace/wdq/sparql -o chembl2wikidata.csv
 curl -H "Accept: text/csv" --data-urlencode query@wikidata/drugbank.rq -G https://query.wikidata.org/bigdata/namespace/wdq/sparql -o drugbank2wikidata.csv
+curl -H "Accept: text/csv" --data-urlencode query@wikidata/swisslipids.rq -G https://query.wikidata.org/bigdata/namespace/wdq/sparql -o swisslipids2wikidata.csv
 ```
 
 4.2 Get compound labels and InChIKeys

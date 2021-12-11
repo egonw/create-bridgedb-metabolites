@@ -63,6 +63,7 @@ dtxDS = DataSource.register ("Ect", "EPA CompTox").asDataSource()
 drugbankDS = DataSource.register ("Dr", "DrugBank").asDataSource() 
 iupharDS = DataSource.register ("Gpl", "Guide to Pharmacology").asDataSource() 
 chemblDS = DataSource.register ("Cl", "ChEMBL compound").asDataSource() 
+swisslipidsDS = DataSource.register ("Sl", "SwissLipids").asDataSource()
 
 //vmhmetaboliteDS = DataSource.register ("VmhM", "VMH metabolite").asDataSource() //Add this to BridgeDb, update libraries, add to website!
 
@@ -760,6 +761,36 @@ new File("knapsack2wikidata.csv").eachLine { line,number ->
   }
 }
 unitReport << "  <testcase classname=\"WikidataCreation\" name=\"KNApSAcKFound\"/>\n"
+
+// SwissLipids identifiers
+counter = 0
+error = 0
+new File("swisslipids2wikidata.csv").eachLine { line,number ->
+  if (number == 1) return // skip the first line
+
+  fields = line.split(",")
+  rootid = fields[0].substring(31)
+  Xref ref = new Xref(rootid, wikidataDS);
+  if (!genesDone.contains(ref.toString())) {
+    addError = database.addGene(ref);
+    if (addError != 0) println "Error (addGene): " + database.recentException().getMessage()
+    error += addError
+    linkError = database.addLink(ref,ref);
+    if (linkError != 0) println "Error (addLinkItself): " + database.recentException().getMessage()
+    error += linkError
+    genesDone.add(ref.toString())
+  }
+
+  // add external identifiers
+  addXRef(database, ref, fields[1], swisslipidsDS, genesDone, linksDone);
+
+  counter++
+  if (counter % commitInterval == 0) {
+    println "Info: errors: " + error + " (SwissLipds)"
+    database.commit()
+  }
+}
+unitReport << "  <testcase classname=\"WikidataCreation\" name=\"SwissLipidsFound\"/>\n"
 
 // Wikidata names
 counter = 0
