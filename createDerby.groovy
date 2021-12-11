@@ -68,7 +68,7 @@ swisslipidsDS = DataSource.register ("Sl", "SwissLipids").asDataSource()
 //vmhmetaboliteDS = DataSource.register ("VmhM", "VMH metabolite").asDataSource() //Add this to BridgeDb, update libraries, add to website!
 
 chebiVersionFile = new File('data/chebi.version')
-chebiVersion = "197"
+chebiVersion = "206"
 if (chebiVersionFile.exists() && chebiVersionFile.canRead()) {
   chebiVersion = chebiVersionFile.text.trim()
 }
@@ -76,7 +76,7 @@ if (chebiVersionFile.exists() && chebiVersionFile.canRead()) {
 String dateStr = new SimpleDateFormat("yyyyMMdd").format(new Date());
 database.setInfo("BUILDDATE", dateStr);
 database.setInfo("DATASOURCENAME", "HMDB-CHEBI-WIKIDATA");
-database.setInfo("DATASOURCEVERSION", "HMDB4.0.20200909-CHEBI" + chebiVersion + "-WIKIDATA" + dateStr);
+database.setInfo("DATASOURCEVERSION", "HMDB5.0.20211102-CHEBI" + chebiVersion + "-WIKIDATA" + dateStr);
 database.setInfo("DATATYPE", "Metabolite");
 database.setInfo("SERIES", "standard_metabolite");
 
