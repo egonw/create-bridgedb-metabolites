@@ -794,6 +794,36 @@ new File("swisslipids2wikidata.csv").eachLine { line,number ->
 }
 unitReport << "  <testcase classname=\"WikidataCreation\" name=\"SwissLipidsFound\"/>\n"
 
+// InChIKeys
+counter = 0
+error = 0
+new File("inchikey2wikidata.csv").eachLine { line,number ->
+  if (number == 1) return // skip the first line
+
+  fields = line.split(",")
+  rootid = fields[0].substring(31)
+  Xref ref = new Xref(rootid, wikidataDS);
+  if (!genesDone.contains(ref.toString())) {
+    addError = database.addGene(ref);
+    if (addError != 0) println "Error (addGene): " + database.recentException().getMessage()
+    error += addError
+    linkError = database.addLink(ref,ref);
+    if (linkError != 0) println "Error (addLinkItself): " + database.recentException().getMessage()
+    error += linkError
+    genesDone.add(ref.toString())
+  }
+
+  // add external identifiers
+  addXRef(database, ref, fields[1], inchikeyDS, genesDone, linksDone);
+
+  counter++
+  if (counter % commitInterval == 0) {
+    println "Info: errors: " + error + " (InChIKey)"
+    database.commit()
+  }
+}
+unitReport << "  <testcase classname=\"WikidataCreation\" name=\"InChIKeysFound\"/>\n"
+
 // Wikidata names
 counter = 0
 error = 0
@@ -801,10 +831,9 @@ new File("names2wikidata.tsv").eachLine { line,number ->
   if (number == 1) return // skip the first line
 
   fields = line.split("\t")
-  if (fields.length >= 3) {
+  if (fields.length >= 2) {
     rootid = fields[0].replace("<","").replace(">","").substring(31)
-    key = cleanKey(fields[1].trim())
-    synonym = fields[2].trim().replace("\"","").replace("@en","")
+    synonym = fields[1].trim().replace("\"","").replace("@en","")
     Xref ref = new Xref(rootid, wikidataDS);
     if (!genesDone.contains(ref.toString())) {
       addError = database.addGene(ref);
@@ -818,12 +847,8 @@ new File("names2wikidata.tsv").eachLine { line,number ->
     if (synonym.length() > 0 && !synonym.equals(rootid)) {
       println "Adding synonym: " + synonym
       addAttribute(database, ref, "Symbol", synonym)
-      addXRef(database, ref, key, inchikeyDS, genesDone, linksDone);
     } else {
       println "Not adding synonym: " + synonym
-    }
-    if (key.length() > 0) {
-      addAttribute(database, ref, "InChIKey", key);
     }
   }
   counter++
