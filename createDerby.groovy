@@ -7,7 +7,7 @@ import groovy.util.slurpersupport.NodeChildren;
 import org.bridgedb.IDMapperException;
 import org.bridgedb.DataSource;
 import org.bridgedb.Xref;
-import org.bridgedb.bio.BioDataSource;
+import org.bridgedb.bio.DataSourceTxt;
 import org.bridgedb.rdb.construct.DBConnector;
 import org.bridgedb.rdb.construct.DataDerby;
 import org.bridgedb.rdb.construct.GdbConstruct;
@@ -16,6 +16,8 @@ import org.bridgedb.rdb.construct.GdbConstructImpl3;
 commitInterval = 500
 genesDone = new java.util.HashSet();
 linksDone = new java.util.HashSet();
+
+DataSourceTxt.init()
 
 unitReport = new File("creation.xml")
 // unitReport << "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
@@ -47,23 +49,23 @@ blacklist.add("HMDB06316") //wrong mappings to ChEBI, Pubchem Compound = 0
 // Therefore, we blacklist one of them, to ensure we do not get two Wikidata QIDs
 genesDone.add("Q26981430") // the other QID is Q190875, which should show up anyway
 
-//inchiDS = DataSource.register ("Cin", "InChI").asDataSource()
-inchikeyDS = DataSource.register ("Ik", "InChIKey").asDataSource()
-chemspiderDS = DataSource.register ("Cs", "Chemspider").asDataSource()
-casDS = BioDataSource.CAS
-pubchemDS = BioDataSource.PUBCHEM_COMPOUND
-chebiDS = BioDataSource.CHEBI
-keggDS = BioDataSource.KEGG_COMPOUND
-keggDrugDS = DataSource.register ("Kd", "KEGG Drug").asDataSource()
-wikidataDS = DataSource.register ("Wd", "Wikidata").asDataSource()
-lmDS = DataSource.register ("Lm", "LIPID MAPS").asDataSource()
-knapsackDS = DataSource.register ("Cks", "KNApSAcK").asDataSource()
-dtxDS = DataSource.register ("Ect", "EPA CompTox").asDataSource()
-//drugbankDS = BioDataSource.DRUGBANK //this only works with new BridgeDb release!
-drugbankDS = DataSource.register ("Dr", "DrugBank").asDataSource() 
-iupharDS = DataSource.register ("Gpl", "Guide to Pharmacology").asDataSource() 
-chemblDS = DataSource.register ("Cl", "ChEMBL compound").asDataSource() 
-swisslipidsDS = DataSource.register ("Sl", "SwissLipids").asDataSource()
+//inchiDS = DataSource.getExistingBySystemCode("Cin")
+inchikeyDS = DataSource.getExistingBySystemCode("Ik")
+chemspiderDS = DataSource.getExistingBySystemCode("Cs")
+casDS = DataSource.getExistingBySystemCode("Ca")
+pubchemDS = DataSource.getExistingBySystemCode("Cpc")
+chebiDS = DataSource.getExistingBySystemCode("Ce")
+keggDS = DataSource.getExistingBySystemCode("Ck")
+keggDrugDS = DataSource.getExistingBySystemCode("Kd")
+wikidataDS = DataSource.getExistingBySystemCode("Wd")
+lmDS = DataSource.getExistingBySystemCode("Lm")
+knapsackDS = DataSource.getExistingBySystemCode("Cks")
+dtxDS = DataSource.getExistingBySystemCode("Ect")
+drugbankDS = DataSource.getExistingBySystemCode("Dr")
+iupharDS = DataSource.getExistingBySystemCode("Gpl")
+chemblDS = DataSource.getExistingBySystemCode("Cl")
+swisslipidsDS = DataSource.getExistingBySystemCode("Sl")
+hmdbDS = DataSource.getExistingBySystemCode("Ch")
 
 //vmhmetaboliteDS = DataSource.register ("VmhM", "VMH metabolite").asDataSource() //Add this to BridgeDb, update libraries, add to website!
 
@@ -169,8 +171,8 @@ if (hmdbFile.exists()) {
          println "Error (incorrect HMDB): " + rootid
        }
        // println "HMDB old: ${rootid} -> ${newid}"
-       Xref ref = new Xref(rootid, BioDataSource.HMDB, false);
-       Xref newref = (newid == null) ? null : new Xref(newid, BioDataSource.HMDB);
+       Xref ref = new Xref(rootid, hmdbDS, false);
+       Xref newref = (newid == null) ? null : new Xref(newid, hmdbDS);
        if (!genesDone.contains(ref.toString())) {
          addError = database.addGene(ref);
          if (addError != 0) println "Error (addGene): " + database.recentException().getMessage()
@@ -213,7 +215,7 @@ if (hmdbFile.exists()) {
        addAttribute(database, ref, "Monoisotopic Weight", rootNode.monisotopic_molecular_weight.toString());
   
        // add external identifiers
-       // addXRef(database, ref, rootNode.accession.toString(), BioDataSource.HMDB);
+       // addXRef(database, ref, rootNode.accession.toString(), hmdbDS);
        if (!blacklist.contains(rootid)) {
          addXRef(database, ref, rootNode.cas_registry_number.toString(), casDS, genesDone, linksDone);
          addXRef(database, ref, rootNode.pubchem_compound_id.toString(), pubchemDS, genesDone, linksDone);
@@ -275,7 +277,7 @@ chebiNames.eachLine { line,number ->
   rootid = "CHEBI:" + shortid
   name = columns[4]
   // println rootid + " -> " + name
-  Xref shortRef = new Xref(shortid, BioDataSource.CHEBI, false); // not primary by default
+  Xref shortRef = new Xref(shortid, chebiDS, false); // not primary by default
   if (!genesDone.contains(shortRef.toString())) {
     addError = database.addGene(shortRef);
     if (addError != 0) println "Error (addGene): " + database.recentException().getMessage()
@@ -285,7 +287,7 @@ chebiNames.eachLine { line,number ->
     error += linkError
     genesDone.add(shortRef.toString())
   }
-  Xref ref = new Xref(rootid, BioDataSource.CHEBI, isPrimary);
+  Xref ref = new Xref(rootid, chebiDS, isPrimary);
   if (!genesDone.contains(ref.toString())) {
     addError = database.addGene(ref);
     if (addError != 0) println "Error (addGene): " + database.recentException().getMessage()
@@ -315,13 +317,13 @@ mappedIDs.eachLine { line,number ->
     id = columns[4]
     println "$rootid -($type)-> $id"
     boolean isPrimary = !deprChEBIIDs.contains(rootid)
-    Xref ref = new Xref(rootid, BioDataSource.CHEBI, isPrimary);
+    Xref ref = new Xref(rootid, chebiDS, isPrimary);
     if (type == "CAS Registry Number") {
       if (!id.contains(" ") && !id.contains(":") && id.contains("-")) {
-        addXRef(database, ref, id, BioDataSource.CAS, genesDone, linksDone);
+        addXRef(database, ref, id, casDS, genesDone, linksDone);
       }
     } else if (type == "KEGG COMPOUND accession") {
-      addXRef(database, ref, id, BioDataSource.KEGG_COMPOUND, genesDone, linksDone);
+      addXRef(database, ref, id, keggDS, genesDone, linksDone);
     } else if (type == "Chemspider accession") {
       addXRef(database, ref, id, chemspiderDS, genesDone, linksDone);
     } else if (type == "Pubchem accession") {
@@ -657,7 +659,7 @@ new File("hmdb2wikidata.csv").eachLine { line,number ->
   if (hmdbid.length() == 11) {
     hmdbid = "HMDB" + hmdbid.substring(6) // use the pre-16 August 2017 identifier pattern
   }
-  addXRef(database, ref, hmdbid, BioDataSource.HMDB, genesDone, linksDone);
+  addXRef(database, ref, hmdbid, hmdbDS, genesDone, linksDone);
 
   counter++
   if (counter % commitInterval == 0) {
@@ -719,9 +721,9 @@ new File("chebi2wikidata.csv").eachLine { line,number ->
   // add external identifiers
   shortid = fields[1]
   chebiid = "CHEBI:" + shortid
-  Xref chebiRef = new Xref(rootid, BioDataSource.CHEBI);
-  addXRef(database, ref, shortid, BioDataSource.CHEBI, genesDone, linksDone);
-  addXRef(database, ref, chebiid, BioDataSource.CHEBI, genesDone, linksDone);
+  Xref chebiRef = new Xref(rootid, chebiDS);
+  addXRef(database, ref, shortid, chebiDS, genesDone, linksDone);
+  addXRef(database, ref, chebiid, chebiDS, genesDone, linksDone);
   addXRef(database, chebiRef, rootid, wikidataDS, genesDone, linksDone);
 
   counter++
