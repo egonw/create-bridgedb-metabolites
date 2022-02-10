@@ -2,7 +2,8 @@
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import groovy.util.slurpersupport.NodeChildren;
+import groovy.xml.XmlSlurper
+import groovy.xml.slurpersupport.NodeChildren;
 
 import org.bridgedb.IDMapperException;
 import org.bridgedb.DataSource;

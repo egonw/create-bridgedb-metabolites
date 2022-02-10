@@ -1,10 +1,10 @@
 Create BridgeDb Identity Mapping files
 ======================================
 
-This groovy script creates a Derby file for BridgeDb [1,2] for use in PathVisio,
+This [Groovy](https://groovy-lang.org/) 4.0 script creates a Derby file for BridgeDb [1,2] for use in PathVisio,
 etc.
 
-The script has been tested with HMDB 4.0 [3,4,5], ChEBI 180 [6], and Wikidata [7,8] from Oct. 2019.
+The script has been tested with HMDB 5.0 [3,4,5], ChEBI 208 [6], and Wikidata [7,8] from 2022.
 
 I'm indebted to all that worked on identifier mappings in these projects:
 
