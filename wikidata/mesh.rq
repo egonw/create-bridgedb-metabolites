@@ -1,7 +1,7 @@
 PREFIX wdt: <http://www.wikidata.org/prop/direct/>
-SELECT ?compoundRes ?compoundResLabel ?id WHERE {
+SELECT ?compoundRes ?mesh WHERE {
   SERVICE <https://query.wikidata.org/sparql> {
-    SELECT ?compoundRes ?mesh WITH {
+    SELECT DISTINCT ?compoundRes ?mesh WITH {
       { ?compoundRes p:P31/ps:P31 wd:Q11173 }
       UNION
       { ?compoundRes p:P31/ps:P31 wd:Q36496 }

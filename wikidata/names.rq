@@ -5,7 +5,7 @@ PREFIX wd:   <http://www.wikidata.org/entity/>
 PREFIX wdt:  <http://www.wikidata.org/prop/direct/>
 SELECT ?compoundRes ?compoundResLabel ?id WHERE {
   SERVICE <https://query.wikidata.org/sparql> {
-    SELECT ?compoundRes ?compoundResLabel ?id WHERE {
+    SELECT DISTINCT ?compoundRes ?compoundResLabel ?id WHERE {
       VALUES ?class { wd:Q11173 wd:Q36496 wd:Q79529 wd:Q55662747 }
       ?compoundRes p:P31/ps:P31|p:P279/ps:P279+ ?class .
       ?compoundRes rdfs:label ?compoundResLabel
