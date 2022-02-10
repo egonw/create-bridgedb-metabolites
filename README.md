@@ -82,20 +82,22 @@ KnAPSaCK IDs (knapsack.rq) [9].
 However, you can also use the below curl command line operations.
 
 ```shell
-curl -H "Accept: text/csv" --data-urlencode query@wikidata/cas.rq -G https://query.wikidata.org/bigdata/namespace/wdq/sparql -o cas2wikidata.csv
-curl -H "Accept: text/csv" --data-urlencode query@wikidata/cs.rq -G https://query.wikidata.org/bigdata/namespace/wdq/sparql -o cs2wikidata.csv
-curl -H "Accept: text/csv" --data-urlencode query@wikidata/pubchem.rq -G https://query.wikidata.org/bigdata/namespace/wdq/sparql -o pubchem2wikidata.csv
-curl -H "Accept: text/csv" --data-urlencode query@wikidata/chebi.rq -G https://query.wikidata.org/bigdata/namespace/wdq/sparql -o chebi2wikidata.csv
-curl -H "Accept: text/csv" --data-urlencode query@wikidata/kegg.rq -G https://query.wikidata.org/bigdata/namespace/wdq/sparql -o kegg2wikidata.csv
-curl -H "Accept: text/csv" --data-urlencode query@wikidata/hmdb.rq -G https://query.wikidata.org/bigdata/namespace/wdq/sparql -o hmdb2wikidata.csv
-curl -H "Accept: text/csv" --data-urlencode query@wikidata/lm.rq -G https://query.wikidata.org/bigdata/namespace/wdq/sparql -o lm2wikidata.csv
-curl -H "Accept: text/csv" --data-urlencode query@wikidata/knapsack.rq -G https://query.wikidata.org/bigdata/namespace/wdq/sparql -o knapsack2wikidata.csv
-curl -H "Accept: text/csv" --data-urlencode query@wikidata/comptox.rq -G https://query.wikidata.org/bigdata/namespace/wdq/sparql -o comptox2wikidata.csv
-curl -H "Accept: text/csv" --data-urlencode query@wikidata/iuphar.rq -G https://query.wikidata.org/bigdata/namespace/wdq/sparql -o gpl2wikidata.csv
-curl -H "Accept: text/csv" --data-urlencode query@wikidata/chembl.rq -G https://query.wikidata.org/bigdata/namespace/wdq/sparql -o chembl2wikidata.csv
-curl -H "Accept: text/csv" --data-urlencode query@wikidata/drugbank.rq -G https://query.wikidata.org/bigdata/namespace/wdq/sparql -o drugbank2wikidata.csv
-curl -H "Accept: text/csv" --data-urlencode query@wikidata/swisslipids.rq -G https://query.wikidata.org/bigdata/namespace/wdq/sparql -o swisslipids2wikidata.csv
+curl -H "Accept: text/csv" --data-urlencode query@wikidata/cas.rq -G https://beta.sparql.swisslipids.org/sparql -o cas2wikidata.csv
+curl -H "Accept: text/csv" --data-urlencode query@wikidata/cs.rq -G https://beta.sparql.swisslipids.org/sparql -o cs2wikidata.csv
+curl -H "Accept: text/csv" --data-urlencode query@wikidata/pubchem.rq -G https://beta.sparql.swisslipids.org/sparql -o pubchem2wikidata.csv
+curl -H "Accept: text/csv" --data-urlencode query@wikidata/chebi.rq -G https://beta.sparql.swisslipids.org/sparql -o chebi2wikidata.csv
+curl -H "Accept: text/csv" --data-urlencode query@wikidata/kegg.rq -G https://beta.sparql.swisslipids.org/sparql -o kegg2wikidata.csv
+curl -H "Accept: text/csv" --data-urlencode query@wikidata/hmdb.rq -G https://beta.sparql.swisslipids.org/sparql -o hmdb2wikidata.csv
+curl -H "Accept: text/csv" --data-urlencode query@wikidata/lm.rq -G https://beta.sparql.swisslipids.org/sparql -o lm2wikidata.csv
+curl -H "Accept: text/csv" --data-urlencode query@wikidata/knapsack.rq -G https://beta.sparql.swisslipids.org/sparql -o knapsack2wikidata.csv
+curl -H "Accept: text/csv" --data-urlencode query@wikidata/comptox.rq -G https://beta.sparql.swisslipids.org/sparql -o comptox2wikidata.csv
+curl -H "Accept: text/csv" --data-urlencode query@wikidata/iuphar.rq -G https://beta.sparql.swisslipids.org/sparql -o gpl2wikidata.csv
+curl -H "Accept: text/csv" --data-urlencode query@wikidata/chembl.rq -G https://beta.sparql.swisslipids.org/sparql -o chembl2wikidata.csv
+curl -H "Accept: text/csv" --data-urlencode query@wikidata/drugbank.rq -G https://beta.sparql.swisslipids.org/sparql -o drugbank2wikidata.csv
+curl -H "Accept: text/csv" --data-urlencode query@wikidata/swisslipids.rq -G https://beta.sparql.swisslipids.org/sparql -o swisslipids2wikidata.csv
 ```
+
+Thanks to Jerven Bolleman for their SPARQL endpoint work at SIB.
 
 4.2 Get compound labels and InChIKeys
 
@@ -104,7 +106,7 @@ InChIKeys can be downloaded as simple TSV and saved as "names2wikidata.tsv"
 (note that this file is TAB separated):
 
 ```shell
-curl -H "Accept: text/tab-separated-values" --data-urlencode query@wikidata/names.rq -G https://query.wikidata.org/bigdata/namespace/wdq/sparql -o names2wikidata.tsv
+curl -H "Accept: text/tab-separated-values" --data-urlencode query@wikidata/names.rq -G https://beta.sparql.swisslipids.org/sparql -o names2wikidata.tsv
 ```
 
 5. Run the script with Groovy:

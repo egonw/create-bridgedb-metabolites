@@ -1,11 +1,15 @@
-PREFIX wdt: <http://www.wikidata.org/prop/direct/>
-SELECT DISTINCT ?compoundRes ?compoundResLabel WITH {
-  SELECT ?compoundRes WHERE {
-    VALUES ?class { wd:Q11173 wd:Q36496 wd:Q79529 wd:Q55662747 }
-    ?compoundRes p:P31/ps:P31|p:P279/ps:P279+ ?class .
+PREFIX p:    <http://www.wikidata.org/prop/>
+PREFIX ps:   <http://www.wikidata.org/prop/statement/>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX wd:   <http://www.wikidata.org/entity/>
+PREFIX wdt:  <http://www.wikidata.org/prop/direct/>
+SELECT ?compoundRes ?compoundResLabel ?id WHERE {
+  SERVICE <https://query.wikidata.org/sparql> {
+    SELECT ?compoundRes ?compoundResLabel ?id WHERE {
+      VALUES ?class { wd:Q11173 wd:Q36496 wd:Q79529 wd:Q55662747 }
+      ?compoundRes p:P31/ps:P31|p:P279/ps:P279+ ?class .
+      ?compoundRes rdfs:label ?compoundResLabel
+      FILTER((LANG(?compoundResLabel)) = "en")
+    }
   }
-} AS %RESULTS {
-  INCLUDE %RESULTS
-  ?compoundRes rdfs:label ?compoundResLabel
-  FILTER((LANG(?compoundResLabel)) = "en")
 }
