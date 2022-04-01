@@ -19,7 +19,7 @@ Everyone can contribute ID mappings to the latter project.
 Releases
 --------
 
-The files are released via the BridgeDb Website: http://www.bridgedb.org/mapping-databases/hmdb-metabolite-mappings/
+The files are released via the BridgeDb Website: https://bridgedb.github.io/data/gene_database/
 
 The mapping files are also archived on Figshare: https://figshare.com/projects/BridgeDb_metabolites/28500
 
