@@ -71,7 +71,7 @@ hmdbDS = DataSource.getExistingBySystemCode("Ch")
 //vmhmetaboliteDS = DataSource.register ("VmhM", "VMH metabolite").asDataSource() //Add this to BridgeDb, update libraries, add to website!
 
 chebiVersionFile = new File('data/chebi.version')
-chebiVersion = "206"
+chebiVersion = "211"
 if (chebiVersionFile.exists() && chebiVersionFile.canRead()) {
   chebiVersion = chebiVersionFile.text.trim()
 }
