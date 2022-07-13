@@ -12,7 +12,7 @@ import org.bridgedb.bio.DataSourceTxt;
 import org.bridgedb.rdb.construct.DBConnector;
 import org.bridgedb.rdb.construct.DataDerby;
 import org.bridgedb.rdb.construct.GdbConstruct;
-import org.bridgedb.rdb.construct.GdbConstructImpl3;
+import org.bridgedb.rdb.construct.GdbConstructImpl4;
 
 commitInterval = 500
 genesDone = new java.util.HashSet();
@@ -24,7 +24,7 @@ unitReport = new File("creation.xml")
 // unitReport << "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
 unitReport << "<testsuite tests=\"12\">\n"
 
-GdbConstruct database = GdbConstructImpl3.createInstance(
+GdbConstruct database = GdbConstructImpl4.createInstance(
   "hmdb_chebi_wikidata_metabolites", new DataDerby(), DBConnector.PROP_RECREATE
 );
 database.createGdbTables();
