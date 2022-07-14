@@ -862,7 +862,7 @@ unitReport << "  <testcase classname=\"WikidataCreation\" name=\"NamesFound\"/>\
 unitReport << "</testsuite>\n"
 
 //Trying to figure out XML failure in Jenkins build:
-xmllint --nouout creation.xml
+//xmllint --nouout creation.xml
 
 database.commit();
 database.finalize();
