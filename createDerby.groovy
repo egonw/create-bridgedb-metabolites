@@ -861,8 +861,5 @@ new File("names2wikidata.tsv").eachLine { line,number ->
 unitReport << "  <testcase classname=\"WikidataCreation\" name=\"NamesFound\"/>\n"
 unitReport << "</testsuite>\n"
 
-//Trying to figure out XML failure in Jenkins build:
-//xmllint --nouout creation.xml
-
 database.commit();
 database.finalize();
