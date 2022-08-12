@@ -45,6 +45,8 @@ blacklist.add("HMDB0000912") // see bug #6
 blacklist.add("HMDB00912") // see bug #6
 blacklist.add("HMDB0006316") //wrong mappings to ChEBI, Pubchem Compound = 0
 blacklist.add("HMDB06316") //wrong mappings to ChEBI, Pubchem Compound = 0
+blacklist.add("HMDB0010337") //wrong mappings to ChEBI, introduces duplicate InChI-Keys
+blacklist.add("HMDB10337") //wrong mappings to ChEBI, introduces duplicate InChI-Keys
 
 // Some compounds have more than one Wikidata items, e.g. because there are two Wikipedia pages
 // Therefore, we blacklist one of them, to ensure we do not get two Wikidata QIDs
