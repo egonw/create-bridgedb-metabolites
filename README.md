@@ -112,7 +112,6 @@ curl -H "Accept: text/tab-separated-values" --data-urlencode query@wikidata/name
 5. Run the script with Groovy:
 
 ```shell
-export CLASSPATH=`ls -1 *.jar | tr '\n' ':'`
 groovy createDerby.groovy
 ```
 
