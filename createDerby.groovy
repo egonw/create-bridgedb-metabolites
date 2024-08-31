@@ -1,5 +1,5 @@
-@Grab(group='org.bridgedb', module='org.bridgedb.bio', version='3.0.22')
-@Grab(group='org.bridgedb', module='org.bridgedb.rdb.construct', version='3.0.22')
+@Grab(group='org.bridgedb', module='org.bridgedb.bio', version='3.1.2-java8')
+@Grab(group='org.bridgedb', module='org.bridgedb.rdb.construct', version='3.1.2-java8')
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -76,7 +76,7 @@ hmdbDS = DataSource.getExistingBySystemCode("Ch")
 //vmhmetaboliteDS = DataSource.register ("VmhM", "VMH metabolite").asDataSource() //Add this to BridgeDb, update libraries, add to website!
 
 chebiVersionFile = new File('data/chebi.version')
-chebiVersion = "211"
+chebiVersion = "232"
 if (chebiVersionFile.exists() && chebiVersionFile.canRead()) {
   chebiVersion = chebiVersionFile.text.trim()
 }
@@ -84,7 +84,7 @@ if (chebiVersionFile.exists() && chebiVersionFile.canRead()) {
 String dateStr = new SimpleDateFormat("yyyyMMdd").format(new Date());
 database.setInfo("BUILDDATE", dateStr);
 database.setInfo("DATASOURCENAME", "HMDB-CHEBI-WIKIDATA");
-database.setInfo("DATASOURCEVERSION", "HMDB5.0.20211102-CHEBI" + chebiVersion + "-WIKIDATA" + dateStr);
+database.setInfo("DATASOURCEVERSION", "HMDB5.0.20240416-CHEBI" + chebiVersion + "-WIKIDATA" + dateStr);
 database.setInfo("DATATYPE", "Metabolite");
 database.setInfo("SERIES", "standard_metabolite");
 
