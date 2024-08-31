@@ -104,6 +104,7 @@ InChIKeys can be downloaded as simple TSV and saved as "names2wikidata.tsv"
 
 ```shell
 curl -H "Accept: text/tab-separated-values" --data-urlencode query@wikidata/names.rq -G https://qlever.cs.uni-freiburg.de/api/wikidata -o names2wikidata.tsv
+curl -H "Accept: text/csv" --data-urlencode query@wikidata/inchikey.rq -G https://qlever.cs.uni-freiburg.de/api/wikidata -o inchikey2wikidata.csv
 ```
 
 5. Run the script with Groovy:
