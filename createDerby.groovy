@@ -1,5 +1,8 @@
 @Grab(group='org.bridgedb', module='org.bridgedb.bio', version='3.1.2-java8')
 @Grab(group='org.bridgedb', module='org.bridgedb.rdb.construct', version='3.1.2-java8')
+@Grab(group='org.apache.derby', module='derby', version='10.14.2.0')
+@Grab(group='org.apache.derby', module='derbytools', version='10.14.2.0')
+@Grab(group='org.apache.derby', module='derbyclient', version='10.14.2.0')
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -13,6 +16,7 @@ import org.bridgedb.bio.DataSourceTxt;
 import org.bridgedb.rdb.construct.DBConnector;
 import org.bridgedb.rdb.construct.DataDerby;
 import org.bridgedb.rdb.construct.GdbConstruct;
+import org.bridgedb.rdb.construct.GdbConstructImpl3;
 import org.bridgedb.rdb.construct.GdbConstructImpl4;
 
 commitInterval = 500
@@ -20,12 +24,15 @@ genesDone = new java.util.HashSet();
 linksDone = new java.util.HashSet();
 
 DataSourceTxt.init()
+// Class.forName("org.apache.derby.jdbc.ClientDriver"); // Java ?
+Class.forName("org.apache.derby.jdbc.EmbeddedDriver") // Java 8
 
 unitReport = new File("creation.xml")
 // unitReport << "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
 unitReport << "<testsuite tests=\"12\">\n"
 
-GdbConstruct database = GdbConstructImpl4.createInstance(
+//GdbConstruct database = GdbConstructImpl4.createInstance(   // Other
+GdbConstruct database = GdbConstructImpl3.createInstance(     // PathVisio 3.3
   "hmdb_chebi_wikidata_metabolites", new DataDerby(), DBConnector.PROP_RECREATE
 );
 database.createGdbTables();
