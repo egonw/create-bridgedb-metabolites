@@ -31,8 +31,8 @@ unitReport = new File("creation.xml")
 // unitReport << "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
 unitReport << "<testsuite tests=\"12\">\n"
 
-//GdbConstruct database = GdbConstructImpl4.createInstance(   // Other
-GdbConstruct database = GdbConstructImpl3.createInstance(     // PathVisio 3.3
+GdbConstruct database = GdbConstructImpl4.createInstance(   // Other
+//GdbConstruct database = GdbConstructImpl3.createInstance(     // PathVisio 3.3
   "hmdb_chebi_wikidata_metabolites", new DataDerby(), DBConnector.PROP_RECREATE
 );
 database.createGdbTables();
@@ -177,7 +177,7 @@ if (hmdbFile.exists()) {
            newid = rootid
            rootid = "HMDB" + rootid.substring(6) // use the pre-16 August 2017 identifier pattern
          } // otherwise: assume there only is a new ID
-       } else if (rootid.length() > 4) {
+       } else if (rootid.length() > 4 && rootid.length() < 11) {
          newid = "HMDB00" + rootid.substring(4)
        } else {
          error = 1
@@ -669,7 +669,7 @@ new File("hmdb2wikidata.csv").eachLine { line,number ->
 
   // add external identifiers
   hmdbid = fields[1]
-  if (hmdbid.length() == 11) {
+  if (hmdbid.length() == 11 && hmdbid.startsWith("HMDB00")) {
     hmdbid = "HMDB" + hmdbid.substring(6) // use the pre-16 August 2017 identifier pattern
   }
   addXRef(database, ref, hmdbid, hmdbDS, genesDone, linksDone);
