@@ -59,10 +59,11 @@ zip -r hmdb_metabolites_split.zip hmdb
 ```shell
 mkdir data
 cd data
-wget ftp://ftp.ebi.ac.uk/pub/databases/chebi/Flat_file_tab_delimited/names.tsv.gz
+wget https://ftp.ebi.ac.uk/pub/databases/chebi/flat_files/names.tsv.gz
 gunzip names.tsv.gz
 mv names.tsv chebi_names.tsv
-wget ftp://ftp.ebi.ac.uk/pub/databases/chebi/Flat_file_tab_delimited/database_accession.tsv
+wget https://ftp.ebi.ac.uk/pub/databases/chebi/flat_files/database_accession.tsv.gz
+gunzip gunzip database_accession.tsv.gz
 mv database_accession.tsv chebi_database_accession.tsv
 ```
 
@@ -79,22 +80,22 @@ KnAPSaCK IDs (knapsack.rq) [10], and LIPID MAPS [11].
 However, you can also use the below curl command line operations.
 
 ```shell
-curl -H "Accept: text/csv" --data-urlencode query@wikidata/cas.rq -G https://qlever.cs.uni-freiburg.de/api/wikidata -o cas2wikidata.csv
-curl -H "Accept: text/csv" --data-urlencode query@wikidata/cs.rq -G https://qlever.cs.uni-freiburg.de/api/wikidata -o cs2wikidata.csv
-curl -H "Accept: text/csv" --data-urlencode query@wikidata/pubchem.rq -G https://qlever.cs.uni-freiburg.de/api/wikidata -o pubchem2wikidata.csv
-curl -H "Accept: text/csv" --data-urlencode query@wikidata/chebi.rq -G https://qlever.cs.uni-freiburg.de/api/wikidata -o chebi2wikidata.csv
-curl -H "Accept: text/csv" --data-urlencode query@wikidata/kegg.rq -G https://qlever.cs.uni-freiburg.de/api/wikidata -o kegg2wikidata.csv
-curl -H "Accept: text/csv" --data-urlencode query@wikidata/hmdb.rq -G https://qlever.cs.uni-freiburg.de/api/wikidata -o hmdb2wikidata.csv
-curl -H "Accept: text/csv" --data-urlencode query@wikidata/lm.rq -G https://qlever.cs.uni-freiburg.de/api/wikidata -o lm2wikidata.csv
-curl -H "Accept: text/csv" --data-urlencode query@wikidata/knapsack.rq -G https://qlever.cs.uni-freiburg.de/api/wikidata -o knapsack2wikidata.csv
-curl -H "Accept: text/csv" --data-urlencode query@wikidata/comptox.rq -G https://qlever.cs.uni-freiburg.de/api/wikidata -o comptox2wikidata.csv
-curl -H "Accept: text/csv" --data-urlencode query@wikidata/iuphar.rq -G https://qlever.cs.uni-freiburg.de/api/wikidata -o gpl2wikidata.csv
-curl -H "Accept: text/csv" --data-urlencode query@wikidata/chembl.rq -G https://qlever.cs.uni-freiburg.de/api/wikidata -o chembl2wikidata.csv
-curl -H "Accept: text/csv" --data-urlencode query@wikidata/drugbank.rq -G https://qlever.cs.uni-freiburg.de/api/wikidata -o drugbank2wikidata.csv
-curl -H "Accept: text/csv" --data-urlencode query@wikidata/swisslipids.rq -G https://qlever.cs.uni-freiburg.de/api/wikidata -o swisslipids2wikidata.csv
+curl -H "Accept: text/csv" --data-urlencode query@wikidata/cas.rq -G https://qlever.dev/api/wikidata -o cas2wikidata.csv
+curl -H "Accept: text/csv" --data-urlencode query@wikidata/cs.rq -G https://qlever.dev/api/wikidata -o cs2wikidata.csv
+curl -H "Accept: text/csv" --data-urlencode query@wikidata/pubchem.rq -G https://qlever.dev/api/wikidata -o pubchem2wikidata.csv
+curl -H "Accept: text/csv" --data-urlencode query@wikidata/chebi.rq -G https://qlever.dev/api/wikidata -o chebi2wikidata.csv
+curl -H "Accept: text/csv" --data-urlencode query@wikidata/kegg.rq -G https://qlever.dev/api/wikidata -o kegg2wikidata.csv
+curl -H "Accept: text/csv" --data-urlencode query@wikidata/hmdb.rq -G https://qlever.dev/api/wikidata -o hmdb2wikidata.csv
+curl -H "Accept: text/csv" --data-urlencode query@wikidata/lm.rq -G https://qlever.dev/api/wikidata -o lm2wikidata.csv
+curl -H "Accept: text/csv" --data-urlencode query@wikidata/knapsack.rq -G https://qlever.dev/api/wikidata -o knapsack2wikidata.csv
+curl -H "Accept: text/csv" --data-urlencode query@wikidata/comptox.rq -G https://qlever.dev/api/wikidata -o comptox2wikidata.csv
+curl -H "Accept: text/csv" --data-urlencode query@wikidata/iuphar.rq -G https://qlever.dev/api/wikidata -o gpl2wikidata.csv
+curl -H "Accept: text/csv" --data-urlencode query@wikidata/chembl.rq -G https://qlever.dev/api/wikidata -o chembl2wikidata.csv
+curl -H "Accept: text/csv" --data-urlencode query@wikidata/drugbank.rq -G https://qlever.dev/api/wikidata -o drugbank2wikidata.csv
+curl -H "Accept: text/csv" --data-urlencode query@wikidata/swisslipids.rq -G https://qlever.dev/api/wikidata -o swisslipids2wikidata.csv
 ```
 
-Thanks to Jerven Bolleman for their SPARQL endpoint work at SIB (which we used before) and to the Freiburg QLever team.
+Thanks to the Freiburg QLever team.
 
 4.2 Get compound labels and InChIKeys
 
@@ -103,8 +104,8 @@ InChIKeys can be downloaded as simple TSV and saved as "names2wikidata.tsv"
 (note that this file is TAB separated):
 
 ```shell
-curl -H "Accept: text/tab-separated-values" --data-urlencode query@wikidata/names.rq -G https://qlever.cs.uni-freiburg.de/api/wikidata -o names2wikidata.tsv
-curl -H "Accept: text/csv" --data-urlencode query@wikidata/inchikey.rq -G https://qlever.cs.uni-freiburg.de/api/wikidata -o inchikey2wikidata.csv
+curl -H "Accept: text/tab-separated-values" --data-urlencode query@wikidata/names.rq -G https://qlever.dev/api/wikidata -o names2wikidata.tsv
+curl -H "Accept: text/csv" --data-urlencode query@wikidata/inchikey.rq -G https://qlever.dev/api/wikidata -o inchikey2wikidata.csv
 ```
 
 5. Run the script with Groovy:
