@@ -1,5 +1,6 @@
-@Grab(group='org.bridgedb', module='org.bridgedb.bio', version='3.1.2-java8')
-@Grab(group='org.bridgedb', module='org.bridgedb.rdb.construct', version='3.1.2-java8')
+@GrabResolver(name='sonatype', root='https://repo1.maven.org/maven2/')
+@Grab(group='org.bridgedb', module='org.bridgedb.bio', version='[3.1.2-java8,)')
+@Grab(group='org.bridgedb', module='org.bridgedb.rdb.construct', version='[3.1.2-java8,)')
 @Grab(group='org.apache.derby', module='derby', version='10.4.2.0')
 @Grab(group='org.apache.derby', module='derbytools', version='10.4.2.0')
 @Grab(group='org.apache.derby', module='derbyclient', version='10.4.2.0')
@@ -24,7 +25,7 @@ genesDone = new java.util.HashSet();
 linksDone = new java.util.HashSet();
 
 DataSourceTxt.init()
-// Class.forName("org.apache.derby.jdbc.ClientDriver"); // Java ?
+// Class.forName("org.apache.derby.jdbc.ClientDriver"); // Java 11+
 Class.forName("org.apache.derby.jdbc.EmbeddedDriver") // Java 8
 
 unitReport = new File("creation.xml")
@@ -83,7 +84,7 @@ hmdbDS = DataSource.getExistingBySystemCode("Ch")
 //vmhmetaboliteDS = DataSource.register ("VmhM", "VMH metabolite").asDataSource() //Add this to BridgeDb, update libraries, add to website!
 
 chebiVersionFile = new File('data/chebi.version')
-chebiVersion = "232"
+chebiVersion = "247"
 if (chebiVersionFile.exists() && chebiVersionFile.canRead()) {
   chebiVersion = chebiVersionFile.text.trim()
 }
@@ -91,7 +92,7 @@ if (chebiVersionFile.exists() && chebiVersionFile.canRead()) {
 String dateStr = new SimpleDateFormat("yyyyMMdd").format(new Date());
 database.setInfo("BUILDDATE", dateStr);
 database.setInfo("DATASOURCENAME", "HMDB-CHEBI-WIKIDATA");
-database.setInfo("DATASOURCEVERSION", "HMDB5.0.20240416-CHEBI" + chebiVersion + "-WIKIDATA" + dateStr);
+database.setInfo("DATASOURCEVERSION", "HMDB5.0.20260102-CHEBI" + chebiVersion + "-WIKIDATA" + dateStr);
 database.setInfo("DATATYPE", "Metabolite");
 database.setInfo("SERIES", "standard_metabolite");
 
